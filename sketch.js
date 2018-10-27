@@ -17,7 +17,7 @@ function unrollRepeats(oldCode) {
 	};
 	// this regex finds "repeat (number) [(string)]" where string doesn't contain [ or ]
 	// only the innermost nesting gets unrolled on each pass through
-	const newCode = oldCode.replace(/repeat\s(\d+)\s\[([^\]\[]+)\]/gmi, regexRepeater);
+	const newCode = oldCode.replace(/repeat\s+(\d+)\s+\[([^\]\[]+)\]/gmi, regexRepeater);
 	// if it hasn't changed any text return it, but if some text has been replaced
 	// call the function again to make sure there isn't another outer level to unroll
 	return oldCode === newCode ? oldCode : unrollRepeats(newCode);
@@ -29,7 +29,7 @@ function goTurtle() {
 	turtle.reset();
 	let code = editor.value();
 	code = unrollRepeats(code);
-	let tokens = code.split(/\s/);
+	let tokens = code.split(/\s+/);
 	let index = 0;
 	while (index < tokens.length) {
 		let token = tokens[index];
