@@ -1,3 +1,58 @@
+function parseCode(str, buffer = []) {
+  let funcName = "",
+    other = [];
+
+  while (str.length) {
+    [
+      funcName,
+      ...other
+    ] = str.split(" ");
+    str = (prepares[funcName] || prepares["default"])(other, buffer, funcName).trim();
+  }
+}
+
+function indexOfClose(str, open, close) {
+  let start = 1,
+    char = "",
+    limit = str.length,
+    index = 0;
+
+  while (start && index < limit) {
+    index++;
+    char = str.charAt(index);
+    start = char == open ? start + 1 : start;
+    start = char == close ? start - 1 : start;
+  }
+  return index;
+}
+
+
+const prepares = {
+  repeat: function (rest, buffer) {
+    let [
+      num,
+      ...other
+    ] = rest,
+      str = other.join(" "),
+      indexEnd = indexOfClose(str.trim(), "[", "]"),
+      strRepeat = str.slice(1, indexEnd),
+      restEnd = str.slice(indexEnd + 1, str.length);
+
+    num = parseInt(num);
+
+    for (let i = 0; i < num; i++) {
+      parseCode(strRepeat.trim(), buffer);
+    }
+
+    return restEnd;
+  },
+  default: function (rest, buffer, funcName) {
+    buffer.push(funcName);
+    return rest.join(" ");
+  },
+};
+
+
 const commands = {
   "fd": function (amt) {
     turtle.forward(amt);
