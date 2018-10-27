@@ -16,7 +16,8 @@ function goTurtle() {
 	push();
 	turtle.reset();
 	let code = editor.value();
-	let tokens = code.split(' ');
+	let tokens = [];
+  	parseCode(code, tokens);
 	let index = 0;
 	while (index < tokens.length) {
 		let token = tokens[index];
