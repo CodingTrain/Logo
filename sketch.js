@@ -2,7 +2,7 @@ let editor;
 let turtle;
 
 function setup() {
-	createCanvas(600, 600);
+	createCanvas(840, 760);
 	angleMode(DEGREES);
 	background(0);
 	turtle = new Turtle(100, 100, 0);
