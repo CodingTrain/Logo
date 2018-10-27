@@ -16,6 +16,30 @@ const commands = {
   },
   "pd": function () {
     turtle.pen = true;
+  },
+  "repeat": function (arg, repeat) {
+    let count = 0;
+    repeat = repeat.substring(1, repeat.length-(repeat.length - repeat.indexOf("]")));
+    for (let i = 0; i < arg; i++){
+      let tokens = repeat.split(" ");
+      let index = 0;
+      let count = 0;
+      let repeats = lookForReapeat(tokens);
+      while (index < tokens.length) {
+        let token = tokens[index];
+        if (commands[token]) {
+          if (token.charAt(0) === 'p') {
+            commands[token]();
+          } else if (token.charAt(0) === 'r'){
+              commands[token](tokens[++index], repeats[count]);
+              count++;
+            } else {
+            commands[token](tokens[++index]);
+          }
+        }
+        index++;
+      }
+    }
   }
 }
 
