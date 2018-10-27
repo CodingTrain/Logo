@@ -16,7 +16,7 @@ function goTurtle() {
 	push();
 	turtle.reset();
 	let code = editor.value();
-	let tokens = code.split(/\b/) // Split on word boundary
+	let tokens = code.split(/\b|(?=\[|\])/) // Split on word boundary
 		.map(str => str.trim()) // Trim whitespace
 		.filter(str => str !== ''); // Remove empty strings
 
