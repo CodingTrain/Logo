@@ -2,32 +2,37 @@ let editor;
 let turtle;
 
 function setup() {
-	createCanvas(200, 200);
+	createCanvas(400, 400);
 	angleMode(DEGREES);
-	background(0);
-	turtle = new Turtle(100, 100, 0);
+	turtle = new Turtle(200, 200);
 	editor = select('#code');
-	editor.input(goTurtle);
-	goTurtle();
+	editor.input(main);
+	main();
 }
 
-function goTurtle() {
-	background(0);
+function main() {
+	console.clear();
 	push();
+	background(51);
 	turtle.reset();
-	let code = editor.value();
-	let tokens = code.split(' ');
-	let index = 0;
-	while (index < tokens.length) {
-		let token = tokens[index];
-		if (commands[token]) {
-			if (token.charAt(0) === 'p') {
-				commands[token]();
-			} else {
-				commands[token](tokens[++index]);
-			}
-		}
-		index++;
-	}
+	const rawCode = editor.value();
+	let stack = LogoParser.parse(rawCode);
+	execStack(stack);
+	turtle.draw();
 	pop();
+}
+
+function execCommand(command, stack) {
+	if (commands[command]) {
+		commands[command](stack);
+	} else {
+		console.warn('Unknown command: "' + command + '"');
+	}
+}
+
+function execStack(stack) {
+	while(stack.length > 0) {
+		const command = stack.shift();
+		execCommand(command, stack);
+	}
 }
