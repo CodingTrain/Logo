@@ -31,11 +31,12 @@ const commands = {
     const openBracket = nextToken(refCode, "\\[");
     if (!openBracket) return;
     let localCode = refCode.code;
-    const closeBracket = nextToken(refCode, "\\]");
-    if (!closeBracket) return;
-    localCode = localCode.substr(0, localCode.indexOf(']'));
+    const closingPos = findClosingPair(localCode, ']', '[');
+    if (closingPos === -1) return;
+    localCode = localCode.substr(0, closingPos);
     for( ; repeat > 0; repeat--)
       turtle.eat(localCode);
+    refCode.code = refCode.code.substr(closingPos + 1);
   }
 }
 
@@ -54,6 +55,22 @@ function nextToken(refCode, reg) {
     return found[0];
   }
   return null;
+}
+
+function findClosingPair(code, close, open) {
+  var match = 1;
+  for(var i = 0; i < code.length; i++) {
+    if (code[i] === open) {
+      match++;
+    }
+    if (code[i] === close) {
+      match--;
+      if (match === 0) {
+        return i;
+      }
+    }
+  }
+  return -1;
 }
 
 function eatToken(refCode, token) {
