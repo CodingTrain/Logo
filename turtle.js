@@ -1,14 +1,22 @@
 const commands = {
-  "fd": function (amt) {
+  "fd": function (refCode) {
+    const amt = nextNumber(refCode);
+    if (!amt) return;
     turtle.forward(amt);
   },
-  "bd": function (amt) {
+  "bd": function (refCode) {
+    const amt = nextNumber(refCode);
+    if (!amt) return;
     turtle.forward(-amt);
   },
-  "rt": function (angle) {
+  "rt": function (refCode) {
+    const angle = nextNumber(refCode);
+    if (!angle) return;
     turtle.right(angle);
   },
-  "lt": function (angle) {
+  "lt": function (refCode) {
+    const angle = nextNumber(refCode);
+    if (!angle) return;
     turtle.right(-angle);
   },
   "pu": function () {
@@ -16,7 +24,41 @@ const commands = {
   },
   "pd": function () {
     turtle.pen = true;
+  },
+  "repeat": function (refCode) {
+    let repeat = nextNumber(refCode);
+    if (!repeat) return;
+    const openBracket = nextToken(refCode, "\\[");
+    if (!openBracket) return;
+    let localCode = refCode.code;
+    const closeBracket = nextToken(refCode, "\\]");
+    if (!closeBracket) return;
+    localCode = localCode.substr(0, localCode.indexOf(']'));
+    for( ; repeat > 0; repeat--)
+      turtle.eat(localCode);
   }
+}
+
+function nextCmd(refCode) {
+  return nextToken(refCode, "[a-z]+");
+}
+
+function nextNumber(refCode) {
+  return nextToken(refCode, "[0-9]+");
+}
+
+function nextToken(refCode, reg) {
+  const found = refCode.code.match(reg);
+  if (found) {
+    eatToken(refCode, found[0]);
+    return found[0];
+  }
+  return null;
+}
+
+function eatToken(refCode, token) {
+  const tokenPos = refCode.code.indexOf(token);
+  refCode.code = refCode.code.substr(tokenPos + token.length);
 }
 
 class Turtle {
@@ -31,6 +73,17 @@ class Turtle {
     translate(this.x, this.y);
     rotate(this.dir);
     this.pen = true;
+  }
+
+  eat(code) {
+    let refCode = {code:code};
+    while(refCode.code.length) {
+      const cmd = nextCmd(refCode);
+      if (!cmd) break;
+      if (commands[cmd]) {
+        commands[cmd](refCode);
+      }
+    }
   }
 
   forward(amt) {

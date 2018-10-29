@@ -16,18 +16,6 @@ function goTurtle() {
 	push();
 	turtle.reset();
 	let code = editor.value();
-	let tokens = code.split(' ');
-	let index = 0;
-	while (index < tokens.length) {
-		let token = tokens[index];
-		if (commands[token]) {
-			if (token.charAt(0) === 'p') {
-				commands[token]();
-			} else {
-				commands[token](tokens[++index]);
-			}
-		}
-		index++;
-	}
+	turtle.eat(code);
 	pop();
 }
