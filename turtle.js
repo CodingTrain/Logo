@@ -31,7 +31,6 @@ class Turtle {
   }
 
   reset() {
-    console.log(this.x, this.y, this.dir);
     translate(this.x, this.y);
     rotate(this.dir);
     this.pen = true;

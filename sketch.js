@@ -44,15 +44,20 @@ function goTurtle() {
   // handle all tokens
   while (index < tokens.length) {
     let token = tokens[index];
+    // handle save command (use it carefully or don't use it)
     if (token === 'save') {
     	const file_name = 'turtled_image';
     	saveCanvas(turtled_image, file_name, 'png');
+	// handle background selection
+	} else if (token == 'bckgr') {
+		const color = tokens[++index];
+		background(color);
     // handle repeat (loop)
     } else if (token === 'repeat') {
       times = parseInt(tokens[++index]);
       if (tokens[index + 1].charAt(0) === '[') {
         // store start position of a loop
-        start = ++index;
+        let start = ++index;
         for (let i = 0; i < times; i++) {
           token = tokens[start].slice(1);
           while (true) {
