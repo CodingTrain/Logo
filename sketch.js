@@ -2,10 +2,10 @@ let editor;
 let turtle;
 
 function setup() {
-  createCanvas(200, 200);
+  createCanvas(400, 400).parent('logo');
   angleMode(DEGREES);
   background(0);
-  turtle = new Turtle(100, 100, 0);
+  turtle = new Turtle(width/2, height/2, 0);
   editor = select('#code');
   editor.input(goTurtle);
   goTurtle();

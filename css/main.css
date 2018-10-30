@@ -1,0 +1,56 @@
+body {
+	max-width: 960px;
+	min-width: 495px;
+	margin: 10px auto;
+}
+
+#main {
+	margin: 20px;
+	padding: 20px;
+}
+
+#file_name {
+	margin-bottom: 0;
+	color: #d95bf5;
+	font-size: 1.2em;
+}
+
+#main textarea {
+	width: calc(100% - 20px);
+	height: calc(100% - 100px);
+	border: 1px solid grey;
+	padding: 10px;
+	margin: 0 auto;
+	border-radius: 10px;
+	resize: none;
+	outline: none;
+	font-family: Consolas, Monaco;
+}
+
+#editor {
+	max-width: 400px;
+	margin: 0 auto;
+}
+
+#logo canvas {
+	box-shadow: 0 0 20px grey;
+	display: block;
+	margin: 0 auto;
+}
+
+@media (min-width: 840px) {
+	#main {
+		display: flex;
+		flex-wrap: wrap;
+	}
+	#editor, #logo {
+		width: calc(50% - 5px);
+	}
+	#editor {
+		margin-right: 10px;
+		order: 1;
+	}
+	#logo {
+		order: 2;
+	}
+}
