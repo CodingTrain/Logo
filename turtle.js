@@ -16,6 +16,9 @@ const commands = {
   },
   "pd": function () {
     turtle.pen = true;
+  },
+  "clr": function (color) {
+    turtle.color = color;
   }
 }
 
@@ -24,6 +27,7 @@ class Turtle {
     this.x = x;
     this.y = y;
     this.dir = angle;
+    this.color = 'white';
   }
 
   reset() {
@@ -36,7 +40,7 @@ class Turtle {
   forward(amt) {
     amt = parseInt(amt);
     if (this.pen) {
-      stroke(255);
+      stroke(this.color);
       strokeWeight(2);
       line(0, 0, amt, 0);
     }
@@ -46,6 +50,5 @@ class Turtle {
   right(angle) {
     rotate(angle);
   }
-
 
 }
