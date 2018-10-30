@@ -1,0 +1,16 @@
+bckgr #194034
+
+clr cyan
+pu fd -100 rt 90 fd 80 rt -90 pd
+repeat 3 [fd 200 rt -120]
+fd 104
+repeat 36 [rt -10 fd 10]
+fd -4 rt -90 fd 170
+
+clr #f75bff
+pu rt 90 fd 4 rt -90 fd 17 pd
+repeat 90 [
+ fd 170 fd -170
+ rt 94 pu fd 9 pd rt -90]
+
+#save

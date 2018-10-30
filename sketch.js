@@ -8,8 +8,11 @@ function setup() {
   background(0);
   turtle = new Turtle(width/2, height/2, 0);
   editor = select('#code');
+  loadStrings('./turtle_path.shffman', (strings) => {
+    editor.value(join(strings, '\n'));
+    goTurtle();
+  });
   editor.input(goTurtle);
-  goTurtle();
 }
 
 function HandleCommand(token, index, tokens) {

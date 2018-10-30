@@ -19,6 +19,13 @@ Turtles can't speak and don't understand human language, except there is one who
 
 [**Go, try them out!**](https://fabritsius.github.io/shiffmans-code-editor/)
 
+## Usage locally
+
+1. Clone this repo (or obtain in other way);
+2. In terminal go to the directory you have files in;
+3. Enter `python3 -m http.server`;
+4. Visit [localhost:8000](http://localhost:8000) in your browser.
+
 ## Possible improvements
 
 - add support for nested `repeats`;
