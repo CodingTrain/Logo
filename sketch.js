@@ -1,8 +1,9 @@
 let editor;
 let turtle;
+let turtled_image;
 
 function setup() {
-  createCanvas(400, 400).parent('logo');
+  turtled_image = createCanvas(400, 400).parent('logo');
   angleMode(DEGREES);
   background(0);
   turtle = new Turtle(width/2, height/2, 0);
@@ -43,8 +44,11 @@ function goTurtle() {
   // handle all tokens
   while (index < tokens.length) {
     let token = tokens[index];
+    if (token === 'save') {
+    	const file_name = 'turtled_image';
+    	saveCanvas(turtled_image, file_name, 'png');
     // handle repeat (loop)
-    if (token === 'repeat') {
+    } else if (token === 'repeat') {
       times = parseInt(tokens[++index]);
       if (tokens[index + 1].charAt(0) === '[') {
         // store start position of a loop
