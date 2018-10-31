@@ -1,0 +1,11 @@
+bckgr #022a42
+
+clr #ffffd8 pu rt 90 fd -80 rt -90 pd
+
+repeat 45 [
+ repeat 60 [fd 3 rt 1]
+ rt 64
+ repeat 60 [fd 3 rt 1]
+]
+
+#save
