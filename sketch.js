@@ -20,7 +20,7 @@ function getRandomExample() {
     while (!random_example && attempts < 10) {
       const random_idx = int(random(files.length));
       // pick this example if it has proper extension
-      if (files[random_idx].name.endsWith('.shffman')) {
+      if (files[random_idx].name.endsWith('.logocode')) {
         random_example = files[random_idx];
       }
       attempts++;

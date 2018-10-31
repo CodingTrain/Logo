@@ -32,3 +32,8 @@ Turtles can't speak and don't understand human language, except there is one who
 
 - add more examples into [./examples](./examples) directory
 - add cheatsheet with commands to the web page (improve editor further).
+
+## Links
+
+- [Coding Challenge #121: Logo Interpreter](https://www.youtube.com/watch?v=i-k04yzfMpw)
+- [Logo (programming language)](https://en.wikipedia.org/wiki/Logo_(programming_language))
