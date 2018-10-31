@@ -17,7 +17,7 @@ Turtles can't speak and don't understand human language, except there is one who
 - `bckgr` followed by a `color` (_ex.:_ `bckgr purple`, `bckgr #022a42`):<br>image will be filled with the new `color` ;
 - `save`:<br>save an image drawn by the turtle (be careful with this one).
 
-[**Go, try them out!**](https://fabritsius.github.io/shiffmans-code-editor/)
+[**Go, try them out!**](https://fabritsius.github.io/logo-code-editor/)
 
 ## Usage locally
 

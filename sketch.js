@@ -8,7 +8,7 @@ let turtled_image;
  */
 function getRandomExample() { 
   const user = 'fabritsius';
-  const repo = 'shiffmans-code-editor';
+  const repo = 'logo-code-editor';
   const base_uri = `https://api.github.com/repos/${user}/${repo}/contents`;
   // get a list of examples (returns a promise)
   return fetch(`${base_uri}/examples`).then((response) => {
