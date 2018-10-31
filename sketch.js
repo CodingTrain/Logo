@@ -6,17 +6,15 @@ function setup() {
 	angleMode(DEGREES);
 	turtle = new Turtle(200, 200);
 	editor = select('#code');
-	editor.input(main);
-	main();
+	editor.input(handleInput);
+	handleInput();
 }
 
-function main() {
-	console.clear();
+function handleInput() {
 	push();
 	background(51);
 	turtle.reset();
-	const rawCode = editor.value();
-	let stack = LogoParser.parse(rawCode);
+	const stack = parse(editor.value(), [parseRepeats]);
 	execStack(stack);
 	turtle.draw();
 	pop();
@@ -35,4 +33,18 @@ function execStack(stack) {
 		const command = stack.shift();
 		execCommand(command, stack);
 	}
+}
+
+function parse(code, funcs) {
+	funcs.forEach(func => {
+		code = func(code);
+	});
+	return code.trim().split(/\s+/);
+}
+
+function parseRepeats(code) {
+	const newCode = code.replace(/repeat\s+(\d+)\s+\[([\w\d\s]*)?\](?!.*repeat\s+\d+\s+\[[\w\d\s]*?\])/, (_, times, funcs) => {
+		return (' ' + funcs + ' ').repeat(parseInt(times));
+	});
+	return newCode === code ? newCode : this.parseRepeats(newCode);
 }
