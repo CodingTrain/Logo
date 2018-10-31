@@ -16,6 +16,17 @@ const commands = {
   },
   "pd": function () {
     turtle.pen = true;
+  },
+  "repeat": function (val, cmd) {
+	  for (var j = 0; j < val; j++)
+	  {
+	  	  	for (var i = 0; i < cmd.length; i++)
+			{
+				commands[cmd[i].replace("[", "").replace("]", "")](cmd[++i].replace("[", "").replace("]", ""));
+			}
+	  }
+  },
+  "train": function () {
   }
 }
 
@@ -34,7 +45,7 @@ class Turtle {
   }
 
   forward(amt) {
-    amt = parseInt(amt);
+    amt = float(amt);
     if (this.pen) {
       stroke(255);
       strokeWeight(2);
