@@ -30,5 +30,5 @@ Turtles can't speak and don't understand human language, except there is one who
 
 ## Possible improvements
 
-- add more examples into [./examples](./tree/master/examples) directory
+- add more examples into [./examples](./examples) directory
 - add cheatsheet with commands to the web page (improve editor further).
