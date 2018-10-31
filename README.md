@@ -6,15 +6,15 @@ Turtles can't speak and don't understand human language, except there is one who
 
 ## Turtle words
 
-- `fd` followed by a `number`:<br>turtle will move forward `number` of times;
-- `bd` followed by a `number`:<br>turtle will move backward `number` of times;
-- `rt` followed by an `angle`:<br>turtle will turn right by the `angle`;
-- `lt` followed by an `angle`:<br>turtle will turn left by the `angle`;
+- `fd` followed by a `number` (_ex.:_ `fd 50`, `fd 87`):<br>turtle will move forward `number` of times;
+- `bd` means the same as `fd` but backwards (_ex.:_ `bd 10`);
+- `rt` followed by an `angle` (_ex.:_ `rt 45`, `rt 120`):<br>turtle will turn right by the `angle`;
+- `lt` means the same as `rt` but the other way (_ex.:_ `lt 90`);
 - `pu`:<br>turtle stops drawing and moves more secretive;
 - `pd`:<br>turtle starts drawing the line after itself;
-- `clr` followed by a `color`:<br>turtle changes line `color` to a new one;
-- `repeat` followed by a `number` and \[array of commands\]:<br>turtle will repeat commands in the array `number` of times;
-- `bckgr` followed by a `color`:<br>image will be filled with a new `color`;
+- `clr` followed by a `color` (_ex.:_ `clr cyan`, `clr #fff`):<br>turtle changes line `color` to a new one;
+- `repeat` followed by a `number` and \[array of commands\]:<br>turtle will repeat commands in the array `number` of times (can be nested).<br>(_Examples.:_ `repeat 3 [fd 100 rt 120]`, `repeat 4 [rt 90 repeat 36 [fd 10 rt 10] ]`;
+- `bckgr` followed by a `color` (_ex.:_ `bckgr purple`, `bckgr #022a42`):<br>image will be filled with the new `color` ;
 - `save`:<br>save an image drawn by the turtle (be careful with this one).
 
 [**Go, try them out!**](https://fabritsius.github.io/shiffmans-code-editor/)
@@ -26,8 +26,9 @@ Turtles can't speak and don't understand human language, except there is one who
 3. Enter `python3 -m http.server`;
 4. Visit [localhost:8000](http://localhost:8000) in your browser.
 
+  or double click on `index.html` after saving and unzipping this repo.
+
 ## Possible improvements
 
-- add support for nested `repeats`;
-- allow `save` and `bckgr` to be used inside of a `repeat`;
-- add cheatsheet to the web page.
+- add more examples into [./examples](./tree/master/examples) directory
+- add cheatsheet with commands to the web page (improve editor further).
