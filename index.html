@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Shiffman's Code Editor</title>
+    <title>Logo Code Editor</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/addons/p5.dom.min.js"></script>
     <script src="turtle.js"></script>
@@ -16,8 +16,14 @@
     <div id="main">
         <div id="logo"></div>
         <div id="editor">
-            <h2 id="file_name">turtle_path.logocode</h2>
+            <div id="editor_header_box">
+                <h2 id="file_name">turtle_path.logocode</h2>
+                <button id="save_file_btn">save file</button>
+            </div>
             <textarea id="code" spellcheck="false" placeholder="code here..."></textarea>
+            <div id="editor_footer">
+                <a href="https://github.com/fabritsius/logo-code-editor" target="_blank">Code available on GitHub</span>
+            </div>
         </div>
     </div>
 </body>

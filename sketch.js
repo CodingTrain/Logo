@@ -49,7 +49,14 @@ function setup() {
     editor.value(example);
     goTurtle();
   });
+  // redraw each time code changes
   editor.input(goTurtle);
+  // setup 'file save' button
+  save_btn = select('#save_file_btn');
+  save_btn.mousePressed(() => {
+    saveStrings(editor.value().split('\n'),
+      'turtle_path', 'logocode');  
+  });
 }
 
 /**

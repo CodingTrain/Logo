@@ -9,10 +9,39 @@ body {
 	padding: 20px;
 }
 
+#editor_header_box {
+	display: flex;
+	flex-wrap: wrap;
+	padding-bottom: 2px;
+}
+
 #file_name {
 	margin-bottom: 0;
 	color: #8a5bf5;
 	font-size: 1.2em;
+	flex: 1;
+	user-select: none;
+}
+
+#save_file_btn {
+	display: inline-block;
+	padding: 2px 4px;
+	margin: auto;
+	margin-bottom: 2px;
+	border: none;
+	border-radius: 4px;
+	color: white;
+	background-color: #c5c5c5;
+	user-select: none;
+}
+
+#save_file_btn:hover {
+	cursor: pointer;
+	background-color: #4ac73b;
+}
+
+#save_file_btn:focus {
+	outline: none;
 }
 
 #main textarea {
@@ -30,6 +59,22 @@ body {
 #editor {
 	max-width: 400px;
 	margin: 0 auto;
+}
+
+#editor_footer {
+	font-size: 0.7em;
+	text-align: right;
+}
+
+#editor_footer a {
+	color: grey;
+	text-decoration: none;
+}
+
+#editor_footer a:hover {
+	cursor: pointer;
+	color: black;
+	text-decoration: underline;
 }
 
 #logo canvas {
