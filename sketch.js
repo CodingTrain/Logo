@@ -2,20 +2,62 @@ let editor;
 let turtle;
 let turtled_image;
 
+/**
+ * getRandomExample() fetches random code example.
+ * Returns code string as a promise. 
+ */
+function getRandomExample() { 
+  const user = 'fabritsius';
+  const repo = 'shiffmans-code-editor';
+  const base_uri = `https://api.github.com/repos/${user}/${repo}/contents`;
+  // get a list of examples (returns a promise)
+  return fetch(`${base_uri}/examples`).then((response) => {
+    return response.json();
+  }).then((files) => {
+    let attempts = 0;
+    let random_example;
+    // try 10 times to get an index which isn't a README file
+    while (!random_example & attempts < 10) {
+      const random_idx = int(random(files.length));
+      // pick this example if it has proper extension
+      if (files[random_idx].name.endsWith('.shffman')) {
+        random_example = files[random_idx];
+      }
+      attempts++;
+    } 
+    // get content of a randomly chosen example (returns a promise)
+    return fetch(`${base_uri}/${random_example.path}`).then((response) => {
+      return response.json();
+    }).then((file) => {
+      // return converted (from base64) content
+      return atob(file.content);
+    });
+  });
+}
+
+/**
+ * p5 setup()
+ */
 function setup() {
   turtled_image = createCanvas(400, 400).parent('logo');
   angleMode(DEGREES);
   background(0);
   turtle = new Turtle(width/2, height/2, 0);
   editor = select('#code');
-  loadStrings('./examples/deathly_hallows.shffman', (strings) => {
-    editor.value(join(strings, '\n'));
+  // load a random example from ./examples
+  getRandomExample().then((example) => {
+    editor.value(example);
     goTurtle();
   });
   editor.input(goTurtle);
 }
 
-function HandleCommand(token, index, tokens) {
+/**
+ * handleCommand()
+ * 1. analyzes a token;
+ * 2. gives turtle a command.
+ */
+function handleCommand(token, index, tokens) {
   if (token in commands) {
     if (token.charAt(0) === 'p') {
       // give command to a turtle
@@ -35,7 +77,9 @@ function HandleCommand(token, index, tokens) {
   }
 }
 
-
+/**
+ * goTurtle() gives a command to a turtle.
+ */
 function goTurtle() {
   background(0);
   push();
@@ -74,7 +118,7 @@ function goTurtle() {
               break;
             // if not the last token in a repeat
             } else {
-              HandleCommand(token, index, tokens);
+              handleCommand(token, index, tokens);
               token = tokens[++index];
             }
           }         
@@ -82,7 +126,7 @@ function goTurtle() {
       }
     // handle every other command (not repeat)
     } else if (index < tokens.length) {
-      HandleCommand(token, index, tokens);
+      handleCommand(token, index, tokens);
     }
     index++;
   }
