@@ -1,23 +1,23 @@
 const commands = {
-  "fd": function (amt) {
+  "fd": (amt) => {
     turtle.forward(amt);
   },
-  "bd": function (amt) {
+  "bd": (amt) => {
     turtle.forward(-amt);
   },
-  "rt": function (angle) {
+  "rt": (angle) => {
     turtle.right(angle);
   },
-  "lt": function (angle) {
+  "lt": (angle) => {
     turtle.right(-angle);
   },
-  "pu": function () {
+  "pu": () => {
     turtle.pen = false;
   },
-  "pd": function () {
+  "pd": () => {
     turtle.pen = true;
   },
-  "clr": function (color) {
+  "clr": (color) => {
     turtle.color = color;
   }
 }

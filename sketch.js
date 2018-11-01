@@ -3,42 +3,9 @@ let turtle;
 let turtled_image;
 
 /**
- * getRandomExample() fetches random code example.
- * Returns code string as a promise. 
+ * p5 setup() function (we changing it, not creating)
  */
-function getRandomExample() { 
-  const user = 'fabritsius';
-  const repo = 'logo-code-editor';
-  const base_uri = `https://api.github.com/repos/${user}/${repo}/contents`;
-  // get a list of examples (returns a promise)
-  return fetch(`${base_uri}/examples`).then((response) => {
-    return response.json();
-  }).then((files) => {
-    let attempts = 0;
-    let random_example;
-    // try 10 times to get an index which isn't a README file
-    while (!random_example && attempts < 10) {
-      const random_idx = int(random(files.length));
-      // pick this example if it has proper extension
-      if (files[random_idx].name.endsWith('.logocode')) {
-        random_example = files[random_idx];
-      }
-      attempts++;
-    } 
-    // get content of a randomly chosen example (returns a promise)
-    return fetch(`${base_uri}/${random_example.path}`).then((response) => {
-      return response.json();
-    }).then((file) => {
-      // return converted (from base64) content
-      return atob(file.content);
-    });
-  });
-}
-
-/**
- * p5 setup() function
- */
-function setup() {
+setup = () => {
   turtled_image = createCanvas(400, 400).parent('logo');
   angleMode(DEGREES);
   background(0);
@@ -64,7 +31,7 @@ function setup() {
 /**
  * goTurtle() initiates the turtle movement.
  */
-function goTurtle() {
+const goTurtle = () => {
   background(0);
   push();
   
@@ -82,7 +49,7 @@ function goTurtle() {
  * reTurtle(tokens [, start]) gives a command to a turtle.
  * Returns an index at which this instanse of the function finished.
  */
-function reTurtle(tokens, start = 0) {
+const reTurtle = (tokens, start = 0) => {
   let index = start;
   while (index < tokens.length) {
     let token = tokens[index];
@@ -128,7 +95,7 @@ function reTurtle(tokens, start = 0) {
  * 1. analyzes a token;
  * 2. gives turtle a command.
  */
-function handleCommand(token, index, tokens) {
+const handleCommand = (token, index, tokens) => {
   if (token in commands) {
     if (token.charAt(0) === 'p') {
       // give command to a turtle
@@ -148,10 +115,43 @@ function handleCommand(token, index, tokens) {
 }
 
 /**
+ * getRandomExample() fetches random code example.
+ * Returns code string as a promise. 
+ */
+const getRandomExample = () => { 
+  const user = 'fabritsius';
+  const repo = 'logo-code-editor';
+  const base_uri = `https://api.github.com/repos/${user}/${repo}/contents`;
+  // get a list of examples (returns a promise)
+  return fetch(`${base_uri}/examples`).then((response) => {
+    return response.json();
+  }).then((files) => {
+    let attempts = 0;
+    let random_example;
+    // try 10 times to get an index which isn't a README file
+    while (!random_example && attempts < 10) {
+      const random_idx = int(random(files.length));
+      // pick this example if it has proper extension
+      if (files[random_idx].name.endsWith('.logocode')) {
+        random_example = files[random_idx];
+      }
+      attempts++;
+    } 
+    // get content of a randomly chosen example (returns a promise)
+    return fetch(`${base_uri}/${random_example.path}`).then((response) => {
+      return response.json();
+    }).then((file) => {
+      // return converted (from base64) content
+      return atob(file.content);
+    });
+  });
+}
+
+/**
  * addFileDragDrop()
  * Adds eventListeners for Drag'n'Drop Handling
  */
-function addFileDragDrop() {
+const addFileDragDrop = () => {
   drop_area = document.querySelector('#code');
   // use p5 to handle drop event
   editor.drop((file) => {
