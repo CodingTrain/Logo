@@ -46,5 +46,5 @@ function parseRepeats(code) {
 	const newCode = code.replace(/repeat\s+(\d+)\s+\[([\w\d\s]*)?\](?!.*repeat\s+\d+\s+\[[\w\d\s]*?\])/, (_, times, funcs) => {
 		return (' ' + funcs + ' ').repeat(parseInt(times));
 	});
-	return newCode === code ? newCode : this.parseRepeats(newCode);
+	return newCode === code ? newCode : parseRepeats(newCode);
 }
