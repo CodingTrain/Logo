@@ -17,7 +17,7 @@ class Stream {
 	}
 
 	isDigit(chr) {
-		return chr >= '0' && chr <= '9'
+		return chr >= '0' && chr <= '9' || chr == '.' || chr == '-'
 	}
 
 	isLetter(chr) {
@@ -26,8 +26,13 @@ class Stream {
 
 	isWhitespace(chr) {
 		switch (chr.charCodeAt(0)) {
-			case 10: case 13: case 32: return true;
-			default: return false;
+			case 10: // Line feed
+      case 13: // Carriage return
+      case 32: // Space
+      case 44: // Comma
+        return true;
+			default:
+        return false;
 		}
 	}
 
