@@ -4,6 +4,13 @@ _inspired by:_ [Daniel Shiffman](https://github.com/shiffman)
 
 Turtles can't speak and don't understand human language, except there is one who also doesn't understand human language, but she understands something. The language she speaks is strange, but it can be mastered relatively fast and after that you will wield the turtle the way you always desired. See the rest of this documentation to learn her tongue.
 
+## Features
+
+- uses a version of [Logo programming language](https://en.wikipedia.org/wiki/Logo_(programming_language));
+- random [example](./examples) is shown each time webpage is reloaded;
+- there is an option to save both your code and a generated image;
+- you can Drag and Drop `.logocode` file right into the editor.
+
 ## Turtle words
 
 - `fd` followed by a `number` (_ex.:_ `fd 50`, `fd 87`):<br>turtle will move forward `number` of times;
