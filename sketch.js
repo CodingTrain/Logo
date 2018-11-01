@@ -57,6 +57,8 @@ function setup() {
     saveStrings(editor.value().split('\n'),
       'turtle_path', 'logocode');  
   });
+  // setup drag'n'drop for .logocode files
+  addFileDragDrop();
 }
 
 /**
@@ -143,4 +145,30 @@ function handleCommand(token, index, tokens) {
       }
     }
   }
+}
+
+/**
+ * addFileDragDrop()
+ * Adds eventListeners for Drag'n'Drop Handling
+ */
+function addFileDragDrop() {
+  drop_area = document.querySelector('#code');
+  // use p5 to handle drop event
+  editor.drop((file) => {
+    if (file.name.endsWith('.logocode')) {
+      // separate content encoded as base64
+      const content = file.data.split(',')[1];
+      // decode and update the editor textarea
+      editor.value(atob(content));
+      goTurtle();
+    }
+    drop_area.classList.remove('file_hovered');
+  });
+  // use plain JS to handle both drag enter and leave events
+  drop_area.addEventListener('dragenter', () => {
+    drop_area.classList.add('file_hovered');
+  });
+  drop_area.addEventListener('dragleave', () => {
+    drop_area.classList.remove('file_hovered');
+  });
 }
