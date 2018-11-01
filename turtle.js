@@ -34,6 +34,7 @@ class Turtle {
     translate(this.x, this.y);
     rotate(this.dir);
     this.pen = true;
+    this.color = 'white';
   }
 
   forward(amt) {
