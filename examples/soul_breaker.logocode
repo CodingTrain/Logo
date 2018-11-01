@@ -1,0 +1,12 @@
+bckgr #ad42f4
+
+clr #d6c0e5
+pu fd -150 rt 90 fd -144 rt -88.5 pd
+repeat 10 [
+ fd 300 rt 178 fd 300 rt -178 
+] fd 200 pu fd 4 pd fd 96
+repeat 17 [
+ rt -2.02 fd -300 rt 2 fd 300 
+]
+
+#save

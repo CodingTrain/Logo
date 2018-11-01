@@ -1,0 +1,14 @@
+bckgr #6a827c
+
+clr #0befb6
+pu fd 55 rt 90 fd 20 rt -90 pd
+repeat 9 [
+ repeat 5 [
+  fd 80 rt 144
+ ] pu
+ repeat 20 [
+  rt 2 fd -1 rt 90 fd 2 rt -90
+ ] pd
+]
+
+#save

@@ -1,9 +1,14 @@
 bckgr #8c0138
 
 clr #56e0ff
-repeat 9 [
- repeat 18 [fd 10 rt 2]
- repeat 10 [fd 2 rt 14.8]
- repeat 18 [fd 10 rt 2]
- fd 2 rt 90 fd 2 rt 90
+repeat 5 [
+ repeat 9 [
+  repeat 18 [fd 10 rt 2]
+  repeat 10 [fd 2 rt 14.8]
+  repeat 18 [fd 10 rt 2]
+  fd 2 rt 90 fd 2 rt 90
+ ]
+ rt 2
 ]
+
+#save
