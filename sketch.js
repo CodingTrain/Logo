@@ -162,13 +162,15 @@ const addFileDragDrop = () => {
       editor.value(atob(content));
       goTurtle();
     }
-    drop_area.classList.remove('file_hovered');
   });
   // use plain JS to handle both drag enter and leave events
   drop_area.addEventListener('dragenter', () => {
     drop_area.classList.add('file_hovered');
   });
   drop_area.addEventListener('dragleave', () => {
+    drop_area.classList.remove('file_hovered');
+  });
+  drop_area.addEventListener('drop', () => {
     drop_area.classList.remove('file_hovered');
   });
 }
