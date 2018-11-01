@@ -36,9 +36,9 @@ const goTurtle = () => {
   push();
   
   turtle.reset();
-  let code = editor.value();
-  // remove new lines and convert code into an array of tokens
-  let tokens = code.replace(/(?:\r\n|\r|\n)/g, ' ').split(' ');
+  const code = editor.value();
+  // convert code into an array of tokens
+  const tokens = parseTokens(code);
   // recursively draw the path from tokens
   reTurtle(tokens);
   
@@ -53,10 +53,6 @@ const reTurtle = (tokens, start = 0) => {
   let index = start;
   while (index < tokens.length) {
     let token = tokens[index];
-    // check if this token is the first item in a loop (repeat)
-    if (index == start && token.charAt(0) === '[') {
-      token = token.slice(1);
-    }
     // handle 'save' command
     if (token === 'save') {
       const file_name = 'turtled_image';
@@ -68,7 +64,7 @@ const reTurtle = (tokens, start = 0) => {
     // handle 'repeat' (loop) command
     } else if (token === 'repeat') {
       const times = parseInt(tokens[++index]);
-      if (tokens[index + 1] && tokens[index + 1].charAt(0) === '[') {
+      if (tokens[index + 1] && tokens[index + 1] === '[') {
         const repeat_start = ++index;
         for (let i = 0; i < times; i++) {
           // start another reTurtle for every (inner) loop
@@ -76,11 +72,8 @@ const reTurtle = (tokens, start = 0) => {
         }
       }
     } else if (index < tokens.length) {
-      // check if this token is the last item in a loop (repeat)
-      if (token.charAt(token.length - 1) === ']') {
-        token = token.slice(0, -1);
-        handleCommand(token, index, tokens);
-        // return an index (used for nested loops)
+      // check if this is the end of the loop (repeat)
+      if (token === ']') {
         return index;
       } else {
         handleCommand(token, index, tokens);
@@ -104,9 +97,6 @@ const handleCommand = (token, index, tokens) => {
       // check if aguments might be in array
       if (index + 1 < tokens.length) {
         arg = tokens[index + 1];
-        if (arg.charAt(arg.length - 1) === ']') {
-          arg = arg.slice(0, -1);
-        }
         // give command to a turtle
         commands[token](arg);
       }
@@ -173,4 +163,32 @@ const addFileDragDrop = () => {
   drop_area.addEventListener('drop', () => {
     drop_area.classList.remove('file_hovered');
   });
+}
+
+/**
+ * parseTokens(input_string)
+ * Returns an array of tokens splitting by spaves, new lines and brackets
+ * Similar to string.split() but preserves brackets as tokens. 
+ */
+const parseTokens = (input_string) => {
+  tokens = [];
+  word = '';
+  for (let letter of input_string) {
+    if (letter === ' ' || letter === '\n') {
+      if (word) {
+        tokens.push(word);
+        word = '';
+      }
+    } else if (letter === '[' || letter === ']') {
+      if (word) {
+        tokens.push(word);
+        word = '';
+      }
+      tokens.push(letter);
+    } else {
+      word += letter;
+    }
+  }
+  if (word) { tokens.push(word) }
+  return tokens;
 }

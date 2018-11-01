@@ -1,7 +1,7 @@
 bckgr #8c0138
 
 clr #56e0ff
-repeat 5 [
+repeat 13 [
  repeat 9 [
   repeat 18 [fd 10 rt 2]
   repeat 10 [fd 2 rt 14.8]
