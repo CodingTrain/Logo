@@ -1,0 +1,14 @@
+textarea {
+	font-size: 24pt;
+	overflow-y: scroll;
+	overflow-x: scroll;
+	overflow: hidden;
+	height: 100px;
+	width: 600px;
+	resize: none;
+	border: 10px black;
+}
+
+/* body {
+	background-color: black;
+} */

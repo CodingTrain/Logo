@@ -1,24 +1,21 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-	<meta charset="UTF-8">
+	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-
 	<title>Logo</title>
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/addons/p5.dom.min.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/addons/p5.dom.js"></script>
+	<script src="instance.js"></script>
+	<script src="grammar.js"></script>
 	<script src="turtle.js"></script>
-	<script src="sketch.js"></script>
-
+	<script src="main.js"></script>
 </head>
-
-<body>
-	<textarea id="code" cols="40" rows="5">
-repeat 3 [fd 60 rt 120]
-	</textarea>
+<body id="body">
+	<div>
+		<textarea id="code" rows="5" cols="60">repeat 90 [fd 5 rt 4]</textarea>
+	</div>
 </body>
-
 </html>
