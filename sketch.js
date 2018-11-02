@@ -2,10 +2,10 @@ let editor;
 let turtle;
 
 function setup() {
-	createCanvas(200, 200);
+	createCanvas(800, 400);
 	angleMode(DEGREES);
 	background(0);
-	turtle = new Turtle(100, 100, 0);
+	turtle = new Turtle(200, 200, 0);
 	editor = select('#code');
 	editor.input(goTurtle);
 	goTurtle();
