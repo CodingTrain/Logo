@@ -109,19 +109,32 @@ body {
     margin: 0 auto;
 }
 
+#logo_footer {
+    height: 20px;
+    color: grey;
+    text-align: center;
+    padding: 5px;
+}
+
+#example_name.is_hidden {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 0.5s, opacity 0.5s linear;
+}
+
 @media (min-width: 840px) {
     #main {
         display: flex;
         flex-wrap: wrap;
     }
-    #editor, #logo {
+    #editor, #logo_box {
         width: calc(50% - 5px);
     }
     #editor {
         margin-right: 10px;
         order: 1;
     }
-    #logo {
+    #logo_box {
         order: 2;
     }
 }

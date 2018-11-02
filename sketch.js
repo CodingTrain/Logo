@@ -170,6 +170,14 @@ const getRandomExample = () => {
     return fetch(`${base_uri}/${random_example.path}`).then((response) => {
       return response.json();
     }).then((file) => {
+      // display the name of the example
+      const example_name = document.querySelector('#example_name');
+      const file_name = file.name.replace(/_/g, ' ').slice(0, -9);
+      example_name.innerHTML = file_name;
+      // remove example after 2 seconds
+      setTimeout(() => {
+        example_name.classList.add("is_hidden");
+      }, 2000);
       // return converted (from base64) content
       return atob(file.content);
     });
