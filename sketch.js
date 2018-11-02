@@ -1,6 +1,7 @@
 let editor;
 let turtle;
 let turtled_image;
+let user_methods;
 
 /**
  * p5 setup() function (we changing it, not creating)
@@ -39,6 +40,7 @@ const goTurtle = () => {
   const code = editor.value();
   // convert code into an array of tokens
   const tokens = parseCode(code);
+  user_methods = {};
   // recursively draw the path from tokens
   reTurtle(tokens);
   
@@ -46,22 +48,48 @@ const goTurtle = () => {
 }
 
 /**
- * reTurtle(tokens [, start]) gives a command to a turtle.
+ * reTurtle(tokens [, start, until_end]) gives a command to a turtle.
  * Returns an index at which this instanse of the function finished.
+ * Arguments:
+ *   'start' argument sets starting position;
+ *   'until_end' argument allows to stop execution if 'end' keyword encountered.
  */
-const reTurtle = (tokens, start = 0) => {
+const reTurtle = (tokens, start = 0, until_end = false) => {
   let index = start;
+  let not_executing = false;
   while (index < tokens.length) {
     let token = tokens[index];
-    // handle 'save' command
-    if (token === 'save') {
+    // handle 'end' keyword
+    if (token === 'end') {
+      if (until_end) return;
+      // start executing again
+      not_executing = false;
+    // skip this token if not execution at the moment
+    } else if (not_executing) {
+      index++;
+      continue;
+    // handle user methods definition
+    } else if (token === 'to') {
+      // stop executing intil method definition ends
+      not_executing = true;
+      if (index + 2 < tokens.length) {
+        // store token in user_methods
+        token = tokens[++index]
+        if (!commands[token]) {
+          user_methods[token] = index + 1;
+        }
+      }
+    // handle 'save' keyword
+    } else if (token === 'save') {
       const file_name = 'turtled_image';
       saveCanvas(turtled_image, file_name, 'png');
     // handle 'bckgr' which is used to change background
     } else if (token === 'bckgr') {
-      const color = tokens[++index];
-      background(color);
-    // handle 'repeat' (loop) command
+      if (tokens[index + 1]) {
+        const color = tokens[++index];
+        background(color);
+      }
+    // handle 'repeat' (loop) keyword
     } else if (token === 'repeat') {
       const times = parseInt(tokens[++index]);
       if (tokens[index + 1] && tokens[index + 1] === '[') {
@@ -71,12 +99,23 @@ const reTurtle = (tokens, start = 0) => {
           index = reTurtle(tokens, repeat_start);
         }
       }
+    // handle user defined methods
+    } else if (token in user_methods) {
+      // launch reTurtle
+      // ... from the position stored in user_methods
+      // ... and until first 'end' keyword
+      reTurtle(tokens, user_methods[token], true);
+    // handle turtle commands
     } else if (index < tokens.length) {
       // check if this is the end of the loop (repeat)
       if (token === ']') {
         return index;
       } else {
-        handleCommand(token, index, tokens);
+        try {
+          handleCommand(token, index, tokens);
+        } catch {
+          continue;
+        }
       }
     }
     index++;
@@ -220,6 +259,6 @@ const parseCode = (input_string) => {
       word += letter;
     }
   }
-  if (word) { tokens.push(word) }
+  if (word) tokens.push(word);
   return tokens;
 }

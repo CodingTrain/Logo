@@ -1,0 +1,31 @@
+bckgr #6d8bbc
+
+to tiny_triangle
+ fd 15 rt 135 fd 12 rt 90
+ fd 12 rt 175 fd 12 lt 90
+ fd 10 lt 135 fd 12 lt 135
+ fd 8 lt 100 fd 6 lt 135
+ fd 6 lt 145 fd 4
+end
+
+to small_triangle 
+ tiny_triangle
+ pu lt 40 fd 11 rt 19 pd 
+ tiny_triangle
+ pu rt 143 fd 19 lt 162 pd
+ tiny_triangle
+ pu lt 163 fd 20
+ rt 143 fd 20
+ rt 90 fd -2 rt -90 pd
+end
+
+pu fd -190 rt 90 bd 187 rt -90 pd 
+repeat 18 [
+ repeat 10 [
+  small_triangle
+  pu fd 16 pd
+ ]
+ pu rt 90 fd 23 rt -90 bd 387 pd
+]
+
+#save

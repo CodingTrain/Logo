@@ -1,13 +1,16 @@
 bckgr #6135d1
 
-clr #36d1c4
-pu rt -90 fd 120 rt 90 fd -50 pd
-repeat 2 [
+to thick_line 
  repeat 26 [
   rt 90 fd 250 rt 90 fd -2
   rt 90 fd 250 pu rt 90 fd 2 pd
  ]
- pu fd 70 rt 90 fd 74 pd
-]
+end
+
+clr #36d1c4
+pu rt -90 fd 120 rt 90 fd -50 pd
+thick_line
+pu fd 70 rt 90 fd 74 pd
+thick_line
 
 #save

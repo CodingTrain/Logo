@@ -1,23 +1,19 @@
 bckgr #312377
 
+to spiral 
+ repeat 20 [
+  repeat 11 [ fd 5 rt 8 ]
+  repeat 30 [ fd 2 rt 7 ]
+  repeat 10 [ fd 5 rt 8 ]
+ ]
+end
+
 clr yellow
 pu fd 157 rt 90 pd
-repeat 20 [
- repeat 11 [ fd 5 rt 8 ]
- repeat 30 [ fd 2 rt 7 ]
- repeat 10 [ fd 5 rt 8 ]
-]
+spiral
 fd 10 rt 3 clr purple
-repeat 20 [
- repeat 11 [ fd 5 rt 8 ]
- repeat 30 [ fd 2 rt 7 ]
- repeat 10 [ fd 5 rt 8 ]
-]
+spiral
 fd 10 rt 3 clr cyan
-repeat 20 [
- repeat 11 [ fd 5 rt 8 ]
- repeat 30 [ fd 2 rt 7 ]
- repeat 10 [ fd 5 rt 8 ]
-]
+spiral
 
 #save
