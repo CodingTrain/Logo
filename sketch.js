@@ -38,7 +38,7 @@ const goTurtle = () => {
   turtle.reset();
   const code = editor.value();
   // convert code into an array of tokens
-  const tokens = parseTokens(code);
+  const tokens = parseCode(code);
   // recursively draw the path from tokens
   reTurtle(tokens);
   
@@ -142,27 +142,58 @@ const getRandomExample = () => {
  * Adds eventListeners for Drag'n'Drop Handling
  */
 const addFileDragDrop = () => {
-  drop_area = document.querySelector('#code');
+  drop_zone = document.querySelector('#code');
   // use p5 to handle drop event
   editor.drop((file) => {
     if (file.name.endsWith('.logocode')) {
       // separate content encoded as base64
       const content = file.data.split(',')[1];
-      // decode and update the editor textarea
-      editor.value(atob(content));
-      goTurtle();
+      // give a border color feedback
+      if (file.data && content) {
+        styleFeedback(drop_zone, 'correct_file_dropped', 200);
+        // decode and update the editor textarea
+        editor.value(atob(content));
+        goTurtle();
+      } else {
+        styleFeedback(drop_zone, 'wrong_file_dropped', 200);
+      }
+    } else {
+      styleFeedback(drop_zone, 'wrong_file_dropped', 200);
     }
   });
-  // use plain JS to handle both drag enter and leave events
-  drop_area.addEventListener('dragenter', () => {
-    drop_area.classList.add('file_hovered');
+  // use plain JS to handle drag'n'drop animation
+  // change coloring based on wheather a file is in the dropzone
+  document.addEventListener('dragenter', (event) => {
+    if (event.target.id === 'code') {
+      drop_zone.classList.add('file_hovered');
+      drop_zone.classList.remove('file_dragged');
+    } else {
+      drop_zone.classList.add('file_dragged');
+      drop_zone.classList.remove('file_hovered');
+    }
   });
-  drop_area.addEventListener('dragleave', () => {
-    drop_area.classList.remove('file_hovered');
+  // remove coloring if file is off screen
+  document.addEventListener('dragleave', (event) => {
+    if (event.pageX === 0 && event.pageY === 0) {
+      drop_zone.classList.remove('file_dragged');
+    }
   });
-  drop_area.addEventListener('drop', () => {
-    drop_area.classList.remove('file_hovered');
+  // remove coloring after file drop
+  drop_zone.addEventListener('drop', (event) => {
+    drop_zone.classList.remove('file_hovered');
+    drop_zone.classList.remove('file_dragged');
   });
+}
+
+/**
+ * styleFeedback(element, switch_class, period_ms)
+ * Switches a class of an element for a period in milliseconds.
+ */
+const styleFeedback = (element, switch_class, period_ms) => {
+  element.classList.add(switch_class);
+  setTimeout(() => {
+    drop_zone.classList.remove(switch_class);
+  }, period_ms);
 }
 
 /**
@@ -170,7 +201,7 @@ const addFileDragDrop = () => {
  * Returns an array of tokens splitting by spaves, new lines and brackets
  * Similar to string.split() but preserves brackets as tokens. 
  */
-const parseTokens = (input_string) => {
+const parseCode = (input_string) => {
   tokens = [];
   word = '';
   for (let letter of input_string) {

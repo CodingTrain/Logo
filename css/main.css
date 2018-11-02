@@ -1,108 +1,127 @@
 body {
-	max-width: 960px;
-	min-width: 495px;
-	margin: 10px auto;
+    max-width: 960px;
+    min-width: 495px;
+    margin: 10px auto;
 }
 
 #main {
-	margin: 20px;
-	padding: 20px;
+    margin: 20px;
+    padding: 20px;
 }
 
 #editor {
-	max-width: 400px;
-	margin: 0 auto;
+    max-width: 400px;
+    margin: 0 auto;
 }
 
 #editor_header_box {
-	display: flex;
-	flex-wrap: wrap;
-	padding-bottom: 2px;
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 2px;
 }
 
 #file_name {
-	margin-bottom: 0;
-	color: #8a5bf5;
-	font-size: 1.2em;
-	flex: 1;
-	user-select: none;
+    margin-bottom: 0;
+    color: #8a5bf5;
+    font-size: 1.2em;
+    flex: 1;
+    user-select: none;
 }
 
 #save_file_btn {
-	display: inline-block;
-	padding: 2px 4px;
-	margin: auto;
-	margin-bottom: 2px;
-	border: none;
-	border-radius: 4px;
-	color: white;
-	background-color: #c5c5c5;
-	user-select: none;
+    display: inline-block;
+    padding: 2px 4px;
+    margin: auto;
+    margin-bottom: 2px;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    background-color: #c5c5c5;
+    user-select: none;
 }
 
 #save_file_btn:hover {
-	cursor: pointer;
-	background-color: #4ac73b;
+    cursor: pointer;
+    background-color: #4ac73b;
 }
 
 #save_file_btn:focus {
-	outline: none;
+    outline: none;
 }
 
 #editor textarea {
-	width: calc(100% - 20px);
-	height: 300px;
-	border: 1px solid grey;
-	padding: 10px;
-	margin: 0 auto;
-	border-radius: 10px;
-	resize: none;
-	outline: none;
-	font-family: Consolas, Monaco;
+    width: calc(100% - 20px);
+    height: 300px;
+    border: 1px solid grey;
+    padding: 10px;
+    margin: 0 auto;
+    border-radius: 10px;
+    resize: none;
+    outline: none;
+    font-family: Consolas, Monaco;
 }
 
 #editor textarea.file_hovered {
-	color: #c1c1c1;
-	border-color: #8a5bf5;
-	box-shadow: 0 0 10px #8a5bf5;
-	transition: all 0.3s;
+    color: #c1c1c1;
+    border-color: #8a5bf5;
+    box-shadow: 0 0 10px #8a5bf5;
+    transition: all 0.3s;
+}
+
+#editor textarea.file_dragged {
+    color: #c1c1c1;
+    border-color: grey;
+    box-shadow: 0 0 10px grey;
+    transition: all 0.3s;
+}
+
+#editor textarea.correct_file_dropped {
+    border-color: #4ac73b;
+    box-shadow: 0 0 5px #4ac73b;
+    transition: all 0.1s;
+}
+
+#editor textarea.wrong_file_dropped {
+    border-color: red;
+    box-shadow: 0 0 5px red;
+    transition: all 0.1s;
 }
 
 #editor_footer {
-	font-size: 0.7em;
-	text-align: right;
+    font-size: 0.7em;
+    text-align: right;
 }
 
 #editor_footer a {
-	color: grey;
-	text-decoration: none;
+    color: grey;
+    text-decoration: none;
 }
 
 #editor_footer a:hover {
-	cursor: pointer;
-	color: black;
-	text-decoration: underline;
+    cursor: pointer;
+    color: black;
+    text-decoration: underline;
 }
 
 #logo canvas {
-	box-shadow: 0 0 20px grey;
-	display: block;
-	margin: 0 auto;
+    box-shadow: 0 0 20px grey;
+    display: block;
+    margin: 0 auto;
 }
 
 @media (min-width: 840px) {
-	#main {
-		display: flex;
-		flex-wrap: wrap;
-	}
-	#editor, #logo {
-		width: calc(50% - 5px);
-	}
-	#editor {
-		margin-right: 10px;
-		order: 1;
-	}
-	#logo {
-		order: 2;
-	}
+    #main {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    #editor, #logo {
+        width: calc(50% - 5px);
+    }
+    #editor {
+        margin-right: 10px;
+        order: 1;
+    }
+    #logo {
+        order: 2;
+    }
 }
