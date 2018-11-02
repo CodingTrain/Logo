@@ -27,6 +27,8 @@ setup = () => {
   });
   // setup drag'n'drop for .logocode files
   addFileDragDrop();
+  // handle Tab presses in the editor
+  handleTab();
 }
 
 /**
@@ -241,6 +243,25 @@ const styleFeedback = (element, switch_class, period_ms) => {
   setTimeout(() => {
     drop_zone.classList.remove(switch_class);
   }, period_ms);
+}
+
+/**
+ * handleTab
+ * Tab won't cause a jump to the next DOM element.
+ */
+const handleTab = () => {
+  const code_area = document.querySelector('#code');
+  code_area.onkeydown = (event) => {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      const cursor = code_area.selectionEnd;
+      const before_text = code_area.value.slice(0, code_area.selectionStart);
+      const after_text = code_area.value.slice(cursor);
+      code_area.value = `${before_text}  ${after_text}`;
+      code_area.selectionStart = cursor + 2;
+      code_area.selectionEnd = cursor + 2;
+    }
+  }
 }
 
 /**

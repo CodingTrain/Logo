@@ -25,7 +25,7 @@ repeat 18 [
   small_triangle
   pu fd 16 pd
  ]
- pu rt 90 fd 23 rt -90 bd 387 pd
+ pu rt 90.05 fd 23 rt -90 bd 387 pd
 ]
 
 #save

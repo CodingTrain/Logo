@@ -1,0 +1,37 @@
+bckgr #0d7769
+
+to eye
+  pu fd -60 pd
+  repeat 120 [
+    clr #d61b6c rt 3 fd 30
+    clr #c9a5b5 rt -6 fd -30
+  ]
+  clr #d61b6c rt 2 fd 20 clr #cc86a5 fd 10
+  pu fd 30 pd
+end
+
+to eyelash
+  clr white
+  fd 3 rt -85 fd 40
+  rt -95 fd 12
+  rt -95 fd 40
+  rt -86 fd 3
+end
+
+clr black
+repeat 356 [
+  fd 30 fd -30 rt 1 
+]
+
+eye
+pu fd -9 rt 90 fd -97 rt -90 pd
+repeat 13 [
+  eyelash
+  pu
+  repeat 5 [
+    fd 9 rt 5.74
+  ]
+  pd
+]
+
+#save

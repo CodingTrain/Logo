@@ -13,7 +13,6 @@ Turtles can't speak and don't understand human language, except there is one who
 
 ## Turtle words
 
-
 - `fd` followed by a `number` (_ex.:_ `fd 50`, `fd 87`):<br>turtle will move forward `number` of times;
 - `bd` means the same as `fd` but backwards (_ex.:_ `bd 10`);
 - `rt` followed by an `angle` (_ex.:_ `rt 45`, `rt 120`):<br>turtle will turn right by the `angle`;
@@ -24,7 +23,7 @@ Turtles can't speak and don't understand human language, except there is one who
 - `repeat` followed by a `number` and \[array of commands\]:<br>turtle will repeat commands in the array `number` of times (can be nested).<br>_Examples:_ `repeat 3 [fd 100 rt 120]`, `repeat 4 [rt 90 repeat 36 [fd 10 rt 10] ]`;
 - `bckgr` followed by a `color` (_ex.:_ `bckgr purple`, `bckgr #022a42`):<br>image will be filled with the new `color` ;
 - `save`:<br>save an image drawn by the turtle (be careful with this one);
-- `to` followed by a `name`:<br>create a method, callable by the `name`. To use the method call it by `name`.<br>_Example:_<br>`to triangle repeat 3 [fd 100 rt 120] end`<br>`triangle`.
+- `to` followed by a `name`:<br>create a method, callable by the `name`. To use the method call it by `name`.<br>_Example:_<br>`to triangle repeat 3 [fd 100 rt 120] end` <br>`triangle`.
 
 [**Go, try them out!**](https://fabritsius.github.io/logo-code-editor/)
 
