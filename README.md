@@ -32,9 +32,9 @@ Turtles can't speak and don't understand human language, except there is one who
 1. Clone this repo (or obtain in other way);
 2. In terminal go to the directory you have files in;
 3. Enter `python3 -m http.server`;
-4. Visit [localhost:8000](http://localhost:8000) in your browser.
+4. Visit [localhost:8000](http://localhost:8000) in your browser;
 
-  or double click on `index.html` after saving and unzipping this repo.
+  or just double click on `index.html` after saving and unzipping this repo.
 
 ## Possible improvements
 
@@ -44,4 +44,5 @@ Turtles can't speak and don't understand human language, except there is one who
 ## Links
 
 - [Coding Challenge #121: Logo Interpreter](https://www.youtube.com/watch?v=i-k04yzfMpw)
-- [Logo (programming language)](https://en.wikipedia.org/wiki/Logo_(programming_language))
+- [Logo (programming language)](https://en.wikipedia.org/wiki/Logo_(programming_language)) on Wikipedia
+- [Google Color Picker](https://www.google.ru/search?q=color+picker+tool)

@@ -1,0 +1,114 @@
+bckgr #e5e2d5
+
+to square
+  repeat 5 [
+    fd 19 rt 90 fd 2 rt 90 fd 19
+    pu rt -90 fd 2 rt -90 pd
+  ]
+  pu fd rt -90 fd 20 rt 90 pd
+end
+
+to right
+  pu fd 20 pd
+end
+
+to left 
+  pu fd -20 pd
+end
+
+to down
+  pu rt 90 fd 20 rt -90 fd -20 pd
+end
+
+pu fd -50 rt 90 fd -130 rt -90 pd
+
+clr #10372F repeat 5 [ square right ]
+down repeat 5 [ left ]
+
+square
+right clr #2DE8C4 square
+right clr #26C0A2 square
+repeat 2 [ right clr #23A98F square ]
+right clr #26C0A2 square
+right clr #10372F square
+right clr #402F15 square
+right clr #5D441C square
+down repeat 7 [ left ]
+
+clr #10372F repeat 4 [ right square ]
+clr #23A98F repeat 2 [ right square ]
+right clr #7E5C23 square
+right clr #241C0E square
+down repeat 3 [ left ]
+
+right clr #402F15 square
+right clr #26C0A2 square
+right clr #23A98F square
+right clr #10372F square
+down repeat 4 [ left ]
+
+right clr #402F15 square
+right clr #5D441C square
+right clr #241C0E square
+right clr #23A98F square
+right clr #26C0A2 square
+right clr #10372F square
+down repeat 6 [ left ]
+
+right clr #402F15 square
+right clr #7E5C23 square
+right clr #241C0E square
+right
+right clr #10372F square
+right clr #23A98F square
+right clr #10372F square
+down repeat 7 [ left ]
+
+right clr #402F15 square
+right clr #5D441C square
+right clr #241C0E square
+repeat 2 [ right ]
+right clr #10372F square
+right clr #23A98F square
+right clr #10372F square
+down repeat 8 [ left ]
+
+right clr #402F15 square
+right clr #7E5C23 square
+right clr #241C0E square
+repeat 3 [ right ]
+right clr #10372F square
+right clr #26C0A2 square
+right clr #10372F square
+down repeat 9 [ left ]
+
+right clr #402F15 square
+right clr #5D441C square
+right clr #241C0E square
+repeat 4 [ right ]
+right clr #10372F square
+right clr #2DE8C4 square
+right clr #10372F square
+down repeat 10 [ left ]
+
+right clr #402F15 square
+right clr #7E5C23 square
+right clr #241C0E square
+repeat 6 [ right ]
+right clr #10372F square
+down repeat 10 [ left ]
+
+right clr #402F15 square
+right clr #5D441C square
+right clr #241C0E square
+down repeat 3 [ left ]
+
+right clr #402F15 square
+right clr #7E5C23 square
+right clr #241C0E square
+down repeat 2 [ left ]
+
+right clr #5D441C square
+right clr #241C0E square
+
+#save
