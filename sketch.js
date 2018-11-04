@@ -29,6 +29,11 @@ setup = () => {
   addFileDragDrop();
   // handle Tab presses in the editor
   handleTab();
+  // adapt canvas to the screen size on setup and future resizes
+  scaleCanvas();
+  window.addEventListener('resize', () => {
+    scaleCanvas();
+  });
 }
 
 /**
@@ -290,4 +295,17 @@ const parseCode = (input_string) => {
   }
   if (word) tokens.push(word);
   return tokens;
+}
+
+/**
+ * scaleCanvas()
+ * This function ensures the canvas fits into it's parent.
+ */
+const scaleCanvas = () => {
+  const canvas = document.querySelector('#logo canvas');
+  const parentWidth = canvas.parentElement.offsetWidth;
+  if (windowWidth < 500 && canvas.width > parentWidth) {
+    canvas.style.width = `${parentWidth}px`;
+    canvas.style.height = `${parentWidth}px`;
+  }
 }

@@ -1,12 +1,12 @@
 body {
-    max-width: 960px;
-    min-width: 495px;
+    max-width: 920px;
+    width: calc(100% - 20px);
+    min-width: 320px;
     margin: 10px auto;
 }
 
 #main {
-    margin: 20px;
-    padding: 20px;
+    padding: 10px;
 }
 
 #editor {
@@ -23,7 +23,8 @@ body {
 #file_name {
     margin-bottom: 0;
     color: #8a5bf5;
-    font-size: 1.2em;
+    font-size: 1.1em;
+    font-family: Arial, Helvetica, sans-serif;
     flex: 1;
     user-select: none;
 }
@@ -36,6 +37,7 @@ body {
     border: none;
     border-radius: 4px;
     color: white;
+    font-size: 0.9em;
     background-color: #c5c5c5;
     user-select: none;
 }
@@ -58,6 +60,7 @@ body {
     border-radius: 10px;
     resize: none;
     outline: none;
+    font-size: 1em;
     font-family: Consolas, Monaco;
 }
 
@@ -88,13 +91,15 @@ body {
 }
 
 #editor_footer {
-    font-size: 0.7em;
+    padding: 2px 0;
     text-align: right;
 }
 
 #editor_footer a {
     color: grey;
+    font-size: 0.8em;
     text-decoration: none;
+    user-select: none;
 }
 
 #editor_footer a:hover {
@@ -103,17 +108,23 @@ body {
     text-decoration: underline;
 }
 
+#logo_box {
+    width: 100%;
+    margin: 0;
+}
+
 #logo canvas {
     box-shadow: 0 0 20px grey;
     display: block;
     margin: 0 auto;
+    transform-origin: top left;    
 }
 
 #logo_footer {
     height: 20px;
     color: grey;
     text-align: center;
-    padding: 5px;
+    padding-top: 10px;
 }
 
 #example_name.is_hidden {
@@ -122,17 +133,22 @@ body {
     transition: visibility 0s 0.5s, opacity 0.5s linear;
 }
 
-@media (min-width: 840px) {
+@media (min-width: 850px) {
     #main {
         display: flex;
         flex-wrap: wrap;
+        margin: 20px;
+        padding: 20px;
     }
     #editor, #logo_box {
-        width: calc(50% - 5px);
+        width: calc(50% - 6px);
     }
     #editor {
-        margin-right: 10px;
+        margin-right: 12px;
         order: 1;
+    }
+    #editor textarea, #save_file_btn {
+        font-size: 0.8em;
     }
     #logo_box {
         order: 2;
