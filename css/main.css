@@ -59,7 +59,7 @@ body {
     margin: 0 auto;
     border-radius: 10px;
     resize: none;
-    white-space: nowrap;
+    white-space: pre;
     overflow: auto;
     outline: none;
     font-size: 1em;
