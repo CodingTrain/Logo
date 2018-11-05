@@ -1,16 +1,16 @@
 const APP_NAME = 'logo-code-editor';
 const CACHE_NAME = `${APP_NAME}-v1`;
 const urlsToCache = [
-  `${APP_NAME}/`,
-  `${APP_NAME}/index.html`,
-  `${APP_NAME}/js/libs/p5/p5.min.js`,
-  `${APP_NAME}/js/libs/p5/p5.dom.min.js`,
-  `${APP_NAME}/js/sketch.js`,
-  `${APP_NAME}/js/turtle.js`,
-  `${APP_NAME}/js/swhelper.js`,
-  `${APP_NAME}/css/main.css`,
-  `${APP_NAME}/assets/offline/offline_examples.json`,
-  `${APP_NAME}/assets/offline/offline_logocode.json`
+  `/${APP_NAME}/`,
+  `/${APP_NAME}/index.html`,
+  `/${APP_NAME}/js/libs/p5/p5.min.js`,
+  `/${APP_NAME}/js/libs/p5/p5.dom.min.js`,
+  `/${APP_NAME}/js/sketch.js`,
+  `/${APP_NAME}/js/turtle.js`,
+  `/${APP_NAME}/js/swhelper.js`,
+  `/${APP_NAME}/css/main.css`,
+  `/${APP_NAME}/assets/offline/offline_examples.json`,
+  `/${APP_NAME}/assets/offline/offline_logocode.json`
 ];
 
 // not for gh-pages
