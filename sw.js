@@ -13,20 +13,6 @@ const urlsToCache = [
   `/${APP_NAME}/assets/offline/offline_logocode.json`
 ];
 
-// not for gh-pages
-// const urlsToCache = [
-//   `/`,
-//   '/index.html',
-//   '/js/libs/p5/p5.min.js',
-//   '/js/libs/p5/p5.dom.min.js',
-//   '/js/sketch.js',
-//   '/js/turtle.js',
-//   '/js/swhelper.js',
-//   '/css/main.css',
-//   '/assets/offline/offline_examples.json',
-//   '/assets/offline/offline_logocode.json'
-// ];
-
 // Perform install steps
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -49,9 +35,9 @@ self.addEventListener('fetch', (event) => {
         });
       }).catch((error) => {
         if (event.request.url.split('?')[0].endsWith('.logocode')) {
-          return caches.match('/assets/offline/offline_logocode.json');
+          return caches.match(`/${APP_NAME}/assets/offline/offline_logocode.json`);
         } else if (event.request.url.endsWith('/examples')) {
-          return caches.match('/assets/offline/offline_examples.json');
+          return caches.match(`/${APP_NAME}/assets/offline/offline_examples.json`);
         }
       });
     })
