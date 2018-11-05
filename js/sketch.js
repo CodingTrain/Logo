@@ -103,7 +103,7 @@ const reTurtle = (tokens, start = 0, until_end = false) => {
         const repeat_start = ++index;
         for (let i = 0; i < times; i++) {
           // start another reTurtle for every (inner) loop
-          index = reTurtle(tokens, repeat_start);
+          index = reTurtle(tokens, repeat_start, true);
         }
       }
     // handle user defined methods
@@ -174,7 +174,7 @@ const getRandomExample = () => {
       attempts++;
     } 
     // get content of a randomly chosen example (returns a promise)
-    return fetch(`${base_uri}/${random_example.path}`).then((response) => {
+    return fetch(random_example.url).then((response) => {
       return response.json();
     }).then((file) => {
       // display the name of the example

@@ -59,6 +59,8 @@ body {
     margin: 0 auto;
     border-radius: 10px;
     resize: none;
+    white-space: nowrap;
+    overflow: auto;
     outline: none;
     font-size: 1em;
     font-family: Consolas, Monaco;
@@ -117,7 +119,8 @@ body {
     box-shadow: 0 0 20px grey;
     display: block;
     margin: 0 auto;
-    transform-origin: top left;    
+    transform-origin: top left;
+    user-select: none;  
 }
 
 #logo_footer {
