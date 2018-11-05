@@ -9,7 +9,8 @@ Turtles can't speak and don't understand human language, except there is one who
 - uses a version of [Logo programming language](https://en.wikipedia.org/wiki/Logo_(programming_language));
 - random [example](./examples) is shown each time webpage is reloaded;
 - there is an option to save both your code and a generated image;
-- you can Drag and Drop `.logocode` file right into the editor.
+- you can Drag and Drop `.logocode` file right into the editor;
+- works Offline after first load.
 
 ## Turtle words
 

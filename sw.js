@@ -1,31 +1,17 @@
 const APP_NAME = 'logo-code-editor';
 const CACHE_NAME = `${APP_NAME}-v1`;
 const urlsToCache = [
-  `${APP_NAME}/`,
-  `${APP_NAME}/index.html`,
-  `${APP_NAME}/js/libs/p5/p5.min.js`,
-  `${APP_NAME}/js/libs/p5/p5.dom.min.js`,
-  `${APP_NAME}/js/sketch.js`,
-  `${APP_NAME}/js/turtle.js`,
-  `${APP_NAME}/js/swhelper.js`,
-  `${APP_NAME}/css/main.css`,
-  `${APP_NAME}/assets/offline/offline_examples.json`,
-  `${APP_NAME}/assets/offline/offline_logocode.json`
+  '/',
+  '/index.html',
+  '/js/libs/p5/p5.min.js',
+  '/js/libs/p5/p5.dom.min.js',
+  '/js/sketch.js',
+  '/js/turtle.js',
+  '/js/swhelper.js',
+  '/css/main.css',
+  '/assets/offline/offline_examples.json',
+  '/assets/offline/offline_logocode.json'
 ];
-
-// use this version if served not on GitHub Pages
-// const urlsToCache = [
-//   '/',
-//   '/index.html',
-//   '/js/libs/p5/p5.min.js',
-//   '/js/libs/p5/p5.dom.min.js',
-//   '/js/sketch.js',
-//   '/js/turtle.js',
-//   '/js/swhelper.js',
-//   '/css/main.css',
-//   '/assets/offline/offline_examples.json',
-//   '/assets/offline/offline_logocode.json'
-// ];
 
 // Perform install steps
 self.addEventListener('install', (event) => {
@@ -37,7 +23,6 @@ self.addEventListener('install', (event) => {
       })
   );
 });
-
 
 // Respond with cached resources
 self.addEventListener('fetch', (event) => {
