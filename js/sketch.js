@@ -19,11 +19,14 @@ setup = () => {
   });
   // redraw each time code changes
   editor.input(goTurtle);
-  // setup 'file save' button
+  // setup 'file save' button and Ctrl+S
   save_btn = select('#save_file_btn');
-  save_btn.mousePressed(() => {
-    saveStrings(editor.value().split('\n'),
-      'turtle_path', 'logocode');  
+  save_btn.mousePressed(saveCode);
+  document.addEventListener('keypress', (event) => {
+    if (event.ctrlKey && event.code === 'KeyS') {
+      event.preventDefault();
+      saveCode();
+    }
   });
   // setup drag'n'drop for .logocode files
   addFileDragDrop();
@@ -270,7 +273,7 @@ const handleTab = () => {
 }
 
 /**
- * parseTokens(input_string)
+ * parseCode(input_string)
  * Returns an array of tokens splitting by spaves, new lines and brackets
  * Similar to string.split() but preserves brackets as tokens. 
  */
@@ -295,6 +298,15 @@ const parseCode = (input_string) => {
   }
   if (word) tokens.push(word);
   return tokens;
+}
+
+/**
+ * saveCode()
+ * Saves code from the editor as a .logocode file.
+ */
+const saveCode = () => {
+  saveStrings(editor.value().split('\n'),
+    'turtle_path', 'logocode');
 }
 
 /**
