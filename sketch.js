@@ -19,15 +19,12 @@ function execute(commands, repcount) {
 		let name = command.name;
 		let arg = command.arg;
 		if (name === 'repeat') {
-			for (let i = 0; i < arg; i++) {
+			for (let i = 0; i < arg.eval(repcount); i++) {
 				execute(command.commands, i);
 			}
 		} else {
-			if(arg == 'repcount' && repcount) {
-				commandLookUp[name](repcount);
-			} else {
-				commandLookUp[name](arg);
-			}
+			if(arg) arg = arg.eval(repcount);
+			commandLookUp[name](arg);
 		}
 	}
 }

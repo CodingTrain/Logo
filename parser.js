@@ -30,7 +30,7 @@ class Parser {
     let char = this.text.charAt(this.index);
 
     // If it's a space ignore
-    if (char === ' ') {
+    if (char === ' ' || char == '\n') {
       this.index++;
       return this.nextToken();
     }
@@ -42,11 +42,35 @@ class Parser {
     }
 
     // Otherwise accumulate until a space
-    while (char !== ' ' && this.remainingTokens()) {
+    while (char !== ' ' && this.remainingTokens() && char !== '\n') {
       token += char;
       char = this.text.charAt(++this.index);
     }
     return token;
+  }
+
+  parseExpression(last) {
+    let token = new Expression('$', this.nextToken());
+    let temp = this.index;
+    let next = this.nextToken();
+    let e;
+    let right;
+    if(next == '/' || next == '*') {
+      right = this.parseExpression();
+      e = new Expression(next, token, right);
+    } else if(next == '+' || next == '-') {
+      right = this.parseExpression();
+      e = new Expression(next, token, right); 
+    } else {
+      this.index = temp;
+      return token;
+    }
+    console.log(right);
+    if(right.lvl() > e.lvl()) {
+      let new_left = new Expression(next, token, right.left);
+      e = new Expression(right.type, new_left, right.right);
+    }
+    return e;
   }
 
   parse() {
@@ -57,13 +81,13 @@ class Parser {
     while (this.remainingTokens()) {
       let token = this.nextToken();
       if (movement.test(token)) {
-        let cmd = new Command(token, this.nextToken());
+        let cmd = new Command(token, this.parseExpression());
         commands.push(cmd);
       } else if (pen.test(token)) {
         let cmd = new Command(token);
         commands.push(cmd);
       } else if (repeat.test(token)) {
-        let cmd = new Command(token, this.nextToken());
+        let cmd = new Command(token, this.parseExpression());
         let toRepeat = this.getRepeat();
         let parser = new Parser(toRepeat);
         cmd.commands = parser.parse();
