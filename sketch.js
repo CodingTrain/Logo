@@ -8,6 +8,7 @@ function setup() {
 	createCanvas(200, 200);
 	angleMode(DEGREES);
 	background(0);
+
 	turtle = new Turtle(100, 100, 0);
 	editor = select('#code');
 	editor.input(goTurtle);
@@ -36,7 +37,6 @@ function execute(commands, repcount) {
 	}
 }
 
-
 function goTurtle() {
 	background(0);
 	push();
@@ -47,4 +47,9 @@ function goTurtle() {
 	console.log(commands);
 	execute(commands);
 	pop();
+}
+
+function createTextArea() {
+	editor = createElement('textarea');
+	editor.elt.placeholder = 'hint text';
 }
