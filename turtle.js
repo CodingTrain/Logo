@@ -1,4 +1,4 @@
-const commands = {
+const commandLookUp = {
   "fd": function (amt) {
     turtle.forward(amt);
   },
@@ -37,7 +37,7 @@ class Turtle {
     amt = parseInt(amt);
     if (this.pen) {
       stroke(255);
-      strokeWeight(2);
+      strokeWeight(1);
       line(0, 0, amt, 0);
     }
     translate(amt, 0);
