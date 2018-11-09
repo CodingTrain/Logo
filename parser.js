@@ -52,20 +52,21 @@ class Parser {
   parse() {
     let commands = [];
     let movement = /^([fb]d|[lr]t)$/;
-    let pen = /^p/;
+    let noArgsCalls = /^p|home|degrees|radians/;
     let repeat = /^repeat$/;
     let setxy = /^setxy$/;
     let color = /^color$/;
+    let setxySingle = /^set[xy]$/;
 
     while (this.remainingTokens()) {
       let token = this.nextToken();
-      let cmd = undefined
+      let cmd = undefined;
       if (movement.test(token)) {
-        cmd = new Command(token, this.nextToken());
-      } else if (pen.test(token)) {
+        cmd = new Command(token, parseFloat(this.nextToken()));
+      } else if (noArgsCalls.test(token)) {
         cmd = new Command(token);
       } else if (repeat.test(token)) {
-        cmd = new Command(token, this.nextToken());
+        cmd = new Command(token, parseInt(this.nextToken()));
         let toRepeat = this.getRepeat();
         let parser = new Parser(toRepeat);
         cmd.commands = parser.parse();
@@ -76,6 +77,8 @@ class Parser {
         cmd.arg = [parseFloat(argX), parseFloat(argY)];
       } else if (color.test(token)) {
         cmd = new Command(token, this.nextToken());
+      } else if (setxySingle.test(token)) {
+        cmd = new Command(token, parseFloat(this.nextToken()));
       }
 
       if (cmd) {
