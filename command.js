@@ -62,7 +62,6 @@ class CommandLookUp {
   constructor() {
     this.commands = [];
   }
-
   add(command) {
     this.commands.push(command);
   }

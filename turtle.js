@@ -1,3 +1,4 @@
+
 class Turtle {
   constructor(x, y, angle) {
     this.x = x;
@@ -26,5 +27,4 @@ class Turtle {
   right(angle) {
     rotate(angle);
   }
-
 }

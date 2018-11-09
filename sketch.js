@@ -14,7 +14,6 @@ function setup() {
 	goTurtle();
 }
 
-
 function goTurtle() {
 	background(0);
 	

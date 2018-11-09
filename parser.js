@@ -11,7 +11,6 @@ class Parser {
   remainingTokens() {
     return this.index < this.text.length;
   }
-
   nextToken() {
     while (this.text.charAt(this.index) === ' ' && this.remainingTokens()) this.index++;
 
@@ -29,7 +28,6 @@ class Parser {
     }
 
     let actualChar = this.text.charAt(this.index);
-
 
     while(((actualChar === ' ' && isTokenList) || actualChar !== ' ') && this.remainingTokens()) {
       if (isTokenList) {
@@ -68,3 +66,4 @@ class Parser {
     return cmdsExecutors;
   }
 }
+
