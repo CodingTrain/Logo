@@ -1,3 +1,6 @@
+// Coding Challenge 121: Logo
+// https://youtu.be/i-k04yzfMpw
+
 let editor;
 let turtle;
 
@@ -11,23 +14,29 @@ function setup() {
 	goTurtle();
 }
 
+function execute(commands) {
+	for (let command of commands) {
+		let name = command.name;
+		let arg = command.arg;
+		if (name === 'repeat') {
+			for (let i = 0; i < arg; i++) {
+				execute(command.commands);
+			}
+		} else {
+			commandLookUp[name](arg);
+		}
+	}
+}
+
+
 function goTurtle() {
 	background(0);
 	push();
 	turtle.reset();
 	let code = editor.value();
-	let tokens = code.split(' ');
-	let index = 0;
-	while (index < tokens.length) {
-		let token = tokens[index];
-		if (commands[token]) {
-			if (token.charAt(0) === 'p') {
-				commands[token]();
-			} else {
-				commands[token](tokens[++index]);
-			}
-		}
-		index++;
-	}
+	let parser = new Parser(code);
+	let commands = parser.parse();
+	console.log(commands);
+	execute(commands);
 	pop();
 }
