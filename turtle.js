@@ -20,6 +20,20 @@ const commandLookUp = {
   setxy: function(x, y) {
     turtle.x = x;
     turtle.y = y;
+  },
+  setx: function(x) {
+    turtle.x = x;
+  },
+  sety: function(y) {
+    turtle.y= y
+  },
+  color: function(hex) {
+    // sanity sake let you use hex without the need for #
+    if(hex[0] != "#") {
+      hex = "#" + hex
+    }
+
+    turtle.stroke = color(hex)
   }
 };
 
@@ -28,6 +42,7 @@ class Turtle {
     this.x = x;
     this.y = y;
     this.dir = angle;
+    this.stroke = 255
   }
 
   reset() {
@@ -40,7 +55,7 @@ class Turtle {
   forward(amt) {
     amt = parseInt(amt);
     if (this.pen) {
-      stroke(255);
+      stroke(this.stroke);
       strokeWeight(1);
       line(0, 0, amt, 0);
     }

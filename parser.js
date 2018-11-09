@@ -55,6 +55,7 @@ class Parser {
     let pen = /^p/;
     let repeat = /^repeat$/;
     let setxy = /^setxy$/;
+    let color = /^color$/;
 
     while (this.remainingTokens()) {
       let token = this.nextToken();
@@ -73,6 +74,8 @@ class Parser {
         let argX = this.nextToken();
         let argY = this.nextToken();
         cmd.arg = [parseFloat(argX), parseFloat(argY)];
+      } else if (color.test(token)) {
+        cmd = new Command(token, this.nextToken());
       }
 
       if (cmd) {
