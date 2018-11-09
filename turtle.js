@@ -21,6 +21,12 @@ const commandLookUp = {
     turtle.x = x;
     turtle.y = y;
   },
+  setx: function(x) {
+    turtle.x = x;
+  },
+  sety: function(y) {
+    turtle.y= y
+  },
   color: function(hex) {
     // sanity sake let you use hex without the need for #
     if(hex[0] != "#") {
