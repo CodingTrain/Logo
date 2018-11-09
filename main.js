@@ -33,8 +33,8 @@ function goTurtle() {
 }
 
 function style() {
-	background(instance_variables.background);
-	_body.style("background", instance_variables.background);
-	editor.style("background", instance_variables.background);
-	editor.style("color", instance_variables.pencolor);
+	background(instance.background);
+	_body.style("background", instance.background);
+	editor.style("background", instance.background);
+	editor.style("color", instance.pencolor);
 }

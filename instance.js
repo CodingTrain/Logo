@@ -15,10 +15,10 @@ const colors = [
 	"rgb(218,112,214)", // light purple
 	"rgb(255, 165, 0)", // orange
 	"rgb(128,128,128)", // gray
-
 ]
 
-const instance_variables = {
+// object storing the variable values used by the current instance of LOGO
+const instance = {
 	background: colors[0],
 	pencolor: colors[7],
 	

@@ -12,14 +12,15 @@ class Turtle {
 		translate(this.x, this.y);
 		rotate(this.heading);
 		this.pen = DOWN;
+		this.show = true;
 	}
 
 	move(amt) {
 		if (this.pen) {
 			if(this.pen == DOWN)
-				stroke(255);
+				stroke(instance.pencolor);
 			else if(this.pen == ERASE)
-				stroke(0);
+				stroke(instance.background);
 			strokeWeight(2);
 			line(0, 0, amt, 0);
 		}
@@ -40,6 +41,8 @@ class Turtle {
 	}
 
 	display() {
+		if(!this.show)
+			return;
 		const size = 50;
 		push();
 		rotate(90);
@@ -47,5 +50,4 @@ class Turtle {
 		image(this.icon, this.x, this.y-size/2, size, size);
 		pop();
 	}
-	
 }

@@ -1,3 +1,4 @@
+// pen states
 const ERASE = -1;
 const UP = 0;
 const DOWN = 1;
@@ -12,17 +13,16 @@ function parse(code) {
         if(ch == ' ') {
             tokens.push(token);
             token = "";
-        } else if (ch == '[') {
+        } else if (ch == '[') { // start of a block of code
             let j = i+1;
             let brackets = 0;
             for(; j < code.length; j++) {
                 const ch1 = code.charAt(j);
-                if(ch1 == '[') {
-                    brackets ++;
-                } else if(ch1 == ']') {
-                    if(brackets == 0) {
+                if(ch1 == '[')
+                    brackets++;
+                else if(ch1 == ']') {
+                    if(brackets == 0) // matching bracket found
                         break;
-                    }
                     else brackets--;
                 }
                 token += ch1;
@@ -39,9 +39,9 @@ function execute(code_tokens) {
 	for(let i = 0; i < code_tokens.length; i++) {
 		const command = commands[code_tokens[i]];
 		if(command) {
-			const arg_len = command.length;
+			const arg_len = command.length; // number of arguments expected
 			const args = code_tokens.slice(i+1, i+1+arg_len);
-			command(args);
+			command(args); // The functions must parse the arguments from the array
 			i += arg_len;
 		}
 	}
@@ -76,12 +76,12 @@ const repeat = function(n, code) {
 		execute(code);
 }
 const home = function() {
-	turtle.reset();
+	// Implementation needed
 }
 const seth = function(angle) {
 	args = arguments[0];
 	angle = parseInt(args[0]);
-	turtle.setDirection(angle);
+	// Implementation needed
 }
 const pu = function () {
 	turtle.pen = UP;
@@ -108,9 +108,9 @@ const cs = function() {
 	background(0);
 }
 
-/*
- Support for new commands can be added by writing the corresponding function
-  above and then adding the callback to the commands object.
+/**
+ * Support for new commands can be added by writing the corresponding function
+ * above and then adding the callback to the commands object.
  */
 const commands = {
 	"fd": fd,
@@ -132,8 +132,8 @@ const commands = {
 	"st": st,
 	"showturtle": st,
 	"repeat": repeat,
-	"home": home,
-	"seth": seth,
+	// "home": home, // returns the turtle back to its initial position
+	// "seth": seth, // sets heading of the turtle relative to the initial angle
 	"setxy": setxy,
 	"cs": cs,
 	"clearscreen": cs
