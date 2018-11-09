@@ -1,23 +1,27 @@
 const commandLookUp = {
-  "fd": function (amt) {
-    turtle.forward(amt);
+  fd: function(amt) {
+    turtle["forward"](amt);
   },
-  "bd": function (amt) {
-    turtle.forward(-amt);
+  bd: function(amt) {
+    turtle["forward"](-amt);
   },
-  "rt": function (angle) {
-    turtle.right(angle);
+  rt: function(angle) {
+    turtle["right"](angle);
   },
-  "lt": function (angle) {
-    turtle.right(-angle);
+  lt: function(angle) {
+    turtle["right"](-angle);
   },
-  "pu": function () {
+  pu: function() {
     turtle.pen = false;
   },
-  "pd": function () {
+  pd: function() {
     turtle.pen = true;
+  },
+  setxy: function(x, y) {
+    turtle.x = x;
+    turtle.y = y;
   }
-}
+};
 
 class Turtle {
   constructor(x, y, angle) {
@@ -46,6 +50,4 @@ class Turtle {
   right(angle) {
     rotate(angle);
   }
-
-
 }

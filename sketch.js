@@ -26,7 +26,11 @@ function execute(commands, repcount) {
 			if(arg == 'repcount' && repcount) {
 				commandLookUp[name](repcount);
 			} else {
-				commandLookUp[name](arg);
+				if(arg instanceof Array ) {
+					commandLookUp[name](...arg);
+				} else {
+					commandLookUp[name](arg);
+				}
 			}
 		}
 	}

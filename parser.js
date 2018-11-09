@@ -9,15 +9,15 @@ class Parser {
   }
 
   getRepeat() {
-    while (this.text.charAt(this.index++) !== '[' && this.remainingTokens()) {}
+    while (this.text.charAt(this.index++) !== "[" && this.remainingTokens()) {}
     let start = this.index;
 
     let bracketCount = 1;
     while (bracketCount > 0 && this.remainingTokens()) {
       let char = this.text.charAt(this.index++);
-      if (char === '[') {
+      if (char === "[") {
         bracketCount++;
-      } else if (char === ']') {
+      } else if (char === "]") {
         bracketCount--;
       }
     }
@@ -26,23 +26,23 @@ class Parser {
   }
 
   nextToken() {
-    let token = '';
+    let token = "";
     let char = this.text.charAt(this.index);
 
     // If it's a space ignore
-    if (char === ' ') {
+    if (char === " ") {
       this.index++;
       return this.nextToken();
     }
 
     // If it's a bracker send that back
-    if (char === '[' || char === ']') {
+    if (char === "[" || char === "]") {
       this.index++;
       return char;
     }
 
     // Otherwise accumulate until a space
-    while (char !== ' ' && this.remainingTokens()) {
+    while (char !== " " && this.remainingTokens()) {
       token += char;
       char = this.text.charAt(++this.index);
     }
@@ -54,24 +54,31 @@ class Parser {
     let movement = /^([fb]d|[lr]t)$/;
     let pen = /^p/;
     let repeat = /^repeat$/;
+    let setxy = /^setxy$/;
+
     while (this.remainingTokens()) {
       let token = this.nextToken();
+      let cmd = undefined
       if (movement.test(token)) {
-        let cmd = new Command(token, this.nextToken());
-        commands.push(cmd);
+        cmd = new Command(token, this.nextToken());
       } else if (pen.test(token)) {
-        let cmd = new Command(token);
-        commands.push(cmd);
+        cmd = new Command(token);
       } else if (repeat.test(token)) {
-        let cmd = new Command(token, this.nextToken());
+        cmd = new Command(token, this.nextToken());
         let toRepeat = this.getRepeat();
         let parser = new Parser(toRepeat);
         cmd.commands = parser.parse();
+      } else if (setxy.test(token)) {
+        cmd = new Command(token);
+        let argX = this.nextToken();
+        let argY = this.nextToken();
+        cmd.arg = [parseFloat(argX), parseFloat(argY)];
+      }
+
+      if (cmd) {
         commands.push(cmd);
       }
     }
     return commands;
   }
-
-
 }
