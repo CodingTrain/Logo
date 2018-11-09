@@ -14,16 +14,20 @@ function setup() {
 	goTurtle();
 }
 
-function execute(commands) {
+function execute(commands, repcount) {
 	for (let command of commands) {
 		let name = command.name;
 		let arg = command.arg;
 		if (name === 'repeat') {
 			for (let i = 0; i < arg; i++) {
-				execute(command.commands);
+				execute(command.commands, i);
 			}
 		} else {
-			commandLookUp[name](arg);
+			if(arg == 'repcount' && repcount) {
+				commandLookUp[name](repcount);
+			} else {
+				commandLookUp[name](arg);
+			}
 		}
 	}
 }
