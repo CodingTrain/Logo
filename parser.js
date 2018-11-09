@@ -66,7 +66,7 @@ class Parser {
       } else if (noArgsCalls.test(token)) {
         cmd = new Command(token);
       } else if (repeat.test(token)) {
-        cmd = new Command(token, this.nextToken());
+        cmd = new Command(token, parseInt(this.nextToken()));
         let toRepeat = this.getRepeat();
         let parser = new Parser(toRepeat);
         cmd.commands = parser.parse();
