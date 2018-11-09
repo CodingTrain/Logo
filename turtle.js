@@ -17,9 +17,9 @@ const commandLookUp = {
   pd: function() {
     turtle.pen = true;
   },
-  setxy: function(args) {
-    turtle.x = args[0];
-    turtle.y = args[1];
+  setxy: function(x, y) {
+    turtle.x = x;
+    turtle.y = y;
   }
 };
 
