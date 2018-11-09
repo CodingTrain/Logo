@@ -72,7 +72,7 @@ class CommandLookUp {
     while(!item && index < this.commands.length) {
       if (this.commands[index].name === name)
         item = this.commands[index];
-      
+
       index++;
     }
 
@@ -117,6 +117,14 @@ commandLookUp.add(new Command('pu', [], () => {
 
 commandLookUp.add(new Command('pd', [], () => {
   turtle.pen = true;
+}));
+
+commandLookUp.add(new Command('setxy', [
+  new CommandArg('x', COMMAND_TYPES.INT),
+  new CommandArg('y', COMMAND_TYPES.INT)
+], (x, y) => {
+  turtle.x = x;
+  turtle.y = y;
 }));
 
 commandLookUp.add(new Command('repeat', [
