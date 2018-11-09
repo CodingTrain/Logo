@@ -14,33 +14,17 @@ function setup() {
 	goTurtle();
 }
 
-function execute(commands, repcount) {
-	for (let command of commands) {
-		let name = command.name;
-		let arg = command.arg;
-		if (name === 'repeat') {
-			for (let i = 0; i < arg; i++) {
-				execute(command.commands, i);
-			}
-		} else {
-			if(arg == 'repcount' && repcount) {
-				commandLookUp[name](repcount);
-			} else {
-				commandLookUp[name](arg);
-			}
-		}
-	}
-}
-
 
 function goTurtle() {
 	background(0);
+	
 	push();
 	turtle.reset();
 	let code = editor.value();
 	let parser = new Parser(code);
 	let commands = parser.parse();
-	console.log(commands);
-	execute(commands);
+	for (let cmd of commands) {
+		cmd.execute();
+	}
 	pop();
 }
