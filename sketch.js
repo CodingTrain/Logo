@@ -3,13 +3,15 @@
 
 let editor;
 let turtle;
+let xOffset = 0;
+let yOffset = 0;
+let startX = 100;
+let startY = 100;
 
 function setup() {
   createCanvas(200, 200);
   angleMode(DEGREES);
   background(0);
-
-  turtle = new Turtle(100, 100, 0);
   editor = select("#code");
   editor.input(goTurtle);
   goTurtle();
@@ -38,6 +40,8 @@ function execute(commands, repcount) {
 }
 
 function goTurtle() {
+  console.log({startX:startX,startY:startY});
+  turtle = new Turtle(startX, startY, 0);
   background(0);
   push();
   turtle.reset();
@@ -52,4 +56,15 @@ function goTurtle() {
 function createTextArea() {
   editor = createElement("textarea");
   editor.elt.placeholder = "hint text";
+}
+
+function mousePressed() {
+  xOffset = mouseX-startX; 
+  yOffset = mouseY-startX; 
+}
+
+function mouseDragged() {
+    startX = mouseX-xOffset; 
+    startY = mouseY-yOffset; 
+    goTurtle();
 }
