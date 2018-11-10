@@ -18,7 +18,8 @@ function setup() {
   angleMode(DEGREES);
   background(0);
 
-  turtle = new Turtle(width/2, height/2, 0);
+  startX = width/2;
+  startY = height/2;
   editor = select("#code");
   editor.input(goTurtle);
   goTurtle();
