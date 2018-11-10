@@ -1,5 +1,11 @@
 
 class Parser {
+
+  /**
+   * Creates an instance of Parser.
+   * @param {String} text The text to parse
+   * @memberof Parser
+   */
   constructor(text) {
     if (!text) text = '';
 
@@ -7,9 +13,22 @@ class Parser {
     this.index = 0;
   }
 
+  /**
+   * Private method
+   *
+   * @returns Boolean If the index has surpased the length of the text or not.
+   * @memberof Parser
+   */
   remainingTokens() {
     return this.index < this.text.length;
   }
+
+  /**
+   * Private method
+   *
+   * @returns String The next token after the actual index.
+   * @memberof Parser
+   */
   nextToken() {
     while (this.text.charAt(this.index) === ' ' && this.remainingTokens()) this.index++;
 
@@ -46,6 +65,13 @@ class Parser {
     return token;
   }
 
+  /**
+   * Public method
+   *
+   * @returns [CommandExecutor] Parsed text converted into CommandExecutors
+   *    ready to be executed.
+   * @memberof Parser
+   */
   parse() {
     let cmdsExecutors = [];
     while (this.remainingTokens()) {
