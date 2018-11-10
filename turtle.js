@@ -1,8 +1,10 @@
-
 class Turtle {
   constructor(x, y, angle) {
     this.x = x;
     this.y = y;
+    this.homeX = x;
+    this.homeY = y;
+
     this.dir = angle;
     this.strokeColor = 255;
   }
@@ -26,5 +28,10 @@ class Turtle {
 
   right(angle) {
     rotate(angle);
+  }
+
+  home() {
+    this.x = this.homeX;
+    this.y = this.homey;
   }
 }

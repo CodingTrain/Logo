@@ -127,6 +127,30 @@ commandLookUp.add(new Command('setxy', [
   turtle.y = y;
 }));
 
+commandLookUp.add(new Command('setx', [
+  new CommandArg('x', COMMAND_TYPES.INT)
+], (x) => {
+  turtle.x = x;
+}));
+
+commandLookUp.add(new Command('sety', [
+  new CommandArg('y', COMMAND_TYPES.INT)
+], (y) => {
+  turtle.y = y;
+}));
+
+commandLookUp.add(new Command('home', [], () => {
+  turtle["home"]();
+}));
+
+commandLookUp.add(new Command('radians', [], () => {
+  angleMode(DEGREES);
+}));
+
+commandLookUp.add(new Command('degrees', [], () => {
+  angleMode(RADIANS);
+}));
+
 commandLookUp.add(new Command('repeat', [
   new CommandArg('lengthLoop', COMMAND_TYPES.INT),
   new CommandArg('commands', COMMAND_TYPES.COMMANDS)
@@ -144,6 +168,11 @@ commandLookUp.add(new Command('repeat', [
 commandLookUp.add(new Command('color', [
   new CommandArg('color', COMMAND_TYPES.STR)
 ], (color) => {
+  // sanity sake let you use hex without the need for #
+  if (color[0] != "#") {
+    color = "#" + color;
+  }
+
   turtle.strokeColor = color;
 }));
 

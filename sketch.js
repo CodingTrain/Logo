@@ -3,27 +3,88 @@
 
 let editor;
 let turtle;
+let xOffset = 0;
+let yOffset = 0;
+let startX = 100;
+let startY = 100;
+let allCases;
+
+function preload() {
+  loadJSON("./assets/tests.json", createTestDataView);
+}
 
 function setup() {
-	createCanvas(200, 200);
-	angleMode(DEGREES);
-	background(0);
-	turtle = new Turtle(100, 100, 0);
-	editor = select('#code');
-	editor.input(goTurtle);
-	goTurtle();
+  createCanvas(200, 200);
+  angleMode(DEGREES);
+  background(0);
+
+  turtle = new Turtle(width/2, height/2, 0);
+  editor = select("#code");
+  editor.input(goTurtle);
+  goTurtle();
 }
 
 function goTurtle() {
-	background(0);
-	
-	push();
-	turtle.reset();
-	let code = editor.value();
-	let parser = new Parser(code);
-	let commands = parser.parse();
-	for (let cmd of commands) {
-		cmd.execute();
-	}
-	pop();
+  console.log({startX:startX,startY:startY});
+  turtle = new Turtle(startX, startY, 0);
+  background(0);
+  push();
+  turtle.reset();
+  let code = editor.value();
+  let parser = new Parser(code);
+  let commands = parser.parse();
+  for (let cmd of commands) {
+    cmd.execute();
+  }
+  pop();
+}
+
+function createTestDataView(cases) {
+  let selector = select("#testdata");
+  allCases = cases;
+
+  selector.option("Select Test Data", -1);
+
+  for (i = 0; i < cases.length; i++) {
+    selector.option(cases[i].name, i);
+  }
+
+  // because why not do it here
+  selector.changed(function() {
+    let val = parseInt(selector.value());
+    if (val < 0) {
+      resizeCanvas(200, 200);
+      turtle.strokeColor = 255;
+      turtle.dir = 0;
+      turtle.x = width / 2;
+      turtle.y = height / 2;
+
+      return;
+    }
+
+    editor.value(allCases[val].code);
+    if(allCases[val].width && allCases[val].height) {
+      resizeCanvas(allCases[val].width, allCases[val].height);
+    } else {
+      resizeCanvas(200, 200);
+    }
+
+    turtle.strokeColor = 255;
+    turtle.dir = 0;
+    turtle.x = width / 2;
+    turtle.y = height / 2;
+
+    goTurtle();
+  });
+}
+
+function mousePressed() {
+  xOffset = mouseX-startX;
+  yOffset = mouseY-startX;
+}
+
+function mouseDragged() {
+  startX = mouseX-xOffset;
+  startY = mouseY-yOffset;
+  goTurtle();
 }

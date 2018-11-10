@@ -1,8 +1,7 @@
 
 class Parser {
   constructor(text) {
-    if (!text || typeof text !== 'string')
-      throw new Error('Parser needs one argument of the type String');
+    if (!text) text = '';
 
     this.text = text.trim();
     this.index = 0;
@@ -15,7 +14,7 @@ class Parser {
     while (this.text.charAt(this.index) === ' ' && this.remainingTokens()) this.index++;
 
     let firstChar = this.text.charAt(this.index);
-    
+
     let token = '';
     let isTokenList = false;
 
