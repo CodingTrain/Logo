@@ -1,33 +1,12 @@
-const commandLookUp = {
-  fd: function(amt) {
-    turtle["forward"](amt);
-  },
-  bd: function(amt) {
-    turtle["forward"](-amt);
-  },
-  rt: function(angle) {
-    turtle["right"](angle);
-  },
-  lt: function(angle) {
-    turtle["right"](-angle);
-  },
-  pu: function() {
-    turtle.pen = false;
-  },
-  pd: function() {
-    turtle.pen = true;
-  },
-  setxy: function(x, y) {
-    turtle.x = x;
-    turtle.y = y;
-  }
-};
-
 class Turtle {
   constructor(x, y, angle) {
     this.x = x;
     this.y = y;
+    this.homeX = x;
+    this.homeY = y;
+
     this.dir = angle;
+    this.strokeColor = 255;
   }
 
   reset() {
@@ -40,7 +19,7 @@ class Turtle {
   forward(amt) {
     amt = parseInt(amt);
     if (this.pen) {
-      stroke(255);
+      stroke(this.strokeColor);
       strokeWeight(1);
       line(0, 0, amt, 0);
     }
@@ -49,5 +28,10 @@ class Turtle {
 
   right(angle) {
     rotate(angle);
+  }
+
+  home() {
+    this.x = this.homeX;
+    this.y = this.homey;
   }
 }

@@ -1,84 +1,68 @@
+
 class Parser {
   constructor(text) {
-    this.text = text;
+    if (!text) text = '';
+
+    this.text = text.trim();
     this.index = 0;
   }
 
   remainingTokens() {
     return this.index < this.text.length;
   }
-
-  getRepeat() {
-    while (this.text.charAt(this.index++) !== "[" && this.remainingTokens()) {}
-    let start = this.index;
-
-    let bracketCount = 1;
-    while (bracketCount > 0 && this.remainingTokens()) {
-      let char = this.text.charAt(this.index++);
-      if (char === "[") {
-        bracketCount++;
-      } else if (char === "]") {
-        bracketCount--;
-      }
-    }
-    let end = this.index;
-    return this.text.substring(start, end - 1);
-  }
-
   nextToken() {
-    let token = "";
-    let char = this.text.charAt(this.index);
+    while (this.text.charAt(this.index) === ' ' && this.remainingTokens()) this.index++;
 
-    // If it's a space ignore
-    if (char === " ") {
+    let firstChar = this.text.charAt(this.index);
+
+    let token = '';
+    let isTokenList = false;
+
+    let depth = 0;
+
+    if (firstChar === '['){
       this.index++;
-      return this.nextToken();
+      depth++;
+      isTokenList = true;
     }
 
-    // If it's a bracker send that back
-    if (char === "[" || char === "]") {
-      this.index++;
-      return char;
+    let actualChar = this.text.charAt(this.index);
+
+    while(((actualChar === ' ' && isTokenList) || actualChar !== ' ') && this.remainingTokens()) {
+      if (isTokenList) {
+        if (actualChar === '[') depth++;
+        else if (actualChar === ']') depth--;
+
+        if (actualChar === ']' && depth === 0) {
+          this.index++;
+          return token;
+        }
+      }
+
+      token += actualChar;
+      actualChar = this.text.charAt(++this.index);
     }
 
-    // Otherwise accumulate until a space
-    while (char !== " " && this.remainingTokens()) {
-      token += char;
-      char = this.text.charAt(++this.index);
-    }
     return token;
   }
 
   parse() {
-    let commands = [];
-    let movement = /^([fb]d|[lr]t)$/;
-    let pen = /^p/;
-    let repeat = /^repeat$/;
-    let setxy = /^setxy$/;
-
+    let cmdsExecutors = [];
     while (this.remainingTokens()) {
-      let token = this.nextToken();
-      let cmd = undefined
-      if (movement.test(token)) {
-        cmd = new Command(token, this.nextToken());
-      } else if (pen.test(token)) {
-        cmd = new Command(token);
-      } else if (repeat.test(token)) {
-        cmd = new Command(token, this.nextToken());
-        let toRepeat = this.getRepeat();
-        let parser = new Parser(toRepeat);
-        cmd.commands = parser.parse();
-      } else if (setxy.test(token)) {
-        cmd = new Command(token);
-        let argX = this.nextToken();
-        let argY = this.nextToken();
-        cmd.arg = [parseFloat(argX), parseFloat(argY)];
-      }
+      const actualToken = this.nextToken();
+      let cmd = commandLookUp.get(actualToken);
 
       if (cmd) {
-        commands.push(cmd);
+        let args = [];
+        for (let i = 0; i < cmd.argsTemplate.length; i++) {
+          args.push(this.nextToken());
+        }
+
+        cmdsExecutors.push(new CommandExecutor(cmd, args));
       }
     }
-    return commands;
+
+    return cmdsExecutors;
   }
 }
+
