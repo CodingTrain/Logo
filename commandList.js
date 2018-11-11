@@ -45,6 +45,12 @@ commandLookUp.add(
 );
 
 commandLookUp.add(
+  new Command("pensize", [new CommandArg("size", COMMAND_TYPES.FLOAT)], (size) => {
+    turtle.strokeWeight = size;
+  })
+);
+
+commandLookUp.add(
   new Command(
     "setxy",
     [
