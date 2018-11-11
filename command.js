@@ -73,9 +73,11 @@ class CommandExecutor {
    * @param {[String]} values An array of string tokens, this array needs
    *    to be the same length of the arguments the commands can accept.
    *    These values will be casted to the argument type it corresponds to.
+   * @param {Function} callback Function to execute after the command is executed.
    * @memberof CommandExecutor
    */
-  constructor(command, values) {
+  constructor(command, values, callback) {
+    this.callback = callback
     this.command = command;
     this.values = [];
 
@@ -93,7 +95,9 @@ class CommandExecutor {
         case COMMAND_TYPES.FLOAT:
           this.values.push(parseFloat(value));
         case COMMAND_TYPES.COMMANDS:
-          this.values.push(new Parser(value).parse());
+          this.values.push(
+            new Parser(value, this.callback).parse()
+          );
           break;
         case COMMAND_TYPES.PARAMETERS: // Example
           this.values.push(value.split(" "));
@@ -113,6 +117,9 @@ class CommandExecutor {
    */
   execute() {
     this.command.func.apply(this, this.values);
+    if (this.callback) {
+      this.callback();
+    }
   }
 }
 

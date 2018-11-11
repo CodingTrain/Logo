@@ -24,10 +24,13 @@ class Turtle {
       line(0, 0, amt, 0);
     }
     translate(amt, 0);
+    this.x += Math.cos(this.dir * Math.PI / 180) * amt;
+    this.y += Math.sin(this.dir * Math.PI / 180) * amt;
   }
 
   right(angle) {
     rotate(angle);
+    this.dir += angle;
   }
 
   home() {
