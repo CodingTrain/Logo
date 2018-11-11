@@ -117,7 +117,7 @@ function createTestDataView(cases) {
     turtle.y = height / 2;
 
     canvasScrollX = canvasScrollY = 0;
-    goTurtle();
+    scaleToFitBoundingBox(drawing_bounds);
   });
 }
 
