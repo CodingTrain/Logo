@@ -1,10 +1,6 @@
 // Coding Challenge 121: Logo
 // https://youtu.be/i-k04yzfMpw
 
-/** 
- * @TODO: Fix panning when out of canvas
- */
-
 let canvas;
 let editor;
 let turtle;
@@ -44,6 +40,14 @@ function setup() {
     yOffset = mouseY-startY;
   });
 
+  canvas.mouseMoved(function () {
+    if (mouseIsPressed) {
+      startX = mouseX-xOffset;
+      startY = mouseY-yOffset;
+      goTurtle();
+    }
+  });
+
   recentreBtn = document.querySelector("#recentre");
   bgcolorBtn = document.querySelector("#bgcolor");
 
@@ -71,13 +75,7 @@ function setup() {
   editor.input(goTurtle);
   goTurtle();
 }
-
-function mouseDragged() {
-  startX = mouseX-xOffset;
-  startY = mouseY-yOffset;
-  goTurtle();
-}
-
+  
 function scaleToFitBoundingBox(boundingBox) {
   startX = 0;
   startY = 0;
@@ -85,7 +83,6 @@ function scaleToFitBoundingBox(boundingBox) {
 
   let scale = Math.min((width - drawingPadding) / (boundingBox.width), (height - drawingPadding) / (boundingBox.height));
   canvasScaleX = canvasScaleY = scale;
-
   canvasScrollX = (drawing_bounds.x * scale - width * .5);
   canvasScrollY = (drawing_bounds.y * scale - height * .5);
   goTurtle();
@@ -125,7 +122,7 @@ function createTestDataView(cases) {
   let selector = select("#testdata");
   allCases = cases;
 
-  selector.option("Select Test Data", -1);
+  selector.option("Logo Default", -1);
 
   for (i = 0; i < cases.length; i++) {
     selector.option(cases[i].name, i);
@@ -139,7 +136,16 @@ function createTestDataView(cases) {
       turtle.dir = 0;
       turtle.x = width / 2;
       turtle.y = height / 2;
-
+      xOffset = 0;
+      yOffset = 0;
+      startX = 100;
+      startY = 100;
+      canvasScrollX = 0;
+      canvasScrollY = 0;
+      canvasScaleX = 1;
+      canvasScaleY = 1;
+      
+      goTurtle();
       return;
     }
 
