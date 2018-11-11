@@ -1,10 +1,11 @@
 
 class Parser {
-  constructor(text) {
+  constructor(text, afterCmdCallback) {
     if (!text) text = '';
 
     this.text = text.trim();
     this.index = 0;
+    this.afterCmdCallback = afterCmdCallback
   }
 
   remainingTokens() {
@@ -58,7 +59,7 @@ class Parser {
           args.push(this.nextToken());
         }
 
-        cmdsExecutors.push(new CommandExecutor(cmd, args));
+        cmdsExecutors.push(new CommandExecutor(cmd, args, this.afterCmdCallback));
       }
     }
 
