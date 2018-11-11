@@ -23,7 +23,7 @@ class Command {
 
 class CommandExecutor {
   constructor(command, values, callback) {
-    this.callback = callback
+    this.callback = callback;
     this.command = command;
     this.values = [];
 
@@ -41,9 +41,7 @@ class CommandExecutor {
         case COMMAND_TYPES.FLOAT:
           this.values.push(parseFloat(value));
         case COMMAND_TYPES.COMMANDS:
-          this.values.push(
-            new Parser(value, this.callback).parse()
-          );
+          this.values.push(new Parser(value, this.callback).parse());
           break;
         case COMMAND_TYPES.PARAMETERS: // Example
           this.values.push(value.split(" "));
@@ -114,6 +112,7 @@ commandLookUp.add(
   })
 );
 
+// Pen controls
 commandLookUp.add(
   new Command("pu", [], () => {
     turtle.pen = false;
@@ -126,6 +125,17 @@ commandLookUp.add(
   })
 );
 
+commandLookUp.add(
+  new Command(
+    "pensize",
+    [new CommandArg("size", COMMAND_TYPES.FLOAT)],
+    size => {
+      turtle.strokeWeight = size;
+    }
+  )
+);
+
+// Position of turtle controls
 commandLookUp.add(
   new Command(
     "setxy",
@@ -158,6 +168,7 @@ commandLookUp.add(
   })
 );
 
+// Switch between degree and radians on the fly
 commandLookUp.add(
   new Command("radians", [], () => {
     angleMode(DEGREES);
@@ -170,6 +181,7 @@ commandLookUp.add(
   })
 );
 
+// Commands like repeat and if should go below this
 commandLookUp.add(
   new Command(
     "repeat",

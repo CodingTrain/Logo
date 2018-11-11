@@ -7,6 +7,7 @@ class Turtle {
 
     this.dir = angle;
     this.strokeColor = 255;
+    this.strokeWeight = 1;
   }
 
   reset() {
@@ -17,10 +18,9 @@ class Turtle {
   }
 
   forward(amt) {
-    amt = parseInt(amt);
     if (this.pen) {
       stroke(this.strokeColor);
-      strokeWeight(1);
+      strokeWeight(this.strokeWeight);
       line(0, 0, amt, 0);
     }
     translate(amt, 0);

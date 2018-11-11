@@ -100,6 +100,7 @@ function createTestDataView(cases) {
       turtle.dir = 0;
       turtle.x = width / 2;
       turtle.y = height / 2;
+      editor.value(""); // Empty this on "-1" select
 
       return;
     }
