@@ -43,7 +43,7 @@ class Parser {
 
     let depth = 0;
 
-    if (firstChar === '['){
+    if (firstChar === '[') {
       this.index++;
       depth++;
       isTokenList = true;
@@ -51,7 +51,7 @@ class Parser {
 
     let actualChar = this.text.charAt(this.index);
 
-    while(((regWhitespace.test(actualChar) && isTokenList) || !regWhitespace.test(actualChar)) && this.remainingTokens()) {
+    while (((regWhitespace.test(actualChar) && isTokenList) || !regWhitespace.test(actualChar)) && this.remainingTokens()) {
       this.index++;
 
       if (isTokenList) {
@@ -79,44 +79,28 @@ class Parser {
     let cmdsExecutors = [];
     while (this.remainingTokens()) {
       let token = this.nextToken();
-      let cmd = undefined;
-
-      // testCommand to refactor
-      function testCommand(value, data) { return value.test(data) }
-
-      if (testCommand(movement, token)) {
-        cmd = new Command(token, parseFloat(this.nextToken()));
-      } else if (testCommand(noArgsCalls, token)) {
-        cmd = new Command(token);
-      } else if (testCommand(repeat, token)) {
-        cmd = new Command(token, parseInt(this.nextToken()));
-        let toRepeat = this.getRepeat();
-        let parser = new Parser(toRepeat);
-        cmd.commands = parser.parse();
-      } else if (testCommand(setxy,token)) {
-        cmd = new Command(token);
-        let argX = this.nextToken();
-        let argY = this.nextToken();
-        cmd.arg = [parseFloat(argX), parseFloat(argY)];
-      } else if (testCommand(color, token)) {
-        cmd = new Command(token, this.nextToken());
-      } else if (testCommand(setxySingle,token)) {
-        cmd = new Command(token, parseFloat(this.nextToken()));
-      }
-
-      const actualToken = this.nextToken();
-      let cmd = commandLookUp.get(actualToken);
-
+      let cmd = commandLookUp.get(token);;
       if (cmd) {
         let args = [];
         for (let i = 0; i < cmd.argsTemplate.length; i++) {
-          args.push(this.nextToken());
+          let startIndex = this.index;
+          let arg = cmd.argsTemplate[i];
+          let theArgToken = this.nextToken()
+          if(arg.validator !== undefined){
+            if(!arg.validator(theArgToken))
+              console.error(`Argument number ${i} (${theArgToken}) is invalid for command ${token}`);
+            args.push(theArgToken);
+          }
+          else {
+            args.push(theArgToken);
+
+            console.warn(`A validator is missing for argument ${theArgToken}`);
+          }
         }
 
         cmdsExecutors.push(new CommandExecutor(cmd, args, this.afterCmdCallback));
       }
     }
-
     return cmdsExecutors;
   }
 }

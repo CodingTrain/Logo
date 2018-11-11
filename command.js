@@ -8,7 +8,7 @@
  * - PARAMETERS: Parameters, it almost doesnt make sense but is here to
  *    demonstrate the power of this way of parsing the content.
  */
-const COMMAND_TYPES = {
+const ARGUMENT_TYPES = {
   STR: "STR",
   INT: "INT",
   FLOAT: "FLOAT",
@@ -27,13 +27,28 @@ class CommandArg {
   /**
    * Creates an instance of CommandArg.
    * @param {String} name Name of the argument
-   * @param {COMMAND_TYPES} type Type of the argument. Its important because
+   * @param {ARGUMENT_TYPES} type Type of the argument. Its important because
    *    this will define how the token is parsed.
+   * @param {*} validator Function used to check if the argument is valid
    * @memberof CommandArg
    */
-  constructor(name, type) {
+  constructor(name, type, validator = undefined) {
     this.name = name;
     this.type = type;
+    if (validator === undefined) {
+      switch (type) {
+        case ARGUMENT_TYPES.INT:
+          this.validator = (str) => {
+            return /^\d+$/.test(str);
+          }
+          break;
+        case ARGUMENT_TYPES.FLOAT:
+          this.validator = (str) => {
+            return /^[-+]?[0-9]*\.?[0-9]*$/.test(str);
+          }
+      }
+    } else
+      this.validator = validator;
   }
 }
 
@@ -86,20 +101,20 @@ class CommandExecutor {
       let argTemplate = this.command.argsTemplate[i].type;
 
       switch (argTemplate) {
-        case COMMAND_TYPES.STR:
+        case ARGUMENT_TYPES.STR:
           this.values.push(value);
           break;
-        case COMMAND_TYPES.INT:
+        case ARGUMENT_TYPES.INT:
           this.values.push(parseInt(value));
           break;
-        case COMMAND_TYPES.FLOAT:
+        case ARGUMENT_TYPES.FLOAT:
           this.values.push(parseFloat(value));
-        case COMMAND_TYPES.COMMANDS:
+        case ARGUMENT_TYPES.COMMANDS:
           this.values.push(
             new Parser(value, this.callback).parse()
           );
           break;
-        case COMMAND_TYPES.PARAMETERS: // Example
+        case ARGUMENT_TYPES.PARAMETERS: // Example
           this.values.push(value.split(" "));
           break;
         default:

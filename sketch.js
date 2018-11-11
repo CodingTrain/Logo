@@ -59,13 +59,7 @@ function afterCommandExecuted() {
 
 function goTurtle() {
   console.log({startX:startX,startY:startY});
-<<<<<<< HEAD
   turtle = new Turtle(startX, startY, 0);
-=======
-  turtle = new Turtle(startX / canvasScaleX, startY / canvasScaleY, 0);
-  drawing_bounds.reset();
-  drawing_bounds.move(turtle.x, turtle.y);
->>>>>>> 4ef832510536603e7649e7ddec4f55fa11966b18
   background(0);
 
   push();
@@ -126,17 +120,6 @@ function createTestDataView(cases) {
 }
 
 function mousePressed() {
-<<<<<<< HEAD
-  xOffset = mouseX-startX; 
-  yOffset = mouseY-startX; 
-}
-
-function mouseDragged() {
-    startX = mouseX-xOffset; 
-    startY = mouseY-yOffset; 
-    goTurtle();
-}
-=======
   xOffset = mouseX-startX;
   yOffset = mouseY-startX;
 }
@@ -146,4 +129,3 @@ function mouseDragged() {
   startY = mouseY-yOffset;
   goTurtle();
 }
->>>>>>> 4ef832510536603e7649e7ddec4f55fa11966b18
