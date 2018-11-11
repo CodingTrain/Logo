@@ -1,63 +1,55 @@
+
 class Parser {
-  constructor(text) {
-    this.text = text;
+  constructor(text, afterCmdCallback) {
+    if (!text) text = '';
+
+    this.text = text.trim();
     this.index = 0;
+    this.afterCmdCallback = afterCmdCallback
   }
 
   remainingTokens() {
     return this.index < this.text.length;
   }
-
-  getRepeat() {
-    while (this.text.charAt(this.index++) !== "[" && this.remainingTokens()) {}
-    let start = this.index;
-
-    let bracketCount = 1;
-    while (bracketCount > 0 && this.remainingTokens()) {
-      let char = this.text.charAt(this.index++);
-      if (char === "[") {
-        bracketCount++;
-      } else if (char === "]") {
-        bracketCount--;
-      }
-    }
-    let end = this.index;
-    return this.text.substring(start, end - 1);
-  }
-
   nextToken() {
-    let token = "";
-    let char = this.text.charAt(this.index);
+    let regWhitespace = /\s/;
 
-    // If it's a space ignore
-    if (char === " ") {
+    while (regWhitespace.test(this.text.charAt(this.index)) && this.remainingTokens()) this.index++;
+
+    let firstChar = this.text.charAt(this.index);
+
+    let token = '';
+    let isTokenList = false;
+
+    let depth = 0;
+
+    if (firstChar === '['){
       this.index++;
-      return this.nextToken();
+      depth++;
+      isTokenList = true;
     }
 
-    // If it's a bracker send that back
-    if (char === "[" || char === "]") {
+    let actualChar = this.text.charAt(this.index);
+
+    while(((regWhitespace.test(actualChar) && isTokenList) || !regWhitespace.test(actualChar)) && this.remainingTokens()) {
       this.index++;
-      return char;
+
+      if (isTokenList) {
+        if (actualChar === '[') depth++;
+        else if (actualChar === ']') depth--;
+
+        if (actualChar === ']' && depth === 0) return token;
+      }
+
+      token += actualChar;
+      actualChar = this.text.charAt(this.index);
     }
 
-    // Otherwise accumulate until a space
-    while (char !== " " && this.remainingTokens()) {
-      token += char;
-      char = this.text.charAt(++this.index);
-    }
     return token;
   }
 
   parse() {
-    let commands = [];
-    let movement = /^([fb]d|[lr]t)$/;
-    let noArgsCalls = /^p|home|degrees|radians/;
-    let repeat = /^repeat$/;
-    let setxy = /^setxy$/;
-    let color = /^color$/;
-    let setxySingle = /^set[xy]$/;
-
+    let cmdsExecutors = [];
     while (this.remainingTokens()) {
       let token = this.nextToken();
       let cmd = undefined;
@@ -85,10 +77,20 @@ class Parser {
         cmd = new Command(token, parseFloat(this.nextToken()));
       }
 
+      const actualToken = this.nextToken();
+      let cmd = commandLookUp.get(actualToken);
+
       if (cmd) {
-        commands.push(cmd);
+        let args = [];
+        for (let i = 0; i < cmd.argsTemplate.length; i++) {
+          args.push(this.nextToken());
+        }
+
+        cmdsExecutors.push(new CommandExecutor(cmd, args, this.afterCmdCallback));
       }
     }
-    return commands;
+
+    return cmdsExecutors;
   }
 }
+
