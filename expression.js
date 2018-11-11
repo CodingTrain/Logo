@@ -10,7 +10,7 @@ class Expression {
       if(this.left == 'repcount' && repcount) {
         return repcount;
       } else {
-        return parseInt(this.left);
+        return parseFloat(this.left);
       }
     } else if(this.type == '/') { 
       return this.left.eval(repcount) / this.right.eval(repcount);
