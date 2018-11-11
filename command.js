@@ -96,7 +96,6 @@ class CommandExecutor {
           this.values.push(value);
           break;
         case COMMAND_TYPES.COMMANDS:
-	  console.log(value);
           this.values.push(
             new Parser(value, this.callback).parse()
           );

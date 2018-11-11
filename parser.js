@@ -114,7 +114,6 @@ class Parser {
             args.push(this.nextToken());
           }
         }
-	console.log(cmdsExecutors);
 
         cmdsExecutors.push(new CommandExecutor(cmd, args, this.afterCmdCallback));
       }
