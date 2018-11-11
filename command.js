@@ -90,11 +90,13 @@ class CommandExecutor {
           this.values.push(value);
           break;
         case COMMAND_TYPES.INT:
-          this.values.push(parseInt(value));
+          this.values.push(value);
           break;
         case COMMAND_TYPES.FLOAT:
-          this.values.push(parseFloat(value));
+          this.values.push(value);
+          break;
         case COMMAND_TYPES.COMMANDS:
+	  console.log(value);
           this.values.push(
             new Parser(value, this.callback).parse()
           );
@@ -115,8 +117,19 @@ class CommandExecutor {
    *
    * @memberof CommandExecutor
    */
-  execute() {
-    this.command.func.apply(this, this.values);
+  execute(repcount) {
+    let values = [];
+    for(let i = 0; i < this.values.length; i++)
+    {
+      let val = this.values[i];
+      if(this.command.argsTemplate[i].type == COMMAND_TYPES.FLOAT || this.command.argsTemplate[i].type == COMMAND_TYPES.INT)
+      {
+        values.push(val.eval(repcount));
+      } else {
+        values.push(val);
+      }
+    }
+    this.command.func.apply(this, values);
     if (this.callback) {
       this.callback();
     }
