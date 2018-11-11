@@ -11,7 +11,9 @@ class Parser {
     return this.index < this.text.length;
   }
   nextToken() {
-    while (this.text.charAt(this.index) === ' ' && this.remainingTokens()) this.index++;
+    let regWhitespace = /\s/;
+
+    while (regWhitespace.test(this.text.charAt(this.index)) && this.remainingTokens()) this.index++;
 
     let firstChar = this.text.charAt(this.index);
 
@@ -28,19 +30,18 @@ class Parser {
 
     let actualChar = this.text.charAt(this.index);
 
-    while(((actualChar === ' ' && isTokenList) || actualChar !== ' ') && this.remainingTokens()) {
+    while(((regWhitespace.test(actualChar) && isTokenList) || !regWhitespace.test(actualChar)) && this.remainingTokens()) {
+      this.index++;
+
       if (isTokenList) {
         if (actualChar === '[') depth++;
         else if (actualChar === ']') depth--;
 
-        if (actualChar === ']' && depth === 0) {
-          this.index++;
-          return token;
-        }
+        if (actualChar === ']' && depth === 0) return token;
       }
 
       token += actualChar;
-      actualChar = this.text.charAt(++this.index);
+      actualChar = this.text.charAt(this.index);
     }
 
     return token;
