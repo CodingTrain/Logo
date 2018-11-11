@@ -1,17 +1,20 @@
 
 class Parser {
-  constructor(text) {
+  constructor(text, afterCmdCallback) {
     if (!text) text = '';
 
     this.text = text.trim();
     this.index = 0;
+    this.afterCmdCallback = afterCmdCallback
   }
 
   remainingTokens() {
     return this.index < this.text.length;
   }
   nextToken() {
-    while (this.text.charAt(this.index) === ' ' && this.remainingTokens()) this.index++;
+    let regWhitespace = /\s/;
+
+    while (regWhitespace.test(this.text.charAt(this.index)) && this.remainingTokens()) this.index++;
 
     let firstChar = this.text.charAt(this.index);
 
@@ -28,19 +31,18 @@ class Parser {
 
     let actualChar = this.text.charAt(this.index);
 
-    while(((actualChar === ' ' && isTokenList) || actualChar !== ' ') && this.remainingTokens()) {
+    while(((regWhitespace.test(actualChar) && isTokenList) || !regWhitespace.test(actualChar)) && this.remainingTokens()) {
+      this.index++;
+
       if (isTokenList) {
         if (actualChar === '[') depth++;
         else if (actualChar === ']') depth--;
 
-        if (actualChar === ']' && depth === 0) {
-          this.index++;
-          return token;
-        }
+        if (actualChar === ']' && depth === 0) return token;
       }
 
       token += actualChar;
-      actualChar = this.text.charAt(++this.index);
+      actualChar = this.text.charAt(this.index);
     }
 
     return token;
@@ -58,7 +60,7 @@ class Parser {
           args.push(this.nextToken());
         }
 
-        cmdsExecutors.push(new CommandExecutor(cmd, args));
+        cmdsExecutors.push(new CommandExecutor(cmd, args, this.afterCmdCallback));
       }
     }
 
