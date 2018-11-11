@@ -13,10 +13,49 @@ body {
     margin-left: -5px;
     font-weight: 800;
     display: grid;
-    grid-template-columns: 1fr 18fr;
+    grid-template-columns: 1.5fr 18fr 3.5fr 1fr 1.4fr;
     font-size: 20px;
     font-family: 'Montserrat', 'Open Sans';
     /* position: absolute; */
+}
+
+span[tooltip]::before {
+    content: '';
+    opacity: 0;
+}
+
+span[tooltip]:hover::before {
+    content: attr(tooltip);
+    opacity: 1;
+    position: absolute;
+    top: 60px;
+    right: 2%;
+    background: rgba(0, 0, 0, .7);
+    color: #ffffff;
+    font-size: 15px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    
+    transition: opacity 1ms ease-in-out;
+}
+
+.ico_btn_dark img {
+    border-radius: 100px;
+    transition: all .2s ease-in;
+}
+
+.ico_btn_dark img:hover {
+    background: #00000013;
+}
+
+.ico_btn_dark img:active {
+    background: #00000038;
+}
+
+select {
+    border: 2px solid #ad9bf8;
+    border-radius: 10px;
+    outline: none;
 }
 
 a {
@@ -49,4 +88,5 @@ canvas {
 
 #logo-canvas {
     margin: 5px 5px 5px 0;
+    cursor: -webkit-grab;
 }
