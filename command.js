@@ -1,3 +1,13 @@
+/**
+ * This are the types a Command Argument can be:
+ * - STR: String, as its parsed it will returned.
+ * - INT: Integer, the parsed value will be casted into base10 Integer.
+ * - FLOAT: Float, the parsed value will be casted into a float js object.
+ * - COMMANDS: List of commands, the parsed value will be parse into Command
+ *    Executors that will be executed.
+ * - PARAMETERS: Parameters, it almost doesnt make sense but is here to
+ *    demonstrate the power of this way of parsing the content.
+ */
 const COMMAND_TYPES = {
   STR: "STR",
   INT: "INT",
@@ -6,14 +16,44 @@ const COMMAND_TYPES = {
   PARAMETERS: "PARAMETERS" // Example
 };
 
+/**
+ * Argument a command can accept. The most important of this class is the
+ * type property.
+ *
+ * @class CommandArg
+ */
 class CommandArg {
+
+  /**
+   * Creates an instance of CommandArg.
+   * @param {String} name Name of the argument
+   * @param {COMMAND_TYPES} type Type of the argument. Its important because
+   *    this will define how the token is parsed.
+   * @memberof CommandArg
+   */
   constructor(name, type) {
     this.name = name;
     this.type = type;
   }
 }
 
+/**
+ * Command that can be executed.
+ *
+ * @class Command
+ */
 class Command {
+
+  /**
+   * Creates an instance of Command.
+   * @param {String} name Name of the command, againts this name the tokens will be
+   *    matched.
+   * @param {[CommandArg]} args An array of CommandArg that this command needs in
+   *    order to work.
+   * @param {*} func The JS function that will be executed when this command needs
+   *    to be executed.
+   * @memberof Command
+   */
   constructor(name, args, func) {
     this.name = name;
     this.argsTemplate = args;
@@ -21,7 +61,21 @@ class Command {
   }
 }
 
+/**
+ * The command executor purpose is to hold the command to execute and the parsed
+ * arguments that has been read from the code.
+ */
 class CommandExecutor {
+
+  /**
+   * Creates an instance of CommandExecutor.
+   * @param {Command} command The command you will want to execute.
+   * @param {[String]} values An array of string tokens, this array needs
+   *    to be the same length of the arguments the commands can accept.
+   *    These values will be casted to the argument type it corresponds to.
+   * @param {Function} callback Function to execute after the command is executed.
+   * @memberof CommandExecutor
+   */
   constructor(command, values, callback) {
     this.callback = callback
     this.command = command;
@@ -55,6 +109,12 @@ class CommandExecutor {
     }
   }
 
+  /**
+   * Executes the command with the values given at the creation of the
+   * instance.
+   *
+   * @memberof CommandExecutor
+   */
   execute() {
     this.command.func.apply(this, this.values);
     if (this.callback) {
@@ -63,14 +123,38 @@ class CommandExecutor {
   }
 }
 
+/**
+ * It stores all the commands available.
+ *
+ * @class CommandLookUp
+ */
 class CommandLookUp {
+
+  /**
+   * Creates an instance of CommandLookUp.
+   * @memberof CommandLookUp
+   */
   constructor() {
     this.commands = [];
   }
+
+  /**
+   * Adding a new command to the list.
+   *
+   * @param {Command} command New command to add to the list.
+   * @memberof CommandLookUp
+   */
   add(command) {
     this.commands.push(command);
   }
 
+  /**
+   * Return a command that matches the name.
+   *
+   * @param {String} name The name of the command you want back.
+   * @returns The command that matches the name, or null if it can't find it.
+   * @memberof CommandLookUp
+   */
   get(name) {
     let item = null;
     let index = 0;
@@ -83,177 +167,3 @@ class CommandLookUp {
     return item;
   }
 }
-
-const commandLookUp = new CommandLookUp();
-
-/**
- * To add a new command, just need the name, the arguments,
- * and then the function to execute.
- */
-commandLookUp.add(
-  new Command("fd", [new CommandArg("value", COMMAND_TYPES.FLOAT)], value => {
-    turtle.forward(value);
-  })
-);
-
-commandLookUp.add(
-  new Command("bd", [new CommandArg("value", COMMAND_TYPES.FLOAT)], value => {
-    turtle.forward(-value);
-  })
-);
-
-commandLookUp.add(
-  new Command("rt", [new CommandArg("value", COMMAND_TYPES.FLOAT)], value => {
-    turtle.right(value);
-  })
-);
-
-commandLookUp.add(
-  new Command("lt", [new CommandArg("value", COMMAND_TYPES.FLOAT)], value => {
-    turtle.right(-value);
-  })
-);
-
-commandLookUp.add(
-  new Command("pu", [], () => {
-    turtle.pen = false;
-  })
-);
-
-commandLookUp.add(
-  new Command("pd", [], () => {
-    turtle.pen = true;
-  })
-);
-
-commandLookUp.add(
-  new Command(
-    "setxy",
-    [
-      new CommandArg("x", COMMAND_TYPES.FLOAT),
-      new CommandArg("y", COMMAND_TYPES.FLOAT)
-    ],
-    (x, y) => {
-      turtle.x = x;
-      turtle.y = y;
-    }
-  )
-);
-
-commandLookUp.add(
-  new Command("setx", [new CommandArg("x", COMMAND_TYPES.FLOAT)], x => {
-    turtle.x = x;
-  })
-);
-
-commandLookUp.add(
-  new Command("sety", [new CommandArg("y", COMMAND_TYPES.FLOAT)], y => {
-    turtle.y = y;
-  })
-);
-
-commandLookUp.add(
-  new Command("home", [], () => {
-    turtle["home"]();
-  })
-);
-
-commandLookUp.add(
-  new Command("radians", [], () => {
-    angleMode(DEGREES);
-  })
-);
-
-commandLookUp.add(
-  new Command("degrees", [], () => {
-    angleMode(RADIANS);
-  })
-);
-
-commandLookUp.add(
-  new Command(
-    "repeat",
-    [
-      new CommandArg("lengthLoop", COMMAND_TYPES.INT),
-      new CommandArg("commands", COMMAND_TYPES.COMMANDS)
-    ],
-    function(lengthLoop, commands) {
-      for (let i = 0; i < lengthLoop; i++) {
-        for (let cmd of commands) {
-          cmd.execute();
-        }
-      }
-    }
-  )
-);
-
-/**
- * Color, added as example. Given a value, it set the stroke.
- */
-commandLookUp.add(
-  new Command("color", [new CommandArg("color", COMMAND_TYPES.STR)], color => {
-    // sanity sake let you use hex without the need for #
-    if (color[0] != "#") {
-      color = "#" + color;
-    }
-
-    turtle.strokeColor = color;
-  })
-);
-
-/*
- * Not apart of logo this allows us to use a RGB instead of HEX
- * Though not standard in logo this just gives us a slightly more fine grain color
- */
-commandLookUp.add(
-  new Command(
-    "colorrgb",
-    [new CommandArg("params", COMMAND_TYPES.PARAMETERS)],
-    params => {
-      let [r, g, b] = params;
-      r = parseInt(r);
-      g = parseInt(g);
-      b = parseInt(b);
-
-      if (r > 255) {
-        r = 255;
-      }
-      if (r < 0) {
-        r = 0;
-      }
-
-      if (g > 255) {
-        g = 255;
-      }
-      if (g < 0) {
-        g = 0;
-      }
-
-      if (b > 255) {
-        b = 255;
-      }
-      if (r < 0) {
-        b = 0;
-      }
-
-      turtle.strokeColor = color(r, g, b);
-    }
-  )
-);
-
-/**
- * Added as example of taking [...] as not only commands
- * but strings you can later process.
- * This command expects 3 args separated by spaces.
- */
-commandLookUp.add(
-  new Command(
-    "author",
-    [new CommandArg("params", COMMAND_TYPES.PARAMETERS)],
-    params => {
-      const [author, website, twitter] = params;
-      console.log("This repository has been created by:");
-      console.log(`${author} (@${twitter}) - ${website}`);
-    }
-  )
-);

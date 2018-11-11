@@ -1,6 +1,10 @@
 // Coding Challenge 121: Logo
 // https://youtu.be/i-k04yzfMpw
 
+/** 
+ * @TODO: Fix panning when out of canvas
+ */
+
 let canvas;
 let editor;
 let turtle;
@@ -73,7 +77,7 @@ function mouseDragged() {
   startY = mouseY-yOffset;
   goTurtle();
 }
-  
+
 function scaleToFitBoundingBox(boundingBox) {
   startX = 0;
   startY = 0;
@@ -81,6 +85,7 @@ function scaleToFitBoundingBox(boundingBox) {
 
   let scale = Math.min((width - drawingPadding) / (boundingBox.width), (height - drawingPadding) / (boundingBox.height));
   canvasScaleX = canvasScaleY = scale;
+
   canvasScrollX = (drawing_bounds.x * scale - width * .5);
   canvasScrollY = (drawing_bounds.y * scale - height * .5);
   goTurtle();
