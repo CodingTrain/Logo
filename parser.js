@@ -1,5 +1,12 @@
 
 class Parser {
+
+  /**
+   * Creates an instance of Parser.
+   * @param {String} text The text to parse
+   * @param {Function} afterCmdCallback Function to execute after the commands are executed
+   * @memberof Parser
+   */
   constructor(text, afterCmdCallback) {
     if (!text) text = '';
 
@@ -8,9 +15,22 @@ class Parser {
     this.afterCmdCallback = afterCmdCallback
   }
 
+  /**
+   * Private method
+   *
+   * @returns Boolean If the index has surpased the length of the text or not.
+   * @memberof Parser
+   */
   remainingTokens() {
     return this.index < this.text.length;
   }
+
+  /**
+   * Private method
+   *
+   * @returns String The next token after the actual index.
+   * @memberof Parser
+   */
   nextToken() {
     let regWhitespace = /\s/;
 
@@ -48,6 +68,13 @@ class Parser {
     return token;
   }
 
+  /**
+   * Public method
+   *
+   * @returns [CommandExecutor] Parsed text converted into CommandExecutors
+   *    ready to be executed.
+   * @memberof Parser
+   */
   parse() {
     let cmdsExecutors = [];
     while (this.remainingTokens()) {
