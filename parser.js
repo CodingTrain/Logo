@@ -1,90 +1,123 @@
+
 class Parser {
-  constructor(text) {
-    this.text = text;
+
+  /**
+   * Creates an instance of Parser.
+   * @param {String} text The text to parse
+   * @param {Function} afterCmdCallback Function to execute after the commands are executed
+   * @memberof Parser
+   */
+  constructor(text, afterCmdCallback) {
+    if (!text) text = '';
+
+    this.text = text.trim();
     this.index = 0;
+    this.afterCmdCallback = afterCmdCallback
   }
 
+  /**
+   * Private method
+   *
+   * @returns Boolean If the index has surpased the length of the text or not.
+   * @memberof Parser
+   */
   remainingTokens() {
     return this.index < this.text.length;
   }
 
-  getRepeat() {
-    while (this.text.charAt(this.index++) !== "[" && this.remainingTokens()) {}
-    let start = this.index;
-
-    let bracketCount = 1;
-    while (bracketCount > 0 && this.remainingTokens()) {
-      let char = this.text.charAt(this.index++);
-      if (char === "[") {
-        bracketCount++;
-      } else if (char === "]") {
-        bracketCount--;
-      }
-    }
-    let end = this.index;
-    return this.text.substring(start, end - 1);
-  }
-
+  /**
+   * Private method
+   *
+   * @returns String The next token after the actual index.
+   * @memberof Parser
+   */
   nextToken() {
-    let token = "";
-    let char = this.text.charAt(this.index);
+    let regWhitespace = /\s/;
 
-    // If it's a space ignore
-    if (char === " ") {
+    while (regWhitespace.test(this.text.charAt(this.index)) && this.remainingTokens()) this.index++;
+
+    let firstChar = this.text.charAt(this.index);
+
+    let token = '';
+    let isTokenList = false;
+
+    let depth = 0;
+
+    if (firstChar === '['){
       this.index++;
-      return this.nextToken();
+      depth++;
+      isTokenList = true;
     }
 
-    // If it's a bracker send that back
-    if (char === "[" || char === "]") {
+    let actualChar = this.text.charAt(this.index);
+
+    while(((regWhitespace.test(actualChar) && isTokenList) || !regWhitespace.test(actualChar)) && this.remainingTokens()) {
       this.index++;
-      return char;
+
+      if (isTokenList) {
+        if (actualChar === '[') depth++;
+        else if (actualChar === ']') depth--;
+
+        if (actualChar === ']' && depth === 0) return token;
+      }
+
+      token += actualChar;
+      actualChar = this.text.charAt(this.index);
     }
 
-    // Otherwise accumulate until a space
-    while (char !== " " && this.remainingTokens()) {
-      token += char;
-      char = this.text.charAt(++this.index);
-    }
     return token;
   }
 
+  /**
+   * Public method
+   *
+   * @returns [CommandExecutor] Parsed text converted into CommandExecutors
+   *    ready to be executed.
+   * @memberof Parser
+   */
   parse() {
-    let commands = [];
-    let movement = /^([fb]d|[lr]t)$/;
-    let noArgsCalls = /^p|home|degrees|radians/;
-    let repeat = /^repeat$/;
-    let setxy = /^setxy$/;
-    let color = /^color$/;
-    let setxySingle = /^set[xy]$/;
-
+    let cmdsExecutors = [];
     while (this.remainingTokens()) {
       let token = this.nextToken();
       let cmd = undefined;
-      if (movement.test(token)) {
+
+      // testCommand to refactor
+      function testCommand(value, data) { return value.test(data) }
+
+      if (testCommand(movement, token)) {
         cmd = new Command(token, parseFloat(this.nextToken()));
-      } else if (noArgsCalls.test(token)) {
+      } else if (testCommand(noArgsCalls, token)) {
         cmd = new Command(token);
-      } else if (repeat.test(token)) {
+      } else if (testCommand(repeat, token)) {
         cmd = new Command(token, parseInt(this.nextToken()));
         let toRepeat = this.getRepeat();
         let parser = new Parser(toRepeat);
         cmd.commands = parser.parse();
-      } else if (setxy.test(token)) {
+      } else if (testCommand(setxy,token)) {
         cmd = new Command(token);
         let argX = this.nextToken();
         let argY = this.nextToken();
         cmd.arg = [parseFloat(argX), parseFloat(argY)];
-      } else if (color.test(token)) {
+      } else if (testCommand(color, token)) {
         cmd = new Command(token, this.nextToken());
-      } else if (setxySingle.test(token)) {
+      } else if (testCommand(setxySingle,token)) {
         cmd = new Command(token, parseFloat(this.nextToken()));
       }
 
+      const actualToken = this.nextToken();
+      let cmd = commandLookUp.get(actualToken);
+
       if (cmd) {
-        commands.push(cmd);
+        let args = [];
+        for (let i = 0; i < cmd.argsTemplate.length; i++) {
+          args.push(this.nextToken());
+        }
+
+        cmdsExecutors.push(new CommandExecutor(cmd, args, this.afterCmdCallback));
       }
     }
-    return commands;
+
+    return cmdsExecutors;
   }
 }
+
