@@ -46,6 +46,16 @@ commandLookUp.add(
 
 commandLookUp.add(
   new Command(
+    "pensize",
+    [new CommandArg("size", COMMAND_TYPES.FLOAT)],
+    size => {
+      turtle.strokeWeight = size;
+    }
+  )
+);
+
+commandLookUp.add(
+  new Command(
     "setxy",
     [
       new CommandArg("x", COMMAND_TYPES.FLOAT),
@@ -78,13 +88,13 @@ commandLookUp.add(
 
 commandLookUp.add(
   new Command("radians", [], () => {
-    angleMode(DEGREES);
+    angleMode(RADIANS);
   })
 );
 
 commandLookUp.add(
   new Command("degrees", [], () => {
-    angleMode(RADIANS);
+    angleMode(DEGREES);
   })
 );
 

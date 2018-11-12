@@ -77,7 +77,7 @@ class CommandExecutor {
    * @memberof CommandExecutor
    */
   constructor(command, values, callback) {
-    this.callback = callback
+    this.callback = callback;
     this.command = command;
     this.values = [];
 
@@ -96,9 +96,7 @@ class CommandExecutor {
           this.values.push(value);
           break;
         case COMMAND_TYPES.COMMANDS:
-          this.values.push(
-            new Parser(value, this.callback).parse()
-          );
+          this.values.push(new Parser(value, this.callback).parse());
           break;
         case COMMAND_TYPES.PARAMETERS: // Example
           this.values.push(value.split(" "));
@@ -144,7 +142,7 @@ class CommandLookUp {
 
   /**
    * Creates an instance of CommandLookUp.
-   * @memberof CommandLookUp
+   * @memberokUp
    */
   constructor() {
     this.commands = [];
