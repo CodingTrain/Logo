@@ -1,60 +1,3 @@
-const commandLookUp = {
-  // Movement functions such as: forward, backward, right, left
-  fd: function(amt) {
-    turtle["forward"](amt);
-  },
-  bd: function(amt) {
-    turtle["forward"](-amt);
-  },
-  rt: function(angle) {
-    turtle["right"](angle);
-  },
-  lt: function(angle) {
-    turtle["right"](-angle);
-  },
-
-  // Start and stop the "pen" from drawing
-  pu: function() {
-    turtle.pen = false;
-  },
-  pd: function() {
-    turtle.pen = true;
-  },
-
-  // Set the turtles postion on the canvas
-  setxy: function(x, y) {
-    turtle.x = x;
-    turtle.y = y;
-  },
-  setx: function(x) {
-    turtle.x = x;
-  },
-  sety: function(y) {
-    turtle.y = y;
-  },
-  home: function() {
-    turtle["home"]();
-  },
-
-  // This is the Logo spec for color
-  color: function(hex) {
-    // sanity sake let you use hex without the need for #
-    if (hex[0] != "#") {
-      hex = "#" + hex;
-    }
-
-    turtle.strokeColor = color(hex);
-  },
-
-  // These are also apart of the Logo spec to let you swap between them
-  degrees: function() {
-    angleMode(DEGREES);
-  },
-  radians: function() {
-    angleMode(RADIANS);
-  }
-};
-
 class Turtle {
   constructor(x, y, angle) {
     this.x = x;
@@ -81,10 +24,13 @@ class Turtle {
       line(0, 0, amt, 0);
     }
     translate(amt, 0);
+    this.x += Math.cos(this.dir * Math.PI / 180) * amt;
+    this.y += Math.sin(this.dir * Math.PI / 180) * amt;
   }
 
   right(angle) {
     rotate(angle);
+    this.dir += angle;
   }
 
   home() {
