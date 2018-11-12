@@ -40,8 +40,8 @@ class Parser {
 
     let token = '';
     let isTokenList = false;
-
     let depth = 0;
+
 
     if (firstChar === '[') {
       this.index++;
@@ -68,6 +68,30 @@ class Parser {
     return token;
   }
 
+
+  parseExpression(last) {
+    let token = new Expression('$', this.nextToken());
+    let temp = this.index;
+    let next = this.nextToken();
+    let e;
+    let right;
+    if(next == '/' || next == '*') {
+      right = this.parseExpression();
+      e = new Expression(next, token, right);
+    } else if(next == '+' || next == '-') {
+      right = this.parseExpression();
+      e = new Expression(next, token, right); 
+    } else {
+      this.index = temp;
+      return token;
+    }
+    console.log(right);
+    if(right.lvl() > e.lvl()) {
+      let new_left = new Expression(next, token, right.left);
+      e = new Expression(right.type, new_left, right.right);
+    }
+    return e;
+  }
   /**
    * Public method
    *
@@ -78,6 +102,7 @@ class Parser {
   parse() {
     let cmdsExecutors = [];
     while (this.remainingTokens()) {
+ 
       let token = this.nextToken();
       let cmd = commandLookUp.get(token);;
       if (cmd) {
@@ -85,7 +110,9 @@ class Parser {
         for (let i = 0; i < cmd.argsTemplate.length; i++) {
           let startIndex = this.index;
           let arg = cmd.argsTemplate[i];
-          let theArgToken = this.nextToken()
+          let theArgToken = this.nextToken();
+          if(arg.type == ARGUMENT_TYPES.FLOAT || arg.type == ARGUMENT_TYPES.INT) {
+            theArgToken = this.parseExpression();
           if(arg.validator !== undefined){
             if(!arg.validator(theArgToken))
               console.error(`Argument number ${i} (${theArgToken}) is invalid for command ${token}`);
@@ -93,15 +120,12 @@ class Parser {
           }
           else {
             args.push(theArgToken);
-
             console.warn(`A validator is missing for argument ${theArgToken}`);
           }
         }
-
         cmdsExecutors.push(new CommandExecutor(cmd, args, this.afterCmdCallback));
       }
     }
     return cmdsExecutors;
   }
 }
-

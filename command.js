@@ -92,7 +92,7 @@ class CommandExecutor {
    * @memberof CommandExecutor
    */
   constructor(command, values, callback) {
-    this.callback = callback
+    this.callback = callback;
     this.command = command;
     this.values = [];
 
@@ -130,8 +130,19 @@ class CommandExecutor {
    *
    * @memberof CommandExecutor
    */
-  execute() {
-    this.command.func.apply(this, this.values);
+  execute(repcount) {
+    let values = [];
+    for(let i = 0; i < this.values.length; i++)
+    {
+      let val = this.values[i];
+      if(this.command.argsTemplate[i].type == COMMAND_TYPES.FLOAT || this.command.argsTemplate[i].type == COMMAND_TYPES.INT)
+      {
+        values.push(val.eval(repcount));
+      } else {
+        values.push(val);
+      }
+    }
+    this.command.func.apply(this, values);
     if (this.callback) {
       this.callback();
     }
@@ -147,7 +158,7 @@ class CommandLookUp {
 
   /**
    * Creates an instance of CommandLookUp.
-   * @memberof CommandLookUp
+   * @memberokUp
    */
   constructor() {
     this.commands = [];
