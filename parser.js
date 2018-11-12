@@ -40,10 +40,10 @@ class Parser {
 
     let token = '';
     let isTokenList = false;
-
     let depth = 0;
 
     if (firstChar === '['){
+
       this.index++;
       depth++;
       isTokenList = true;
@@ -68,6 +68,30 @@ class Parser {
     return token;
   }
 
+
+  parseExpression(last) {
+    let token = new Expression('$', this.nextToken());
+    let temp = this.index;
+    let next = this.nextToken();
+    let e;
+    let right;
+    if(next == '/' || next == '*') {
+      right = this.parseExpression();
+      e = new Expression(next, token, right);
+    } else if(next == '+' || next == '-') {
+      right = this.parseExpression();
+      e = new Expression(next, token, right); 
+    } else {
+      this.index = temp;
+      return token;
+    }
+    console.log(right);
+    if(right.lvl() > e.lvl()) {
+      let new_left = new Expression(next, token, right.left);
+      e = new Expression(right.type, new_left, right.right);
+    }
+    return e;
+  }
   /**
    * Public method
    *
@@ -78,15 +102,17 @@ class Parser {
   parse() {
     let cmdsExecutors = [];
     while (this.remainingTokens()) {
-      let actualToken = this.nextToken();
-
+      const actualToken = this.nextToken();
       let cmd = commandLookUp.get(actualToken);
       if (cmd) {
         let args = [];
         for (let i = 0; i < cmd.argsTemplate.length; i++) {
-          args.push(this.nextToken());
+	        if(cmd.argsTemplate[i].type == COMMAND_TYPES.FLOAT || cmd.argsTemplate[i].type == COMMAND_TYPES.INT) {
+            args.push(this.parseExpression());
+          } else {
+            args.push(this.nextToken());
+          }
         }
-
         cmdsExecutors.push(new CommandExecutor(cmd, args, this.afterCmdCallback));
       }
     }
@@ -94,4 +120,3 @@ class Parser {
     return cmdsExecutors;
   }
 }
-
