@@ -98,7 +98,7 @@ commandLookUp.add(
     function(lengthLoop, commands) {
       for (let i = 0; i < lengthLoop; i++) {
         for (let cmd of commands) {
-          cmd.execute();
+          cmd.execute(i + 1);
         }
       }
     }
