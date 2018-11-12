@@ -104,17 +104,15 @@ class Parser {
     while (this.remainingTokens()) {
       const actualToken = this.nextToken();
       let cmd = commandLookUp.get(actualToken);
-
       if (cmd) {
         let args = [];
         for (let i = 0; i < cmd.argsTemplate.length; i++) {
-	  if(cmd.argsTemplate[i].type == COMMAND_TYPES.FLOAT || cmd.argsTemplate[i].type == COMMAND_TYPES.INT) {
+	        if(cmd.argsTemplate[i].type == COMMAND_TYPES.FLOAT || cmd.argsTemplate[i].type == COMMAND_TYPES.INT) {
             args.push(this.parseExpression());
           } else {
             args.push(this.nextToken());
           }
         }
-
         cmdsExecutors.push(new CommandExecutor(cmd, args, this.afterCmdCallback));
       }
     }
