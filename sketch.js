@@ -59,9 +59,7 @@ function afterCommandExecuted() {
 
 function goTurtle() {
   console.log({startX:startX,startY:startY});
-  turtle = new Turtle(startX / canvasScaleX, startY / canvasScaleY, 0);
-  drawing_bounds.reset();
-  drawing_bounds.move(turtle.x, turtle.y);
+  turtle = new Turtle(startX, startY, 0);
   background(0);
 
   push();

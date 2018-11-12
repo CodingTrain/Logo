@@ -9,25 +9,25 @@ const commandLookUp = new CommandLookUp();
  * and then the function to execute.
  */
 commandLookUp.add(
-  new Command("fd", [new CommandArg("value", COMMAND_TYPES.FLOAT)], value => {
+  new Command("fd", [new CommandArg("value", ARGUMENT_TYPES.FLOAT)], value => {
     turtle.forward(value);
   })
 );
 
 commandLookUp.add(
-  new Command("bd", [new CommandArg("value", COMMAND_TYPES.FLOAT)], value => {
+  new Command("bd", [new CommandArg("value", ARGUMENT_TYPES.FLOAT)], value => {
     turtle.forward(-value);
   })
 );
 
 commandLookUp.add(
-  new Command("rt", [new CommandArg("value", COMMAND_TYPES.FLOAT)], value => {
+  new Command("rt", [new CommandArg("value", ARGUMENT_TYPES.FLOAT)], value => {
     turtle.right(value);
   })
 );
 
 commandLookUp.add(
-  new Command("lt", [new CommandArg("value", COMMAND_TYPES.FLOAT)], value => {
+  new Command("lt", [new CommandArg("value", ARGUMENT_TYPES.FLOAT)], value => {
     turtle.right(-value);
   })
 );
@@ -47,7 +47,7 @@ commandLookUp.add(
 commandLookUp.add(
   new Command(
     "pensize",
-    [new CommandArg("size", COMMAND_TYPES.FLOAT)],
+    [new CommandArg("size", ARGUMENT_TYPES.FLOAT)],
     size => {
       turtle.strokeWeight = size;
     }
@@ -58,8 +58,8 @@ commandLookUp.add(
   new Command(
     "setxy",
     [
-      new CommandArg("x", COMMAND_TYPES.FLOAT),
-      new CommandArg("y", COMMAND_TYPES.FLOAT)
+      new CommandArg("x", ARGUMENT_TYPES.FLOAT),
+      new CommandArg("y", ARGUMENT_TYPES.FLOAT)
     ],
     (x, y) => {
       turtle.x = x;
@@ -69,13 +69,13 @@ commandLookUp.add(
 );
 
 commandLookUp.add(
-  new Command("setx", [new CommandArg("x", COMMAND_TYPES.FLOAT)], x => {
+  new Command("setx", [new CommandArg("x", ARGUMENT_TYPES.FLOAT)], x => {
     turtle.x = x;
   })
 );
 
 commandLookUp.add(
-  new Command("sety", [new CommandArg("y", COMMAND_TYPES.FLOAT)], y => {
+  new Command("sety", [new CommandArg("y", ARGUMENT_TYPES.FLOAT)], y => {
     turtle.y = y;
   })
 );
@@ -102,8 +102,8 @@ commandLookUp.add(
   new Command(
     "repeat",
     [
-      new CommandArg("lengthLoop", COMMAND_TYPES.INT),
-      new CommandArg("commands", COMMAND_TYPES.COMMANDS)
+      new CommandArg("lengthLoop", ARGUMENT_TYPES.INT),
+      new CommandArg("commands", ARGUMENT_TYPES.COMMANDS)
     ],
     function(lengthLoop, commands) {
       for (let i = 0; i < lengthLoop; i++) {
@@ -119,7 +119,7 @@ commandLookUp.add(
  * Color, added as example. Given a value, it set the stroke.
  */
 commandLookUp.add(
-  new Command("color", [new CommandArg("color", COMMAND_TYPES.STR)], color => {
+  new Command("color", [new CommandArg("color", ARGUMENT_TYPES.STR)], color => {
     // sanity sake let you use hex without the need for #
     if (color[0] != "#") {
       color = "#" + color;
@@ -136,7 +136,7 @@ commandLookUp.add(
 commandLookUp.add(
   new Command(
     "colorrgb",
-    [new CommandArg("params", COMMAND_TYPES.PARAMETERS)],
+    [new CommandArg("params", ARGUMENT_TYPES.PARAMETERS)],
     params => {
       let [r, g, b] = params;
       r = parseInt(r);
@@ -177,7 +177,7 @@ commandLookUp.add(
 commandLookUp.add(
   new Command(
     "author",
-    [new CommandArg("params", COMMAND_TYPES.PARAMETERS)],
+    [new CommandArg("params", ARGUMENT_TYPES.PARAMETERS)],
     params => {
       const [author, website, twitter] = params;
       console.log("This repository has been created by:");
