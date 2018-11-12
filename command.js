@@ -47,11 +47,13 @@ class CommandArg {
           this.validator = (str) => {
             return /^[-+]?[0-9]*\.?[0-9]*$/.test(str);
           }
+ 
         case ARGUMENT_TYPES.EXPRESSION:
           this.validator = (str) => {
             let res = /^[-+]?([0-9]+\.?[0-9]?|[0-9]*\.?[0-9]+)(\s[+-/*]{1}\s[-+]?([0-9]+\.?[0-9]?|[0-9]*\.?[0-9]+))*$/.test(str);
             return res;
           }
+
       }
     } else
       this.validator = validator;
@@ -120,9 +122,11 @@ class CommandExecutor {
             new Parser(value, this.callback).parse()
           );
           break;
+ 
         case ARGUMENT_TYPES.EXPRESSION:
            //console.log(this.parseExpression(value))
            this.values.push(this.parseExpression(value).eval())
+ 
         case ARGUMENT_TYPES.PARAMETERS: // Example
           this.values.push(value.split(" "));
           break;
@@ -208,4 +212,3 @@ class CommandLookUp {
     return item;
   }
 }
-

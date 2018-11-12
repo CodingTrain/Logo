@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -13,17 +13,43 @@
     <script src="expression.js"></script>
     <script src="parser.js"></script>
     <script src="command.js"></script>
-    <script src="commandList.js"></script>
     <script src="bounding_box.js"></script>
-    <script src="sketch.js"></script>
-  </head>
-  
-  <body>
-    <select id="testdata" style="width: 150px;"></select>
-    <button id="button_autofit">Autofit</button>
-    <br />
-    <textarea id="code" cols="40" rows="5" autocomplete="false" spellcheck="false" autofocus></textarea>
-	<br />
-  </body>
-  
+
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+</head>
+
+<body>
+	<div id="banner">
+		<img src="./assets/img/turtle.svg" style="width: 40px; height: 40px;" alt="">
+		<span style="padding-top: 10px;">LOGO</span>
+        <select id="testdata" style="width: 150px;"></select>
+
+        <span class="ico_btn_dark" id="recentre" style="padding-top: 2px;" tooltip="Recentre">
+            <img src="./assets/img/reset.svg" style="width: 30px; height: 30px; padding: 2px;" alt="">
+        </span>
+
+        <span class="ico_btn_dark" id="bgcolor" style="padding-top: 2px;" tooltip="Random Background Color">
+            <img src="./assets/img/color.svg" style="width: 30px; height: 30px; padding: 2px;" alt="">
+        </span>
+	</div>
+	
+	<!-- Canvas div -->
+	<div id="logo-canvas"></div>
+	
+	<!-- Editor -->
+	<textarea id="code" cols="40" rows="4" autocomplete="false" spellcheck="false" autofocus></textarea>
+	
+	<!-- Icon Copyright info -->
+	<small style="color: white; font-family: 'Montserrat'; padding-top: 10px;">
+		Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Turtle">Turtle</a> from <a href="https://www.flaticon.com/"     title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/"     title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+	</small>
+	
+	<script>
+		document.querySelector("#code").value = "pu lt 90 fd 100 lt 90 fd 250 rt 90 rt 90 pd fd 500 rt 90 fd 150 rt 90 fd 500 rt 90 fd 150";
+	</script>
+	
+	<script src="sketch.js"></script>
+</body>
+
 </html>

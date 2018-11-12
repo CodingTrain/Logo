@@ -1,13 +1,18 @@
 // Coding Challenge 121: Logo
 // https://youtu.be/i-k04yzfMpw
 
+let canvas;
 let editor;
 let turtle;
+let recentreBtn;
+let bgcolorBtn;
+
 let xOffset = 0;
 let yOffset = 0;
 let startX = 100;
 let startY = 100;
 let allCases;
+let bgcolor = "#6040e6";
 
 // Used for scaling drawings to fit the canvas
 let canvasScrollX = 0;
@@ -22,13 +27,47 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(200, 200);
-  angleMode(DEGREES);
-  background(0);
+  canvas = createCanvas(windowWidth - 10, windowHeight - 220);
+  div = document.querySelector("#logo-canvas");
 
-  select("#button_autofit").mousePressed(() => {
-    scaleToFitBoundingBox(drawing_bounds);
-  })
+	div.appendChild(canvas.elt);
+
+  angleMode(DEGREES);
+  background(bgcolor);
+  
+  canvas.mousePressed(function () {
+    xOffset = mouseX-startX;
+    yOffset = mouseY-startY;
+  });
+
+  canvas.mouseMoved(function () {
+    if (mouseIsPressed) {
+      startX = mouseX-xOffset;
+      startY = mouseY-yOffset;
+      goTurtle();
+    }
+  });
+
+  recentreBtn = document.querySelector("#recentre");
+  bgcolorBtn = document.querySelector("#bgcolor");
+
+  recentreBtn.onclick = function () {
+    startX = width/2;
+    startY = height/2;
+    goTurtle();
+  }
+
+  bgcolorBtn.onclick = function () {
+    let r = floor(random(0, 255));
+    let g = floor(random(0, 255));
+    let b = floor(random(0, 255));
+
+    let col = `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`;
+    bgcolor = col;
+    goTurtle();
+
+    console.log(bgcolor);
+  }
 
   startX = width/2;
   startY = height/2;
@@ -36,7 +75,7 @@ function setup() {
   editor.input(goTurtle);
   goTurtle();
 }
-
+  
 function scaleToFitBoundingBox(boundingBox) {
   startX = 0;
   startY = 0;
@@ -44,8 +83,6 @@ function scaleToFitBoundingBox(boundingBox) {
 
   let scale = Math.min((width - drawingPadding) / (boundingBox.width), (height - drawingPadding) / (boundingBox.height));
   canvasScaleX = canvasScaleY = scale;
-  // canvasScrollX = (drawing_bounds.x * scale - width * .5);
-  // canvasScrollY = (drawing_bounds.y * scale - height * .5);
   canvasScrollX = (drawing_bounds.x * scale - width * .5);
   canvasScrollY = (drawing_bounds.y * scale - height * .5);
   goTurtle();
@@ -59,8 +96,10 @@ function afterCommandExecuted() {
 
 function goTurtle() {
   console.log({startX:startX,startY:startY});
-  turtle = new Turtle(startX, startY, 0);
-  background(0);
+ 
+  turtle = new Turtle(startX / canvasScaleX, startY / canvasScaleY, 0);
+  background(bgcolor);
+ 
 
   push();
   translate(-canvasScrollX, -canvasScrollY);
@@ -83,7 +122,7 @@ function createTestDataView(cases) {
   let selector = select("#testdata");
   allCases = cases;
 
-  selector.option("Select Test Data", -1);
+  selector.option("Logo Default", -1);
 
   for (i = 0; i < cases.length; i++) {
     selector.option(cases[i].name, i);
@@ -93,22 +132,24 @@ function createTestDataView(cases) {
   selector.changed(function() {
     let val = parseInt(selector.value());
     if (val < 0) {
-      resizeCanvas(200, 200);
       turtle.strokeColor = 255;
       turtle.dir = 0;
       turtle.x = width / 2;
       turtle.y = height / 2;
-      editor.value(""); // Empty this on "-1" select
-
+      xOffset = 0;
+      yOffset = 0;
+      startX = 100;
+      startY = 100;
+      canvasScrollX = 0;
+      canvasScrollY = 0;
+      canvasScaleX = 1;
+      canvasScaleY = 1;
+      
+      goTurtle();
       return;
     }
 
     editor.value(allCases[val].code);
-    if(allCases[val].width && allCases[val].height) {
-      resizeCanvas(allCases[val].width, allCases[val].height);
-    } else {
-      resizeCanvas(200, 200);
-    }
 
     turtle.strokeColor = 255;
     turtle.dir = 0;
@@ -118,15 +159,4 @@ function createTestDataView(cases) {
     canvasScrollX = canvasScrollY = 0;
     scaleToFitBoundingBox(drawing_bounds);
   });
-}
-
-function mousePressed() {
-  xOffset = mouseX-startX;
-  yOffset = mouseY-startX;
-}
-
-function mouseDragged() {
-  startX = mouseX-xOffset;
-  startY = mouseY-yOffset;
-  goTurtle();
 }
