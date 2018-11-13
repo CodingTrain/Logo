@@ -9,8 +9,6 @@ let bgcolorBtn;
 
 let dragStartMousePos = new p5.Vector();
 let dragStartCanvasOffset = new p5.Vector();
-let xOffset = 0;
-let yOffset = 0;
 let allCases;
 let bgcolor = "#6040e6";
 
@@ -20,7 +18,7 @@ let canvasScrollY = 0;
 let canvasScaleX = 1;
 let canvasScaleY = 1;
 let drawingBounds = new BoundingBox();
-let drawingPadding = 50; // Padding round the edge of the drawing when autofit
+let drawingPadding = 100; // Padding round the edge of the drawing when autofit
 
 function preload() {
   loadJSON("./assets/tests.json", createTestDataView);
@@ -63,8 +61,6 @@ function setup() {
     let col = `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`;
     bgcolor = col;
     goTurtle();
-
-    console.log(bgcolor);
   }
 
   editor = select("#code");
@@ -93,6 +89,7 @@ function goTurtle() {
   drawingBounds.reset();
   drawingBounds.move(turtle.x, turtle.y);
   background(bgcolor);
+
 
   push();
   translate(-canvasScrollX, -canvasScrollY);
@@ -128,10 +125,8 @@ function createTestDataView(cases) {
     if (val < 0) {
       turtle.strokeColor = 255;
       turtle.dir = 0;
-      turtle.x = width / 2;
-      turtle.y = height / 2;
-      xOffset = 0;
-      yOffset = 0;
+      turtle.x = 0;
+      turtle.y = 0;
       canvasScrollX = 0;
       canvasScrollY = 0;
       canvasScaleX = 1;
@@ -145,10 +140,13 @@ function createTestDataView(cases) {
 
     turtle.strokeColor = 255;
     turtle.dir = 0;
-    turtle.x = width / 2;
-    turtle.y = height / 2;
+    turtle.x = 0;
+    turtle.y = 0;
 
-    canvasScrollX = canvasScrollY = 0;
+    canvasScrollX = 0;
+    canvasScrollY = 0;
+    canvasScaleX = 1;
+    canvasScaleY = 1;
     scaleToFitBoundingBox(drawingBounds);
   });
 }

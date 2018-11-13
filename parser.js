@@ -68,30 +68,19 @@ class Parser {
     return token;
   }
 
-
-  parseExpression(last) {
-    let token = new Expression('$', this.nextToken());
+  getArgs() {
+    let ret = this.nextToken();
     let temp = this.index;
     let next = this.nextToken();
-    let e;
-    let right;
-    if(next == '/' || next == '*') {
-      right = this.parseExpression();
-      e = new Expression(next, token, right);
-    } else if(next == '+' || next == '-') {
-      right = this.parseExpression();
-      e = new Expression(next, token, right);
-    } else {
+    if (next == '/' || next == '*' || next == '+' || next == '-') {
+      return ret + ' ' + next +' '+this.getArgs();
+    }
+    else {
       this.index = temp;
-      return token;
+      return ret;
     }
-    console.log(right);
-    if(right.lvl() > e.lvl()) {
-      let new_left = new Expression(next, token, right.left);
-      e = new Expression(right.type, new_left, right.right);
-    }
-    return e;
   }
+
   /**
    * Public method
    *
@@ -103,26 +92,19 @@ class Parser {
     let cmdsExecutors = [];
     while (this.remainingTokens()) {
       let token = this.nextToken();
-      let cmd = commandLookUp.get(token);
+      let cmd = commandLookUp.get(token);;
+      let args = [];
       if (cmd) {
-        let args = [];
         for (let i = 0; i < cmd.argsTemplate.length; i++) {
           let startIndex = this.index;
           let arg = cmd.argsTemplate[i];
-          let theArgToken;
-          if(arg.type == ARGUMENT_TYPES.FLOAT || arg.type == ARGUMENT_TYPES.INT) {
-            theArgToken = this.parseExpression();
-            if(arg.validator !== undefined){
-              if(!arg.validator(theArgToken))
-                console.error(`Argument number ${i} (${theArgToken}) is invalid for command ${token}`);
-              args.push(theArgToken);
-            }
-            else {
-              args.push(theArgToken);
-              console.warn(`A validator is missing for argument ${theArgToken}`);
-            }
-          } else {
-            theArgToken = this.nextToken();
+          let theArgToken = this.getArgs();
+          if (arg.validator !== undefined) {
+            if (!arg.validator(theArgToken))
+              console.error(`Argument number ${i} (${theArgToken}) is invalid for command ${token}`);
+            args.push(theArgToken);
+          }
+          else {
             args.push(theArgToken);
           }
         }

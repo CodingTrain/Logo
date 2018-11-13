@@ -13,6 +13,7 @@ const ARGUMENT_TYPES = {
   INT: "INT",
   FLOAT: "FLOAT",
   COMMANDS: "COMMANDS",
+  EXPRESSION: "EXPRESSION",
   PARAMETERS: "PARAMETERS" // Example
 };
 
@@ -50,6 +51,13 @@ class CommandArg {
               arg = arg.eval();
             return /^[-+]?[0-9]*\.?[0-9]*$/.test(arg);
           }
+
+        case ARGUMENT_TYPES.EXPRESSION:
+          this.validator = (str) => {
+            let res = /^[-+]?([0-9]+\.?[0-9]?|[0-9]*\.?[0-9]+)(\s[+-/*]{1}\s[-+]?([0-9]+\.?[0-9]?|[0-9]*\.?[0-9]+))*$/.test(str);
+            return res;
+          }
+
       }
     } else
       this.validator = validator;
@@ -119,6 +127,11 @@ class CommandExecutor {
             new Parser(value, this.callback).parse()
           );
           break;
+
+        case ARGUMENT_TYPES.EXPRESSION:
+           //console.log(this.parseExpression(value))
+           this.values.push(this.parseExpression(value).eval())
+
         case ARGUMENT_TYPES.PARAMETERS: // Example
           this.values.push(value.split(" "));
           break;
@@ -128,7 +141,24 @@ class CommandExecutor {
       }
     }
   }
-
+  parseExpression(ExpressionString) {
+    let p = new Parser(ExpressionString);
+    let token = p.nextToken();
+    let next = p.nextToken();
+    let e;
+    let right;
+    if (next == '/' || next == '*' || next == '+' || next == '-') {
+      right = this.parseExpression(p.getArgs());
+      e = new Expression(next,new Expression('$',token), right);
+    } else
+      return new Expression('$', token);
+    //console.log(right);
+    if (right.lvl() > e.lvl()) {
+      let new_left = new Expression(next, new Expression('$',token), right.left);
+      e = new Expression(right.type, new_left, right.right);
+    }
+    return e;
+  }
   /**
    * Executes the command with the values given at the creation of the
    * instance.
@@ -136,18 +166,7 @@ class CommandExecutor {
    * @memberof CommandExecutor
    */
   execute(repcount) {
-    let values = [];
-    for(let i = 0; i < this.values.length; i++)
-    {
-      let val = this.values[i];
-      if(this.command.argsTemplate[i].type == ARGUMENT_TYPES.FLOAT || this.command.argsTemplate[i].type == ARGUMENT_TYPES.INT)
-      {
-        values.push(val.eval(repcount));
-      } else {
-        values.push(val);
-      }
-    }
-    this.command.func.apply(this, values);
+    this.command.func.apply(this, this.values);
     if (this.callback) {
       this.callback();
     }

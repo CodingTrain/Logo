@@ -1,25 +1,21 @@
 class Expression {
-  constructor(type, left, right) {
+  constructor(type, left, right=undefined) {
     this.type  = type;
     this.left  = left;
     this.right = right;
   }
 
-  eval(repcount) {
+  eval() {
     if(this.type == '$') {
-      if(this.left == 'repcount' && repcount) {
-        return repcount;
-      } else {
         return parseFloat(this.left);
-      }
     } else if(this.type == '/') { 
-      return this.left.eval(repcount) / this.right.eval(repcount);
+      return this.left.eval() / this.right.eval();
     } else if(this.type == '*') {
-      return this.left.eval(repcount) * this.right.eval(repcount);
+      return this.left.eval() * this.right.eval();
     } else if(this.type == '-') {
-      return this.left.eval(repcount) - this.right.eval(repcount);
+      return this.left.eval() - this.right.eval();
     } else if(this.type == '+') {
-      return this.left.eval(repcount) + this.right.eval(repcount);
+      return this.left.eval() + this.right.eval();
     }
     return 0;
   }

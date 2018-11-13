@@ -9,25 +9,25 @@ const commandLookUp = new CommandLookUp();
  * and then the function to execute.
  */
 commandLookUp.add(
-  new Command("fd", [new CommandArg("value", ARGUMENT_TYPES.FLOAT)], value => {
+  new Command("fd", [new CommandArg("value", ARGUMENT_TYPES.EXPRESSION)], value => {
     turtle.forward(value);
   })
 );
 
 commandLookUp.add(
-  new Command("bd", [new CommandArg("value", ARGUMENT_TYPES.FLOAT)], value => {
+  new Command("bd", [new CommandArg("value", ARGUMENT_TYPES.EXPRESSION)], value => {
     turtle.forward(-value);
   })
 );
 
 commandLookUp.add(
-  new Command("rt", [new CommandArg("value", ARGUMENT_TYPES.FLOAT)], value => {
+  new Command("rt", [new CommandArg("value", ARGUMENT_TYPES.EXPRESSION)], value => {
     turtle.right(value);
   })
 );
 
 commandLookUp.add(
-  new Command("lt", [new CommandArg("value", ARGUMENT_TYPES.FLOAT)], value => {
+  new Command("lt", [new CommandArg("value", ARGUMENT_TYPES.EXPRESSION)], value => {
     turtle.right(-value);
   })
 );
@@ -47,7 +47,7 @@ commandLookUp.add(
 commandLookUp.add(
   new Command(
     "pensize",
-    [new CommandArg("size", ARGUMENT_TYPES.FLOAT)],
+    [new CommandArg("size", ARGUMENT_TYPES.EXPRESSION)],
     size => {
       turtle.strokeWeight = size;
     }
@@ -58,8 +58,8 @@ commandLookUp.add(
   new Command(
     "setxy",
     [
-      new CommandArg("x", ARGUMENT_TYPES.FLOAT),
-      new CommandArg("y", ARGUMENT_TYPES.FLOAT)
+      new CommandArg("x", ARGUMENT_TYPES.EXPRESSION),
+      new CommandArg("y", ARGUMENT_TYPES.EXPRESSION)
     ],
     (x, y) => {
       turtle.x = x;
@@ -69,13 +69,13 @@ commandLookUp.add(
 );
 
 commandLookUp.add(
-  new Command("setx", [new CommandArg("x", ARGUMENT_TYPES.FLOAT)], x => {
+  new Command("setx", [new CommandArg("x", ARGUMENT_TYPES.EXPRESSION)], x => {
     turtle.x = x;
   })
 );
 
 commandLookUp.add(
-  new Command("sety", [new CommandArg("y", ARGUMENT_TYPES.FLOAT)], y => {
+  new Command("sety", [new CommandArg("y", ARGUMENT_TYPES.EXPRESSION)], y => {
     turtle.y = y;
   })
 );
