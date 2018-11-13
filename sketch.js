@@ -109,10 +109,6 @@ function goTurtle() {
 
   pop();
 
-  noFill();
-  stroke(255, 0, 0);
-  rect(drawingBounds.left, drawingBounds.top, drawingBounds.width, drawingBounds.height);
-
   pop();
 }
 
