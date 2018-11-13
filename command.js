@@ -47,13 +47,13 @@ class CommandArg {
           this.validator = (str) => {
             return /^[-+]?[0-9]*\.?[0-9]*$/.test(str);
           }
- 
+          break;
         case ARGUMENT_TYPES.EXPRESSION:
           this.validator = (str) => {
             let res = /^[-+]?([0-9]+\.?[0-9]?|[0-9]*\.?[0-9]+)(\s[+-/*]{1}\s[-+]?([0-9]+\.?[0-9]?|[0-9]*\.?[0-9]+))*$/.test(str);
             return res;
           }
-
+          break;
       }
     } else
       this.validator = validator;
@@ -117,16 +117,15 @@ class CommandExecutor {
           break;
         case ARGUMENT_TYPES.FLOAT:
           this.values.push(parseFloat(value));
+          break;
         case ARGUMENT_TYPES.COMMANDS:
           this.values.push(
             new Parser(value, this.callback).parse()
           );
           break;
- 
         case ARGUMENT_TYPES.EXPRESSION:
-           //console.log(this.parseExpression(value))
-           this.values.push(this.parseExpression(value).eval())
- 
+          this.values.push(this.parseExpression(value).eval());
+          break;
         case ARGUMENT_TYPES.PARAMETERS: // Example
           this.values.push(value.split(" "));
           break;
@@ -147,7 +146,6 @@ class CommandExecutor {
       e = new Expression(next,new Expression('$',token), right);
     } else
       return new Expression('$', token);
-    //console.log(right);
     if (right.lvl() > e.lvl()) {
       let new_left = new Expression(next, new Expression('$',token), right.left);
       e = new Expression(right.type, new_left, right.right);

@@ -91,26 +91,21 @@ class Parser {
   parse() {
     let cmdsExecutors = [];
     while (this.remainingTokens()) {
- 
       let token = this.nextToken();
       let cmd = commandLookUp.get(token);;
       let args = [];
- 
       if (cmd) {
         for (let i = 0; i < cmd.argsTemplate.length; i++) {
           let startIndex = this.index;
           let arg = cmd.argsTemplate[i];
- 
           let theArgToken = this.getArgs();
           if (arg.validator !== undefined) {
             if (!arg.validator(theArgToken))
- 
               console.error(`Argument number ${i} (${theArgToken}) is invalid for command ${token}`);
             args.push(theArgToken);
           }
           else {
             args.push(theArgToken);
-            console.warn(`A validator is missing for argument ${theArgToken}`);
           }
         }
         cmdsExecutors.push(new CommandExecutor(cmd, args, this.afterCmdCallback));

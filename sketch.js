@@ -7,10 +7,8 @@ let turtle;
 let recentreBtn;
 let bgcolorBtn;
 
-let xOffset = 0;
-let yOffset = 0;
-let startX = 100;
-let startY = 100;
+let dragStartMousePos = new p5.Vector();
+let dragStartCanvasOffset = new p5.Vector();
 let allCases;
 let bgcolor = "#6040e6";
 
@@ -19,8 +17,8 @@ let canvasScrollX = 0;
 let canvasScrollY = 0;
 let canvasScaleX = 1;
 let canvasScaleY = 1;
-let drawing_bounds = new BoundingBox();
-let drawingPadding = 50; // Padding round the edge of the drawing when autofit
+let drawingBounds = new BoundingBox();
+let drawingPadding = 100; // Padding round the edge of the drawing when autofit
 
 function preload() {
   loadJSON("./assets/tests.json", createTestDataView);
@@ -34,16 +32,16 @@ function setup() {
 
   angleMode(DEGREES);
   background(bgcolor);
-  
+
   canvas.mousePressed(function () {
-    xOffset = mouseX-startX;
-    yOffset = mouseY-startY;
+    dragStartMousePos = new p5.Vector(mouseX, mouseY);
+    dragStartCanvasOffset = new p5.Vector(canvasScrollX, canvasScrollY);
   });
 
   canvas.mouseMoved(function () {
     if (mouseIsPressed) {
-      startX = mouseX-xOffset;
-      startY = mouseY-yOffset;
+      canvasScrollX = dragStartCanvasOffset.x + dragStartMousePos.x - mouseX;
+      canvasScrollY = dragStartCanvasOffset.y + dragStartMousePos.y - mouseY;
       goTurtle();
     }
   });
@@ -52,9 +50,7 @@ function setup() {
   bgcolorBtn = document.querySelector("#bgcolor");
 
   recentreBtn.onclick = function () {
-    startX = width/2;
-    startY = height/2;
-    goTurtle();
+    scaleToFitBoundingBox(drawingBounds);
   }
 
   bgcolorBtn.onclick = function () {
@@ -65,47 +61,42 @@ function setup() {
     let col = `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`;
     bgcolor = col;
     goTurtle();
-
-    console.log(bgcolor);
   }
 
-  startX = width/2;
-  startY = height/2;
   editor = select("#code");
+  setDefaultDrawing();
   editor.input(goTurtle);
-  goTurtle();
+  scaleToFitBoundingBox(drawingBounds); // This also redraws (it has to in order to measure the size of the drawing)
 }
-  
+
 function scaleToFitBoundingBox(boundingBox) {
-  startX = 0;
-  startY = 0;
   goTurtle();
 
   let scale = Math.min((width - drawingPadding) / (boundingBox.width), (height - drawingPadding) / (boundingBox.height));
   canvasScaleX = canvasScaleY = scale;
-  canvasScrollX = (drawing_bounds.x * scale - width * .5);
-  canvasScrollY = (drawing_bounds.y * scale - height * .5);
+  canvasScrollX = (drawingBounds.x * scale - width * .5);
+  canvasScrollY = (drawingBounds.y * scale - height * .5);
   goTurtle();
 }
 
 function afterCommandExecuted() {
   if (turtle.pen) {
-    drawing_bounds.includePoint(turtle.x, turtle.y);
+    drawingBounds.includePoint(turtle.x, turtle.y);
   }
 }
 
 function goTurtle() {
-  console.log({startX:startX,startY:startY});
- 
-  turtle = new Turtle(startX / canvasScaleX, startY / canvasScaleY, 0);
+  turtle = new Turtle(0, 0, 0);
+  drawingBounds.reset();
+  drawingBounds.move(turtle.x, turtle.y);
   background(bgcolor);
- 
+
 
   push();
   translate(-canvasScrollX, -canvasScrollY);
+  scale(canvasScaleX, canvasScaleY);
 
   push();
-  scale(canvasScaleX, canvasScaleY);
   turtle.reset();
   let code = editor.value();
   let parser = new Parser(code, afterCommandExecuted);
@@ -113,14 +104,23 @@ function goTurtle() {
   for (let cmd of commands) {
     cmd.execute();
   }
+
   pop();
 
   pop();
 }
 
+/**
+ * Writes the Logo code for the default drawing to the textarea
+ * Called on page load
+ * Also called when selecting the default item from the #testdata dropdown
+ */
+function setDefaultDrawing() {
+  editor.value("pu lt 90 fd 100 lt 90 fd 250 rt 90 rt 90 pd fd 500 rt 90 fd 150 rt 90 fd 500 rt 90 fd 150");
+}
+
 function createTestDataView(cases) {
   let selector = select("#testdata");
-  allCases = cases;
 
   selector.option("Logo Default", -1);
 
@@ -132,31 +132,26 @@ function createTestDataView(cases) {
   selector.changed(function() {
     let val = parseInt(selector.value());
     if (val < 0) {
-      turtle.strokeColor = 255;
-      turtle.dir = 0;
-      turtle.x = width / 2;
-      turtle.y = height / 2;
-      xOffset = 0;
-      yOffset = 0;
-      startX = 100;
-      startY = 100;
-      canvasScrollX = 0;
-      canvasScrollY = 0;
-      canvasScaleX = 1;
-      canvasScaleY = 1;
-      
-      goTurtle();
-      return;
+      // Use the default drawing
+      setDefaultDrawing();
+    } else {
+      // Use a drawing from tests.json
+      editor.value(cases[val].code);
     }
 
-    editor.value(allCases[val].code);
-
+    // Reset default parameters for turtle
     turtle.strokeColor = 255;
     turtle.dir = 0;
-    turtle.x = width / 2;
-    turtle.y = height / 2;
+    turtle.x = 0;
+    turtle.y = 0;
 
-    canvasScrollX = canvasScrollY = 0;
-    scaleToFitBoundingBox(drawing_bounds);
+    // Reset default parameters for camera
+    canvasScrollX = 0;
+    canvasScrollY = 0;
+    canvasScaleX = 1;
+    canvasScaleY = 1;
+
+    // Move and scale the drawing to fit on-screen
+    scaleToFitBoundingBox(drawingBounds);
   });
 }
