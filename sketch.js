@@ -96,8 +96,10 @@ function afterCommandExecuted() {
 
 function goTurtle() {
   console.log({startX:startX,startY:startY});
+ 
   turtle = new Turtle(startX / canvasScaleX, startY / canvasScaleY, 0);
   background(bgcolor);
+ 
 
   push();
   translate(-canvasScrollX, -canvasScrollY);
