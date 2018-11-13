@@ -34,6 +34,6 @@ class Turtle {
 
   home() {
     this.x = this.homeX;
-    this.y = this.homey;
+    this.y = this.homeY;
   }
 }

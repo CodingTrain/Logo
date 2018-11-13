@@ -7,8 +7,8 @@ class Expression {
 
   eval() {
     if(this.type == '$') {
-        return parseFloat(this.left);
-    } else if(this.type == '/') { 
+      return parseFloat(this.left);
+    } else if(this.type == '/') {
       return this.left.eval() / this.right.eval();
     } else if(this.type == '*') {
       return this.left.eval() * this.right.eval();
