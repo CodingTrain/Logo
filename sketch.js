@@ -64,6 +64,7 @@ function setup() {
   }
 
   editor = select("#code");
+  setDefaultDrawing();
   editor.input(goTurtle);
   scaleToFitBoundingBox(drawingBounds); // This also redraws (it has to in order to measure the size of the drawing)
 }
@@ -109,9 +110,17 @@ function goTurtle() {
   pop();
 }
 
+/**
+ * Writes the Logo code for the default drawing to the textarea
+ * Called on page load
+ * Also called when selecting the default item from the #testdata dropdown
+ */
+function setDefaultDrawing() {
+  editor.value("pu lt 90 fd 100 lt 90 fd 250 rt 90 rt 90 pd fd 500 rt 90 fd 150 rt 90 fd 500 rt 90 fd 150");
+}
+
 function createTestDataView(cases) {
   let selector = select("#testdata");
-  allCases = cases;
 
   selector.option("Logo Default", -1);
 
@@ -123,30 +132,26 @@ function createTestDataView(cases) {
   selector.changed(function() {
     let val = parseInt(selector.value());
     if (val < 0) {
-      turtle.strokeColor = 255;
-      turtle.dir = 0;
-      turtle.x = 0;
-      turtle.y = 0;
-      canvasScrollX = 0;
-      canvasScrollY = 0;
-      canvasScaleX = 1;
-      canvasScaleY = 1;
-
-      goTurtle();
-      return;
+      // Use the default drawing
+      setDefaultDrawing();
+    } else {
+      // Use a drawing from tests.json
+      editor.value(cases[val].code);
     }
 
-    editor.value(allCases[val].code);
-
+    // Reset default parameters for turtle
     turtle.strokeColor = 255;
     turtle.dir = 0;
     turtle.x = 0;
     turtle.y = 0;
 
+    // Reset default parameters for camera
     canvasScrollX = 0;
     canvasScrollY = 0;
     canvasScaleX = 1;
     canvasScaleY = 1;
+
+    // Move and scale the drawing to fit on-screen
     scaleToFitBoundingBox(drawingBounds);
   });
 }
