@@ -39,13 +39,13 @@ class CommandArg {
     if (validator === undefined) {
       switch (type) {
         case ARGUMENT_TYPES.INT:
-          this.validator = (arg) => {
-            return /^\d+$/.test(arg);
+          this.validator = (str) => {
+            return /^\d+$/.test(str);
           }
           break;
         case ARGUMENT_TYPES.FLOAT:
-          this.validator = (arg) => {
-            return /^[-+]?[0-9]*\.?[0-9]*$/.test(arg);
+          this.validator = (str) => {
+            return /^[-+]?[0-9]*\.?[0-9]*$/.test(str);
           }
           break;
         case ARGUMENT_TYPES.EXPRESSION:
