@@ -80,7 +80,7 @@ class Parser {
       e = new Expression(next, token, right);
     } else if(next == '+' || next == '-') {
       right = this.parseExpression();
-      e = new Expression(next, token, right); 
+      e = new Expression(next, token, right);
     } else {
       this.index = temp;
       return token;
@@ -102,25 +102,28 @@ class Parser {
   parse() {
     let cmdsExecutors = [];
     while (this.remainingTokens()) {
- 
       let token = this.nextToken();
-      let cmd = commandLookUp.get(token);;
+      let cmd = commandLookUp.get(token);
       if (cmd) {
         let args = [];
         for (let i = 0; i < cmd.argsTemplate.length; i++) {
           let startIndex = this.index;
           let arg = cmd.argsTemplate[i];
-          let theArgToken = this.nextToken();
+          let theArgToken;
           if(arg.type == ARGUMENT_TYPES.FLOAT || arg.type == ARGUMENT_TYPES.INT) {
             theArgToken = this.parseExpression();
-          if(arg.validator !== undefined){
-            if(!arg.validator(theArgToken))
-              console.error(`Argument number ${i} (${theArgToken}) is invalid for command ${token}`);
+            if(arg.validator !== undefined){
+              if(!arg.validator(theArgToken))
+                console.error(`Argument number ${i} (${theArgToken}) is invalid for command ${token}`);
+              args.push(theArgToken);
+            }
+            else {
+              args.push(theArgToken);
+              console.warn(`A validator is missing for argument ${theArgToken}`);
+            }
+          } else {
+            theArgToken = this.nextToken();
             args.push(theArgToken);
-          }
-          else {
-            args.push(theArgToken);
-            console.warn(`A validator is missing for argument ${theArgToken}`);
           }
         }
         cmdsExecutors.push(new CommandExecutor(cmd, args, this.afterCmdCallback));

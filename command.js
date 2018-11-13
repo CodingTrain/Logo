@@ -38,13 +38,17 @@ class CommandArg {
     if (validator === undefined) {
       switch (type) {
         case ARGUMENT_TYPES.INT:
-          this.validator = (str) => {
-            return /^\d+$/.test(str);
+          this.validator = (arg) => {
+            if (arg instanceof Expression)
+              arg = arg.eval();
+            return /^\d+$/.test(arg);
           }
           break;
         case ARGUMENT_TYPES.FLOAT:
-          this.validator = (str) => {
-            return /^[-+]?[0-9]*\.?[0-9]*$/.test(str);
+          this.validator = (arg) => {
+            if (arg instanceof Expression)
+              arg = arg.eval();
+            return /^[-+]?[0-9]*\.?[0-9]*$/.test(arg);
           }
       }
     } else
@@ -105,10 +109,11 @@ class CommandExecutor {
           this.values.push(value);
           break;
         case ARGUMENT_TYPES.INT:
-          this.values.push(parseInt(value));
+          this.values.push(value);
           break;
         case ARGUMENT_TYPES.FLOAT:
-          this.values.push(parseFloat(value));
+          this.values.push(value);
+          break;
         case ARGUMENT_TYPES.COMMANDS:
           this.values.push(
             new Parser(value, this.callback).parse()
@@ -135,7 +140,7 @@ class CommandExecutor {
     for(let i = 0; i < this.values.length; i++)
     {
       let val = this.values[i];
-      if(this.command.argsTemplate[i].type == COMMAND_TYPES.FLOAT || this.command.argsTemplate[i].type == COMMAND_TYPES.INT)
+      if(this.command.argsTemplate[i].type == ARGUMENT_TYPES.FLOAT || this.command.argsTemplate[i].type == ARGUMENT_TYPES.INT)
       {
         values.push(val.eval(repcount));
       } else {
