@@ -123,17 +123,9 @@ class CommandExecutor {
             new Parser(value, this.callback).parse()
           );
           break;
-<<<<<<< HEAD
- 
-        case ARGUMENT_TYPES.EXPRESSION:
-           //console.log(this.parseExpression(value))
-           this.values.push(this.parseExpression(value).eval())
- 
-=======
         case ARGUMENT_TYPES.EXPRESSION:
           this.values.push(this.parseExpression(value).eval());
           break;
->>>>>>> upstream/master
         case ARGUMENT_TYPES.PARAMETERS: // Example
           this.values.push(value.split(" "));
           break;
@@ -154,10 +146,6 @@ class CommandExecutor {
       e = new Expression(next,new Expression('$',token), right);
     } else
       return new Expression('$', token);
-<<<<<<< HEAD
-    //console.log(right);
-=======
->>>>>>> upstream/master
     if (right.lvl() > e.lvl()) {
       let new_left = new Expression(next, new Expression('$',token), right.left);
       e = new Expression(right.type, new_left, right.right);
