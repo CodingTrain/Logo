@@ -74,8 +74,12 @@ function setup() {
     let r = floor(random(0, 255));
     let g = floor(random(0, 255));
     let b = floor(random(0, 255));
-
-    let col = `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`;
+    
+    let hexR = `${r <= 15 ? '0' : ''}${r.toString(16)}`;
+    let hexG = `${g <= 15 ? '0' : ''}${g.toString(16)}`;
+    let hexB = `${b <= 15 ? '0' : ''}${b.toString(16)}`;
+    
+    let col = `#${hexR}${hexG}${hexB}`;
     bgcolor = col;
     goTurtle();
   }
