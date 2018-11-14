@@ -114,6 +114,10 @@ textarea#code {
     box-shadow: 0px 5px 8px 1px rgba(0, 0, 0, .3);
 }
 
+#logo-canvas:active {
+    cursor: grabbing;
+}
+
 .copyright-footer {
     grid-area: footer;
     color: white;
