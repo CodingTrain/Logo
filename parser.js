@@ -106,7 +106,7 @@ class Parser {
             let valid;
             if(arg.type == ARGUMENT_TYPES.COMMANDS)
             {
-              while(this.text.length>startIndex & this.text[startIndex++]!='[');
+              while(this.text.length>startIndex && this.text[startIndex++]!='[');
               console.log({arg:theArgToken,offset:startIndex});
               valid = arg.validator(theArgToken,startIndex+this.offset)
             }else
