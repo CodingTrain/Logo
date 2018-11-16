@@ -12,23 +12,40 @@ let dragStartCanvasOffset = new p5.Vector();
 let allCases;
 let bgcolor = "#6040e6";
 
+let resizingEditor = false;
+
 // Used for scaling drawings to fit the canvas
 let canvasScrollX = 0;
 let canvasScrollY = 0;
 let canvasScaleX = 1;
 let canvasScaleY = 1;
 let drawingBounds = new BoundingBox();
-let drawingPadding = 100; // Padding round the edge of the drawing when autofit
 
 function preload() {
   loadJSON("./assets/tests.json", createTestDataView);
 }
 
+function getCanvasSize() {
+  const bounds = select("#logo-canvas").elt.getBoundingClientRect();
+  return { width: bounds.width, height: bounds.height };
+}
+
+function windowResized() {
+  const canvasSize = getCanvasSize();
+  resizeCanvas(canvasSize.width, canvasSize.height);
+  updateResizeHandlePosition();
+  scaleToFitBoundingBox(drawingBounds);
+}
+
 function setup() {
-  canvas = createCanvas(windowWidth - 10, windowHeight - 220);
+  const canvasSize = getCanvasSize();
+  canvas = createCanvas(canvasSize.width, canvasSize.height);
   div = document.querySelector("#logo-canvas");
 
 	div.appendChild(canvas.elt);
+
+  // Use a setTimeout with length 0 to call windowResized immediately after the DOM has updated (since we are dynamically injecting a canvas element)
+  setTimeout(windowResized, 0);
 
   angleMode(DEGREES);
   background(bgcolor);
@@ -57,8 +74,12 @@ function setup() {
     let r = floor(random(0, 255));
     let g = floor(random(0, 255));
     let b = floor(random(0, 255));
-
-    let col = `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`;
+    
+    let hexR = `${r <= 15 ? '0' : ''}${r.toString(16)}`;
+    let hexG = `${g <= 15 ? '0' : ''}${g.toString(16)}`;
+    let hexB = `${b <= 15 ? '0' : ''}${b.toString(16)}`;
+    
+    let col = `#${hexR}${hexG}${hexB}`;
     bgcolor = col;
     goTurtle();
   }
@@ -70,8 +91,11 @@ function setup() {
 }
 
 function scaleToFitBoundingBox(boundingBox) {
+  // Run this once first so we can measure the size of the drawing
   goTurtle();
 
+  // 15% padding around the drawing in the canvas
+  let drawingPadding = Math.min(width, height) * 0.15;
   let scale = Math.min((width - drawingPadding) / (boundingBox.width), (height - drawingPadding) / (boundingBox.height));
   canvasScaleX = canvasScaleY = scale;
   canvasScrollX = (drawingBounds.x * scale - width * .5);
@@ -156,3 +180,36 @@ function createTestDataView(cases) {
     scaleToFitBoundingBox(drawingBounds);
   });
 }
+
+function updateResizeHandlePosition() {
+  const resizeHandle = select('#resize-handle').elt;
+  const editorBounds = editor.elt.getBoundingClientRect();
+  resizeHandle.style.top = `${editorBounds.top - 8}px`;
+  resizeHandle.style.width = `${editorBounds.width}px`;
+}
+
+function updateEditorSize(mouseY) {
+  const resizeHandleBounds = select('#resize-handle').elt.getBoundingClientRect();
+  const editorBounds = editor.elt.getBoundingClientRect();
+  editor.elt.style.height = `${editorBounds.bottom - mouseY - 8}px`;
+  windowResized();
+  updateResizeHandlePosition();
+}
+
+function resizeHandleMouseDown() {
+  resizingEditor = true;
+}
+
+function windowMouseMove(ev) {
+  if (resizingEditor)
+    updateEditorSize(ev.clientY);
+}
+
+function windowMouseUp() {
+  resizingEditor = false;
+  updateResizeHandlePosition();
+}
+
+document.getElementById('resize-handle').addEventListener('mousedown', resizeHandleMouseDown);
+document.addEventListener('mousemove', windowMouseMove);
+document.addEventListener('mouseup', windowMouseUp);

@@ -1,22 +1,39 @@
 body {
     padding: 0;
-    margin: 0 5px 5px 5px;
+    margin: 0;
     background: rgba(0, 0, 0, 0.7);
     overflow: hidden;
+    width: Calc(100vw - 1em);
+    height: 100vh;
+    display: grid;
+    grid-gap: 0.5em;
+    grid-template-columns: 100vw;
+    grid-template-rows: 4em 3.5fr auto 1.5em;
+    grid-template-areas: 'banner'
+                         'canvas'
+                         'editor'
+                         'footer';
 }
 
-#banner {    
+#banner {
+    grid-area: banner;
     background: #F5F5F5;
-    width: 100%;
     height: 20px;
-    padding: 10px 0 35px 20px;
-    margin-left: -5px;
+    padding: 10px 20px 35px 20px;
     font-weight: 800;
     display: grid;
     grid-template-columns: 1.5fr 18fr 3.5fr 1fr 1.4fr;
     font-size: 20px;
     font-family: 'Montserrat', 'Open Sans';
-    /* position: absolute; */
+}
+
+#LOGO {
+    padding-top: 10px;
+    padding-left: 10px;
+}
+
+#banner select {
+    margin-right: 10px;
 }
 
 span[tooltip]::before {
@@ -35,7 +52,7 @@ span[tooltip]:hover::before {
     font-size: 15px;
     padding: 5px 10px;
     border-radius: 10px;
-    
+
     transition: opacity 1ms ease-in-out;
 }
 
@@ -64,22 +81,24 @@ a {
 }
 
 #code {
+    grid-area: editor;
     font-size: 20px;
+    margin: 0 10px 0 9px;
     width: 99%;
+    width: Calc(100% - 42px);
     outline: none;
     border: 3px solid rgba(83, 81, 81, 0.6);
     border-radius: 10px;
-    padding: 5px 0 0 10px;
+    padding: 5px 10px 0 10px;
     box-shadow: 0px 5px 8px 1px rgba(0, 0, 0, .3);
     background: #1f2223;
     color: #ffffff;
-    
-    transition: all 250ms ease-in;
+
+    transition: border 250ms ease-in;
 }
 
-canvas {
-    border-radius: 10px;
-    box-shadow: 0px 5px 8px 1px rgba(0, 0, 0, .3);
+textarea#code {
+    resize: none;
 }
 
 #code:focus {
@@ -87,6 +106,50 @@ canvas {
 }
 
 #logo-canvas {
-    margin: 5px 5px 5px 0;
-    cursor: -webkit-grab;
+    grid-area: canvas;
+    margin: 0 0.5em;
+    cursor: grab;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0px 5px 8px 1px rgba(0, 0, 0, .3);
+}
+
+#logo-canvas:active {
+    cursor: grabbing;
+}
+
+.copyright-footer {
+    grid-area: footer;
+    color: white;
+    font-family: 'Montserrat';
+    padding: 0 0.5em;
+}
+
+.resize-handle {
+    position: fixed;
+    left: 0;
+    right: 0;
+    width: 300px;
+    height: 16px;
+    margin: 0 auto;
+    padding: 0;
+    background-color: transparent;
+    cursor: row-resize;
+}
+
+.resize-handle div {
+    position: relative;
+    top: 50%;
+    width: 90%;
+    margin: 0 auto;
+    height: 0;
+    background-color: rgb(55, 55, 55);
+    background-color: #f5f5f5;
+    box-shadow: 0px 2px 16px rgba(0, 0, 0, .3);
+    transition: all 150ms ease-in-out;
+}
+
+.resize-handle:hover div {
+    top: 0;
+    height: 16px;
 }
