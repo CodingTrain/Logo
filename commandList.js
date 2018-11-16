@@ -119,7 +119,9 @@ commandLookUp.add(
  * Color, added as example. Given a value, it set the stroke.
  */
 commandLookUp.add(
-  new Command("color", [new CommandArg("color", ARGUMENT_TYPES.STR)], color => {
+  new Command("color", [new CommandArg("color", ARGUMENT_TYPES.STR,(str)=>{
+    return /^#?([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})$/.test(str);
+  })], color => {
     // sanity sake let you use hex without the need for #
     if (color[0] != "#") {
       color = "#" + color;
