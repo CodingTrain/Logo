@@ -99,6 +99,11 @@ function setup() {
   editor.input(goTurtle);
   editor_bg = select("#code_bg");
   scaleToFitBoundingBox(drawingBounds); // This also redraws (it has to in order to measure the size of the drawing)
+
+  editor.elt.addEventListener('scroll', ev => {
+    console.log(`scroll: ${editor.elt.scrollTop}`);
+    select('#code_bg').elt.scrollTop = editor.elt.scrollTop;
+  }, { passive: true }); // The 'passive: true' parameter increases performance when scrolling by making it impossible to cancel the scroll events
 }
 
 function scaleToFitBoundingBox(boundingBox) {
@@ -127,8 +132,6 @@ function goTurtle() {
   drawingBounds.move(turtle.x, turtle.y);
   background(bgcolor);
 
-
-
   push();
   translate(-canvasScrollX, -canvasScrollY);
   scale(canvasScaleX, canvasScaleY);
@@ -145,7 +148,7 @@ function goTurtle() {
   } catch (err) {
     showError(err.startIndex,err.endIndex);
     console.log(err);
-    
+
   }
 
   pop();
@@ -201,21 +204,23 @@ function createTestDataView(cases) {
 
 function updateResizeHandlePosition() {
   const resizeHandle = select('#resize-handle').elt;
-  const editorBounds = editor.elt.getBoundingClientRect();
+  const editorBounds = select('#editor-container').elt.getBoundingClientRect();
   resizeHandle.style.top = `${editorBounds.top - 8}px`;
   resizeHandle.style.width = `${editorBounds.width}px`;
 }
 
 function updateEditorSize(mouseY) {
   const resizeHandleBounds = select('#resize-handle').elt.getBoundingClientRect();
-  const editorBounds = editor.elt.getBoundingClientRect();
-  editor.elt.style.height = `${editorBounds.bottom - mouseY - 8}px`;
+  const editorBounds = select('#editor-container').elt.getBoundingClientRect();
+  select('#editor-container').elt.style.height = `${editorBounds.bottom - mouseY - 8}px`;
   windowResized();
   updateResizeHandlePosition();
 }
 
-function resizeHandleMouseDown() {
+function resizeHandleMouseDown(ev) {
   resizingEditor = true;
+  ev.preventDefault();
+  return false;
 }
 
 function windowMouseMove(ev) {
