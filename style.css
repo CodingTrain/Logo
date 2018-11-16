@@ -80,21 +80,65 @@ a {
     text-decoration: none;
 }
 
-#code {
+.editor-container {
     grid-area: editor;
-    font-size: 20px;
+    position: relative;
+    overflow: hidden;
     margin: 0 10px 0 9px;
     width: 99%;
-    width: Calc(100% - 42px);
+    width: Calc(100% - 22px);
+    min-height: 6em;
     outline: none;
-    border: 3px solid rgba(83, 81, 81, 0.6);
     border-radius: 10px;
-    padding: 5px 10px 0 10px;
     box-shadow: 0px 5px 8px 1px rgba(0, 0, 0, .3);
-    background: #1f2223;
+    background-color:#1f2223;
+}
+
+.textarea-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+
+#code {
+    width: Calc(100% - 36px);
+    height: Calc(100% - 11px);
+    font-size: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 5px 20px 0 10px;
+    outline: none;
+    border-radius: 10px;
+    border: 3px solid rgba(83, 81, 81, 0.6);
+    white-space: pre-wrap;
+	word-wrap: break-word;
     color: #ffffff;
+    background: transparent;
 
     transition: border 250ms ease-in;
+}
+
+#code_bg {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    right: 20px;
+    bottom: 0;
+    overflow: hidden;
+    font-family: 'Courier New', Courier, monospace;
+    resize: none;
+    white-space: pre-wrap;
+	word-wrap: break-word;
+    font-size: 20px;
+    padding: 5px 20px 0 10px;
+    background-color:#1f2223;
+}
+
+mark {
+    color: transparent;
+    background-color: red;
 }
 
 textarea#code {
@@ -135,6 +179,7 @@ textarea#code {
     padding: 0;
     background-color: transparent;
     cursor: row-resize;
+    z-index: 2;
 }
 
 .resize-handle div {

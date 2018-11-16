@@ -7,12 +7,13 @@ class Parser {
    * @param {Function} afterCmdCallback Function to execute after the commands are executed
    * @memberof Parser
    */
-  constructor(text, afterCmdCallback) {
+  constructor(text, afterCmdCallback,offset = 0) {
     if (!text) text = '';
 
-    this.text = text.trim();
+    this.text = text.trimRight();
     this.index = 0;
     this.afterCmdCallback = afterCmdCallback
+    this.offset = offset;
   }
 
   /**
@@ -73,7 +74,7 @@ class Parser {
     let temp = this.index;
     let next = this.nextToken();
     if (next == '/' || next == '*' || next == '+' || next == '-') {
-      return ret + ' ' + next +' '+this.getArgs();
+      return ret + ' ' + next + ' ' + this.getArgs();
     }
     else {
       this.index = temp;
@@ -91,26 +92,48 @@ class Parser {
   parse() {
     let cmdsExecutors = [];
     while (this.remainingTokens()) {
+      let cmdStrat = this.index;
       let token = this.nextToken();
-      let cmd = commandLookUp.get(token);;
+      let cmd = commandLookUp.get(token);
       let args = [];
       if (cmd) {
         for (let i = 0; i < cmd.argsTemplate.length; i++) {
           let startIndex = this.index;
           let arg = cmd.argsTemplate[i];
           let theArgToken = this.getArgs();
+          let endIndex = this.index + 1;
           if (arg.validator !== undefined) {
-            if (!arg.validator(theArgToken))
-              console.error(`Argument number ${i} (${theArgToken}) is invalid for command ${token}`);
+            let valid;
+            if(arg.type == ARGUMENT_TYPES.COMMANDS)
+            {
+              while(this.text.length>startIndex && this.text[startIndex++]!='[');
+              console.log({arg:theArgToken,offset:startIndex});
+              valid = arg.validator(theArgToken,startIndex+this.offset)
+            }else
+                valid = arg.validator(theArgToken);
+            if (!valid) {
+              console.error(`Argument number ${i} (${theArgToken}) is invalid for command ${token} parser offset ${this.offset}`);
+              throw {
+                startIndex: startIndex+this.offset,
+                endIndex: endIndex+this.offset
+              }
+            }
             args.push(theArgToken);
           }
           else {
             args.push(theArgToken);
           }
-        }
-        cmdsExecutors.push(new CommandExecutor(cmd, args, this.afterCmdCallback));
+        
+      } 
+      cmdsExecutors.push(new CommandExecutor(cmd, args, this.afterCmdCallback));
+    }else {
+      let endIndex = this.index + 1;
+      throw {
+        startIndex: cmdStrat+this.offset,
+        endIndex: endIndex+this.offset
       }
     }
+  }
     return cmdsExecutors;
   }
 }
