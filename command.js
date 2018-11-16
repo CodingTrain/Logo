@@ -55,13 +55,10 @@ class CommandArg {
           }
           break;
           case ARGUMENT_TYPES.COMMANDS:
-            this.validator = (str)=>{
-              let p = new Parser(str);
-              try{
-                p.parse()
-              }catch{
-                return false;
-              }
+            this.validator = (str,offset)=>{
+              let p = new Parser(str,null,offset);
+              
+              p.parse()
               return true;
             }
           break;
@@ -147,7 +144,7 @@ class CommandExecutor {
     }
   }
   parseExpression(ExpressionString) {
-    let p = new Parser(ExpressionString);
+    let p = new Parser(ExpressionString,null);
     let token = p.nextToken();
     let next = p.nextToken();
     let e;

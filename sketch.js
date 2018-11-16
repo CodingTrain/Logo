@@ -144,6 +144,8 @@ function goTurtle() {
     }
   } catch (err) {
     showError(err.startIndex,err.endIndex);
+    console.log(err);
+    
   }
 
   pop();

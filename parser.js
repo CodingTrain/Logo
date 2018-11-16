@@ -7,12 +7,13 @@ class Parser {
    * @param {Function} afterCmdCallback Function to execute after the commands are executed
    * @memberof Parser
    */
-  constructor(text, afterCmdCallback) {
+  constructor(text, afterCmdCallback,offset = 0) {
     if (!text) text = '';
 
     this.text = text.trimRight();
     this.index = 0;
     this.afterCmdCallback = afterCmdCallback
+    this.offset = offset;
   }
 
   /**
@@ -102,11 +103,19 @@ class Parser {
           let theArgToken = this.getArgs();
           let endIndex = this.index + 1;
           if (arg.validator !== undefined) {
-            if (!arg.validator(theArgToken)) {
-              console.error(`Argument number ${i} (${theArgToken}) is invalid for command ${token}`);
+            let valid;
+            if(arg.type == ARGUMENT_TYPES.COMMANDS)
+            {
+              while(this.text.length>startIndex & this.text[startIndex++]!='[');
+              console.log({arg:theArgToken,offset:startIndex});
+              valid = arg.validator(theArgToken,startIndex+this.offset)
+            }else
+                valid = arg.validator(theArgToken);
+            if (!valid) {
+              console.error(`Argument number ${i} (${theArgToken}) is invalid for command ${token} parser offset ${this.offset}`);
               throw {
-                startIndex: startIndex,
-                endIndex: endIndex
+                startIndex: startIndex+this.offset,
+                endIndex: endIndex+this.offset
               }
             }
             args.push(theArgToken);
@@ -120,8 +129,8 @@ class Parser {
     }else {
       let endIndex = this.index + 1;
       throw {
-        startIndex: cmdStrat,
-        endIndex: endIndex
+        startIndex: cmdStrat+this.offset,
+        endIndex: endIndex+this.offset
       }
     }
   }
