@@ -54,6 +54,17 @@ class CommandArg {
             return res;
           }
           break;
+          case ARGUMENT_TYPES.COMMANDS:
+            this.validator = (str)=>{
+              let p = new Parser(str);
+              try{
+                p.parse()
+              }catch{
+                return false;
+              }
+              return true;
+            }
+          break;
       }
     } else
       this.validator = validator;

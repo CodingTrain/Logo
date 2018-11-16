@@ -10,7 +10,7 @@ class Parser {
   constructor(text, afterCmdCallback) {
     if (!text) text = '';
 
-    this.text = text.trim();
+    this.text = text.trimRight();
     this.index = 0;
     this.afterCmdCallback = afterCmdCallback
   }
