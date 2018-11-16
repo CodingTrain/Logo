@@ -73,7 +73,7 @@ class Parser {
     let temp = this.index;
     let next = this.nextToken();
     if (next == '/' || next == '*' || next == '+' || next == '-') {
-      return ret + ' ' + next +' '+this.getArgs();
+      return ret + ' ' + next + ' ' + this.getArgs();
     }
     else {
       this.index = temp;
@@ -91,26 +91,40 @@ class Parser {
   parse() {
     let cmdsExecutors = [];
     while (this.remainingTokens()) {
+      let cmdStrat = this.index;
       let token = this.nextToken();
-      let cmd = commandLookUp.get(token);;
+      let cmd = commandLookUp.get(token);
       let args = [];
       if (cmd) {
         for (let i = 0; i < cmd.argsTemplate.length; i++) {
           let startIndex = this.index;
           let arg = cmd.argsTemplate[i];
           let theArgToken = this.getArgs();
+          let endIndex = this.index + 1;
           if (arg.validator !== undefined) {
-            if (!arg.validator(theArgToken))
+            if (!arg.validator(theArgToken)) {
               console.error(`Argument number ${i} (${theArgToken}) is invalid for command ${token}`);
+              throw {
+                startIndex: startIndex,
+                endIndex: endIndex
+              }
+            }
             args.push(theArgToken);
           }
           else {
             args.push(theArgToken);
           }
-        }
-        cmdsExecutors.push(new CommandExecutor(cmd, args, this.afterCmdCallback));
+        
+      } 
+      cmdsExecutors.push(new CommandExecutor(cmd, args, this.afterCmdCallback));
+    }else {
+      let endIndex = this.index + 1;
+      throw {
+        startIndex: cmdStrat,
+        endIndex: endIndex
       }
     }
+  }
     return cmdsExecutors;
   }
 }

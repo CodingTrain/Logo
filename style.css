@@ -83,6 +83,7 @@ a {
 #code {
     grid-area: editor;
     font-size: 20px;
+    font-family: 'Courier New', Courier, monospace;
     margin: 0 10px 0 9px;
     width: 99%;
     width: Calc(100% - 42px);
@@ -91,12 +92,36 @@ a {
     border-radius: 10px;
     padding: 5px 10px 0 10px;
     box-shadow: 0px 5px 8px 1px rgba(0, 0, 0, .3);
-    background: #1f2223;
+    background:rgba(0, 0, 0, 0);
     color: #ffffff;
 
     transition: border 250ms ease-in;
 }
-
+#code_bg {
+    grid-area: editor;
+    font-family: 'Courier New', Courier, monospace;
+    resize: none;
+    white-space: pre-wrap;
+	word-wrap: break-word;
+	color: transparent;
+    font-size: 20px;
+    margin: 0 10px 0 9px;
+    width: 99%;
+    width: Calc(100% - 42px);
+    outline: none;
+    border: 3px solid rgba(83, 81, 81, 0.6);
+    border-radius: 10px;
+    padding: 5px 10px 0 10px;
+    box-shadow: 0px 5px 8px 1px rgba(0, 0, 0, .3);
+    background:#1f2223;
+    
+    transition: border 250ms ease-in;
+}
+ 
+mark{
+    color: transparent;
+    background-color: red;
+}
 textarea#code {
     resize: none;
 }

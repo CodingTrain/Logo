@@ -3,6 +3,7 @@
 
 let canvas;
 let editor;
+let editor_bg;
 let turtle;
 let recentreBtn;
 let bgcolorBtn;
@@ -20,6 +21,15 @@ let canvasScrollY = 0;
 let canvasScaleX = 1;
 let canvasScaleY = 1;
 let drawingBounds = new BoundingBox();
+function showError(start,end)
+{
+  let text = editor.value();
+  let beforeErr= text.substring(0,start);
+  let afterErr = text.substring(end);
+  let err = text.substring(start,end);
+  let bg_text = `${beforeErr}<mark>${err}</mark>${afterErr}`;
+  editor_bg.html(bg_text);
+}
 
 function preload() {
   loadJSON("./assets/tests.json", createTestDataView);
@@ -42,7 +52,7 @@ function setup() {
   canvas = createCanvas(canvasSize.width, canvasSize.height);
   div = document.querySelector("#logo-canvas");
 
-	div.appendChild(canvas.elt);
+  div.appendChild(canvas.elt);
 
   // Use a setTimeout with length 0 to call windowResized immediately after the DOM has updated (since we are dynamically injecting a canvas element)
   setTimeout(windowResized, 0);
@@ -74,11 +84,11 @@ function setup() {
     let r = floor(random(0, 255));
     let g = floor(random(0, 255));
     let b = floor(random(0, 255));
-    
+
     let hexR = `${r <= 15 ? '0' : ''}${r.toString(16)}`;
     let hexG = `${g <= 15 ? '0' : ''}${g.toString(16)}`;
     let hexB = `${b <= 15 ? '0' : ''}${b.toString(16)}`;
-    
+
     let col = `#${hexR}${hexG}${hexB}`;
     bgcolor = col;
     goTurtle();
@@ -87,6 +97,7 @@ function setup() {
   editor = select("#code");
   setDefaultDrawing();
   editor.input(goTurtle);
+  editor_bg = select("#code_bg");
   scaleToFitBoundingBox(drawingBounds); // This also redraws (it has to in order to measure the size of the drawing)
 }
 
@@ -110,11 +121,12 @@ function afterCommandExecuted() {
 }
 
 function goTurtle() {
+  editor_bg.html( editor.value());
   turtle = new Turtle(0, 0, 0);
   drawingBounds.reset();
   drawingBounds.move(turtle.x, turtle.y);
   background(bgcolor);
- 
+
 
 
   push();
@@ -125,9 +137,13 @@ function goTurtle() {
   turtle.reset();
   let code = editor.value();
   let parser = new Parser(code, afterCommandExecuted);
-  let commands = parser.parse();
-  for (let cmd of commands) {
-    cmd.execute();
+  try {
+    let commands = parser.parse();
+    for (let cmd of commands) {
+      cmd.execute();
+    }
+  } catch (err) {
+    showError(err.startIndex,err.endIndex);
   }
 
   pop();
@@ -154,7 +170,7 @@ function createTestDataView(cases) {
   }
 
   // because why not do it here
-  selector.changed(function() {
+  selector.changed(function () {
     let val = parseInt(selector.value());
     if (val < 0) {
       // Use the default drawing
