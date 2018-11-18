@@ -40,11 +40,17 @@ function getCanvasSize() {
   return { width: bounds.width, height: bounds.height };
 }
 
+function updateEditorOverlayMargin() {
+  const editorBounds = select('#editor-container').elt.getBoundingClientRect();
+  editor_bg.elt.style.right = `${editorBounds.width - editor.elt.scrollWidth - 3}px`;
+}
+
 function windowResized() {
   const canvasSize = getCanvasSize();
   resizeCanvas(canvasSize.width, canvasSize.height);
   updateResizeHandlePosition();
   scaleToFitBoundingBox(drawingBounds);
+  updateEditorOverlayMargin();
 }
 
 function setup() {
@@ -101,7 +107,6 @@ function setup() {
   scaleToFitBoundingBox(drawingBounds); // This also redraws (it has to in order to measure the size of the drawing)
 
   editor.elt.addEventListener('scroll', ev => {
-    console.log(`scroll: ${editor.elt.scrollTop}`);
     select('#code_bg').elt.scrollTop = editor.elt.scrollTop;
   }, { passive: true }); // The 'passive: true' parameter increases performance when scrolling by making it impossible to cancel the scroll events
 }
@@ -147,8 +152,6 @@ function goTurtle() {
     }
   } catch (err) {
     showError(err.startIndex,err.endIndex);
-    console.log(err);
-
   }
 
   pop();
@@ -199,6 +202,8 @@ function createTestDataView(cases) {
 
     // Move and scale the drawing to fit on-screen
     scaleToFitBoundingBox(drawingBounds);
+
+    updateEditorOverlayMargin()
   });
 }
 

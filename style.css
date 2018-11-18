@@ -86,7 +86,7 @@ a {
     overflow: hidden;
     margin: 0 10px 0 9px;
     width: 99%;
-    width: Calc(100% - 22px);
+    width: Calc(100% - 18px);
     min-height: 6em;
     outline: none;
     border-radius: 10px;
@@ -104,11 +104,11 @@ a {
 }
 
 #code {
-    width: Calc(100% - 36px);
+    width: Calc(100% - 34px);
     height: Calc(100% - 11px);
     font-size: 20px;
     font-family: 'Courier New', Courier, monospace;
-    padding: 5px 20px 0 10px;
+    padding: 5px 18px 0 10px;
     outline: none;
     border-radius: 10px;
     border: 3px solid rgba(83, 81, 81, 0.6);
@@ -124,15 +124,16 @@ a {
     position: absolute;
     top: 3px;
     left: 3px;
-    right: 20px;
+    right: 3px;
     bottom: 0;
     overflow: hidden;
     font-family: 'Courier New', Courier, monospace;
     resize: none;
     white-space: pre-wrap;
-	word-wrap: break-word;
+    word-wrap: break-word;
     font-size: 20px;
-    padding: 5px 20px 0 10px;
+    padding: 5px 18px 0 10px;
+    color: transparent;
     background-color:#1f2223;
 }
 
