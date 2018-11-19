@@ -1,8 +1,14 @@
 # Logo
 Repo for implementation of Logo in JavaScript p5
 
-https://codingtrain.github.io/Logo/
-
+### Useful links
+* [Live Web Demo](https://codingtrain.github.io/Logo/)
+* [Coding Challenge Part 1](https://thecodingtrain.com/CodingChallenges/121.1-logo-interpreter.html) and
+[Coding Challenge Part 2](https://thecodingtrain.com/CodingChallenges/121.2-logo-interpreter.html)
+* [Coding Challenge Part 1 on Youtube](https://www.youtu.be/i-k04yzfMpw) and 
+[Coding Challenge Part 2 on Youtube](https://www.youtu.be/aOqEm101fms)
+* [Logo Wikipedia Page](https://en.wikipedia.org/wiki/Logo_(programming_language))
+* [More Information about Logo and some Examples](http://cs.brown.edu/courses/bridge/1997/Resources/LogoTutorial.html)
 
 ## Getting Started
 
