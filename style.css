@@ -1,22 +1,78 @@
 body {
     padding: 0;
-    margin: 0 5px 5px 5px;
+    margin: 0;
     background: rgba(0, 0, 0, 0.7);
     overflow: hidden;
+    width: Calc(100vw - 1em);
+    height: 100vh;
+    display: grid;
+    grid-gap: 0.5em;
+    grid-template-columns: 100vw;
+    grid-template-rows: 4em 3.5fr auto 1.5em;
+    grid-template-areas: 'banner'
+                         'canvas'
+                         'editor'
+                         'footer';
 }
 
-#banner {    
+#banner {
+    grid-area: banner;
     background: #F5F5F5;
-    width: 100%;
     height: 20px;
-    padding: 10px 0 35px 20px;
-    margin-left: -5px;
+    padding: 10px 20px 35px 20px;
     font-weight: 800;
     display: grid;
-    grid-template-columns: 1fr 18fr;
+    grid-template-columns: 1.5fr 18fr 3.5fr 1fr 1.4fr;
     font-size: 20px;
     font-family: 'Montserrat', 'Open Sans';
-    /* position: absolute; */
+}
+
+#LOGO {
+    padding-top: 10px;
+    padding-left: 10px;
+}
+
+#banner select {
+    margin-right: 10px;
+}
+
+span[tooltip]::before {
+    content: '';
+    opacity: 0;
+}
+
+span[tooltip]:hover::before {
+    content: attr(tooltip);
+    opacity: 1;
+    position: absolute;
+    top: 60px;
+    right: 2%;
+    background: rgba(0, 0, 0, .7);
+    color: #ffffff;
+    font-size: 15px;
+    padding: 5px 10px;
+    border-radius: 10px;
+
+    transition: opacity 1ms ease-in-out;
+}
+
+.ico_btn_dark img {
+    border-radius: 100px;
+    transition: all .2s ease-in;
+}
+
+.ico_btn_dark img:hover {
+    background: #00000013;
+}
+
+.ico_btn_dark img:active {
+    background: #00000038;
+}
+
+select {
+    border: 2px solid #ad9bf8;
+    border-radius: 10px;
+    outline: none;
 }
 
 a {
@@ -24,23 +80,70 @@ a {
     text-decoration: none;
 }
 
-#code {
-    font-size: 20px;
+.editor-container {
+    grid-area: editor;
+    position: relative;
+    overflow: hidden;
+    margin: 0 10px 0 9px;
     width: 99%;
+    width: Calc(100% - 18px);
+    min-height: 6em;
     outline: none;
-    border: 3px solid rgba(83, 81, 81, 0.6);
     border-radius: 10px;
-    padding: 5px 0 0 10px;
     box-shadow: 0px 5px 8px 1px rgba(0, 0, 0, .3);
-    background: #1f2223;
-    color: #ffffff;
-    
-    transition: all 250ms ease-in;
+    background-color:#1f2223;
 }
 
-canvas {
+.textarea-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+
+#code {
+    width: Calc(100% - 34px);
+    height: Calc(100% - 11px);
+    font-size: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 5px 18px 0 10px;
+    outline: none;
     border-radius: 10px;
-    box-shadow: 0px 5px 8px 1px rgba(0, 0, 0, .3);
+    border: 3px solid rgba(83, 81, 81, 0.6);
+    white-space: pre-wrap;
+	word-wrap: break-word;
+    color: #ffffff;
+    background: transparent;
+
+    transition: border 250ms ease-in;
+}
+
+#code_bg {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    right: 3px;
+    bottom: 0;
+    overflow: hidden;
+    font-family: 'Courier New', Courier, monospace;
+    resize: none;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 20px;
+    padding: 5px 18px 0 10px;
+    color: transparent;
+    background-color:#1f2223;
+}
+
+mark {
+    color: transparent;
+    background-color: red;
+}
+
+textarea#code {
+    resize: none;
 }
 
 #code:focus {
@@ -48,5 +151,51 @@ canvas {
 }
 
 #logo-canvas {
-    margin: 5px 5px 5px 0;
+    grid-area: canvas;
+    margin: 0 0.5em;
+    cursor: grab;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0px 5px 8px 1px rgba(0, 0, 0, .3);
+}
+
+#logo-canvas:active {
+    cursor: grabbing;
+}
+
+.copyright-footer {
+    grid-area: footer;
+    color: white;
+    font-family: 'Montserrat';
+    padding: 0 0.5em;
+}
+
+.resize-handle {
+    position: fixed;
+    left: 0;
+    right: 0;
+    width: 300px;
+    height: 16px;
+    margin: 0 auto;
+    padding: 0;
+    background-color: transparent;
+    cursor: row-resize;
+    z-index: 2;
+}
+
+.resize-handle div {
+    position: relative;
+    top: 50%;
+    width: 90%;
+    margin: 0 auto;
+    height: 0;
+    background-color: rgb(55, 55, 55);
+    background-color: #f5f5f5;
+    box-shadow: 0px 2px 16px rgba(0, 0, 0, .3);
+    transition: all 150ms ease-in-out;
+}
+
+.resize-handle:hover div {
+    top: 0;
+    height: 16px;
 }

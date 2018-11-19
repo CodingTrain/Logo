@@ -1,51 +1,39 @@
-const commands = {
-  "fd": function (amt) {
-    turtle.forward(amt);
-  },
-  "bd": function (amt) {
-    turtle.forward(-amt);
-  },
-  "rt": function (angle) {
-    turtle.right(angle);
-  },
-  "lt": function (angle) {
-    turtle.right(-angle);
-  },
-  "pu": function () {
-    turtle.pen = false;
-  },
-  "pd": function () {
-    turtle.pen = true;
-  }
-}
-
 class Turtle {
   constructor(x, y, angle) {
     this.x = x;
     this.y = y;
+    this.homeX = x;
+    this.homeY = y;
+
     this.dir = angle;
+    this.strokeColor = 255;
+    this.strokeWeight = 1;
   }
 
   reset() {
-    console.log(this.x, this.y, this.dir);
     translate(this.x, this.y);
     rotate(this.dir);
     this.pen = true;
   }
 
   forward(amt) {
-    amt = parseInt(amt);
     if (this.pen) {
-      stroke(255);
-      strokeWeight(2);
+      stroke(this.strokeColor);
+      strokeWeight(this.strokeWeight);
       line(0, 0, amt, 0);
     }
     translate(amt, 0);
+    this.x += Math.cos(this.dir * Math.PI / 180) * amt;
+    this.y += Math.sin(this.dir * Math.PI / 180) * amt;
   }
 
   right(angle) {
     rotate(angle);
+    this.dir += angle;
   }
 
-
+  home() {
+    this.x = this.homeX;
+    this.y = this.homeY;
+  }
 }
