@@ -138,12 +138,15 @@ a {
 }
 
 mark {
-    color: transparent;
-    background-color: red;
+    color: #ffffff;
+    background-color: rgba(255, 0, 0, .6);
+    border-radius: 5px;
 }
 
 textarea#code {
     resize: none;
+    color: transparent;
+    caret-color: #528bff;       /* Browser Compatibility Warning */
 }
 
 #code:focus {
