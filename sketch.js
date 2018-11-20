@@ -142,7 +142,10 @@ function setup() {
 
   editor = select("#code");
   setDefaultDrawing();
-  editor.input(goTurtle);
+  editor.input(() => {
+    updateEditorContent();
+    goTurtle();
+  });
   editor_bg = select("#code_bg");
   scaleToFitBoundingBox(drawingBounds); // This also redraws (it has to in order to measure the size of the drawing)
   updateEditorContent();
