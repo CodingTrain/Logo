@@ -1,10 +1,6 @@
 // Coding Challenge 121: Logo
 // https://youtu.be/i-k04yzfMpw
 
-// @TODO: Performance: 
-//    Prevent Syntax Highlighting again and again when resizing...
-//    REFER `goTurtle()`
-
 let canvas;
 let editor;
 let editor_bg;
@@ -29,7 +25,7 @@ let drawingBounds = new BoundingBox();
 let primary_keywords = ['fd', 'bd', 'rt', 'lt'];
 let secondary_keywords = ['color', 'colorrgb', 'pensize', 'repeat', 'pu', 'pd'];
 
-function syntaxHighlight(code) {  
+function syntaxHighlight(code) {
   let tokens = code.split(/(\[\s*\d+\s+\d+\s+\d+\s*\])|(\[)|(\])|(\s+)/).filter(x => (x !== undefined && x != ''));
   let newHTML = '';
 
@@ -37,7 +33,7 @@ function syntaxHighlight(code) {
     if (primary_keywords.includes(i)) {  // #f48771
       newHTML += `<strong><span style="color: #be5046">${i}</span></strong>`;
     }
-      
+
     else if (secondary_keywords.includes(i)) {
       newHTML += `<span style="color: #15c1c1">${i}</span>`;
     }
@@ -49,16 +45,16 @@ function syntaxHighlight(code) {
     else if (/#[a-zA-z0-9]/.test(i) || /\[\s*\d+\s+\d+\s+\d+\s*\]/.test(i)) {
       newHTML += `<em><span style="color: #c678dd">${i}</span></em>`;
     }
-    
+
     else if (parseInt(i) !== NaN) {
       newHTML += `<span style="color: #f5be4a">${i}</span>`;
     }
-    
+
     else {
       newHTML += `<span style="color: #cccccc">${i}</span>`;
     }
   }
-  
+
   return newHTML;
 }
 
@@ -101,20 +97,20 @@ function setup() {
   const canvasSize = getCanvasSize();
   canvas = createCanvas(canvasSize.width, canvasSize.height);
   div = document.querySelector("#logo-canvas");
-  
+
   div.appendChild(canvas.elt);
-  
+
   // Use a setTimeout with length 0 to call windowResized immediately after the DOM has updated (since we are dynamically injecting a canvas element)
   setTimeout(windowResized, 0);
 
   angleMode(DEGREES);
   background(bgcolor);
-  
+
   canvas.mousePressed(function () {
     dragStartMousePos = new p5.Vector(mouseX, mouseY);
     dragStartCanvasOffset = new p5.Vector(canvasScrollX, canvasScrollY);
   });
-  
+
   canvas.mouseMoved(function () {
     if (mouseIsPressed) {
       canvasScrollX = dragStartCanvasOffset.x + dragStartMousePos.x - mouseX;
@@ -122,34 +118,38 @@ function setup() {
       goTurtle();
     }
   });
-  
+
   recentreBtn = document.querySelector("#recentre");
   bgcolorBtn = document.querySelector("#bgcolor");
-  
+
   recentreBtn.onclick = function () {
     scaleToFitBoundingBox(drawingBounds);
   }
-  
+
   bgcolorBtn.onclick = function () {
     let r = floor(random(0, 255));
     let g = floor(random(0, 255));
     let b = floor(random(0, 255));
-    
+
     let hexR = `${r <= 15 ? '0' : ''}${r.toString(16)}`;
     let hexG = `${g <= 15 ? '0' : ''}${g.toString(16)}`;
     let hexB = `${b <= 15 ? '0' : ''}${b.toString(16)}`;
-    
+
     let col = `#${hexR}${hexG}${hexB}`;
     bgcolor = col;
     goTurtle();
   }
-  
+
   editor = select("#code");
   setDefaultDrawing();
-  editor.input(goTurtle);
+  editor.input(() => {
+    updateEditorContent();
+    goTurtle();
+  });
   editor_bg = select("#code_bg");
   scaleToFitBoundingBox(drawingBounds); // This also redraws (it has to in order to measure the size of the drawing)
-  
+  updateEditorContent();
+
   editor.elt.addEventListener('scroll', ev => {
     select('#code_bg').elt.scrollTop = editor.elt.scrollTop;
   }, { passive: true }); // The 'passive: true' parameter increases performance when scrolling by making it impossible to cancel the scroll events
@@ -175,17 +175,15 @@ function afterCommandExecuted() {
 }
 
 function goTurtle() {
-  editor_bg.html(syntaxHighlight(editor.value()));
-  
   turtle = new Turtle(0, 0, 0);
   drawingBounds.reset();
   drawingBounds.move(turtle.x, turtle.y);
   background(bgcolor);
-  
+
   push();
   translate(-canvasScrollX, -canvasScrollY);
   scale(canvasScaleX, canvasScaleY);
-  
+
   push();
   turtle.reset();
   let code = editor.value();
@@ -198,7 +196,7 @@ function goTurtle() {
   } catch (err) {
     showError(err.startIndex,err.endIndex);
   }
-  
+
   pop();
 
   pop();
@@ -215,13 +213,13 @@ function setDefaultDrawing() {
 
 function createTestDataView(cases) {
   let selector = select("#testdata");
-  
+
   selector.option("Logo Default", -1);
-  
+
   for (i = 0; i < cases.length; i++) {
     selector.option(cases[i].name, i);
   }
-  
+
   // because why not do it here
   selector.changed(function () {
     let val = parseInt(selector.value());
@@ -232,23 +230,24 @@ function createTestDataView(cases) {
       // Use a drawing from tests.json
       editor.value(cases[val].code);
     }
-    
+
     // Reset default parameters for turtle
     turtle.strokeColor = 255;
     turtle.dir = 0;
     turtle.x = 0;
     turtle.y = 0;
-    
+
     // Reset default parameters for camera
     canvasScrollX = 0;
     canvasScrollY = 0;
     canvasScaleX = 1;
     canvasScaleY = 1;
-    
+
     // Move and scale the drawing to fit on-screen
     scaleToFitBoundingBox(drawingBounds);
 
-    updateEditorOverlayMargin()
+    updateEditorOverlayMargin();
+    updateEditorContent();
   });
 }
 
@@ -267,6 +266,10 @@ function updateEditorSize(mouseY) {
   updateResizeHandlePosition();
 }
 
+function updateEditorContent() {
+  editor_bg.html(syntaxHighlight(editor.value()));
+}
+
 function resizeHandleMouseDown(ev) {
   resizingEditor = true;
   ev.preventDefault();
@@ -275,7 +278,7 @@ function resizeHandleMouseDown(ev) {
 
 function windowMouseMove(ev) {
   if (resizingEditor)
-  updateEditorSize(ev.clientY);
+    updateEditorSize(ev.clientY);
 }
 
 function windowMouseUp() {
