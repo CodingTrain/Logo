@@ -21,13 +21,53 @@ let canvasScrollY = 0;
 let canvasScaleX = 1;
 let canvasScaleY = 1;
 let drawingBounds = new BoundingBox();
+
+let primary_keywords = ['fd', 'bd', 'rt', 'lt'];
+let secondary_keywords = ['color', 'colorrgb', 'pensize', 'repeat', 'pu', 'pd'];
+
+function syntaxHighlight(code) {
+  let tokens = code.split(/(\[\s*\d+\s+\d+\s+\d+\s*\])|(\[)|(\])|(\s+)/).filter(x => (x !== undefined && x != ''));
+  let newHTML = '';
+
+  for (i of tokens) {
+    if (primary_keywords.includes(i)) {  // #f48771
+      newHTML += `<strong><span style="color: #be5046">${i}</span></strong>`;
+    }
+
+    else if (secondary_keywords.includes(i)) {
+      newHTML += `<span style="color: #15c1c1">${i}</span>`;
+    }
+
+    else if (['[', ']'].includes(i)) {
+      newHTML += `<span style="color: #ffffff">${i}</span>`;
+    }
+
+    else if (/#[a-zA-z0-9]/.test(i) || /\[\s*\d+\s+\d+\s+\d+\s*\]/.test(i)) {
+      newHTML += `<em><span style="color: #c678dd">${i}</span></em>`;
+    }
+
+    else if (parseInt(i) !== NaN) {
+      newHTML += `<span style="color: #f5be4a">${i}</span>`;
+    }
+
+    else {
+      newHTML += `<span style="color: #cccccc">${i}</span>`;
+    }
+  }
+
+  return newHTML;
+}
+
 function showError(start,end)
 {
   let text = editor.value();
+  start = (start > 0) ? start + 1 : start;
+  end = (start < text.length) ? end - 1 : end;
+
   let beforeErr= text.substring(0,start);
   let afterErr = text.substring(end);
   let err = text.substring(start,end);
-  let bg_text = `${beforeErr}<mark>${err}</mark>${afterErr}`;
+  let bg_text = `${syntaxHighlight(beforeErr)}<mark>${err}</mark>${syntaxHighlight(afterErr)}`;
   editor_bg.html(bg_text);
 }
 
@@ -102,9 +142,13 @@ function setup() {
 
   editor = select("#code");
   setDefaultDrawing();
-  editor.input(goTurtle);
+  editor.input(() => {
+    updateEditorContent();
+    goTurtle();
+  });
   editor_bg = select("#code_bg");
   scaleToFitBoundingBox(drawingBounds); // This also redraws (it has to in order to measure the size of the drawing)
+  updateEditorContent();
 
   editor.elt.addEventListener('scroll', ev => {
     select('#code_bg').elt.scrollTop = editor.elt.scrollTop;
@@ -131,7 +175,6 @@ function afterCommandExecuted() {
 }
 
 function goTurtle() {
-  editor_bg.html( editor.value());
   turtle = new Turtle(0, 0, 0);
   drawingBounds.reset();
   drawingBounds.move(turtle.x, turtle.y);
@@ -203,7 +246,8 @@ function createTestDataView(cases) {
     // Move and scale the drawing to fit on-screen
     scaleToFitBoundingBox(drawingBounds);
 
-    updateEditorOverlayMargin()
+    updateEditorOverlayMargin();
+    updateEditorContent();
   });
 }
 
@@ -220,6 +264,10 @@ function updateEditorSize(mouseY) {
   select('#editor-container').elt.style.height = `${editorBounds.bottom - mouseY - 8}px`;
   windowResized();
   updateResizeHandlePosition();
+}
+
+function updateEditorContent() {
+  editor_bg.html(syntaxHighlight(editor.value()));
 }
 
 function resizeHandleMouseDown(ev) {
