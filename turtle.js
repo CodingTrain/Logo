@@ -18,8 +18,8 @@ class Turtle {
 
   forward(amt) {
     // Move the turtle
-    this.x += Math.cos(this.dir * Math.PI / 180) * amt;
-    this.y += Math.sin(this.dir * Math.PI / 180) * amt;
+    this.x += cos(this.dir) * amt;
+    this.y += sin(this.dir) * amt;
 
     // If the pen is down we should draw a line from the previous position to the new position
     if (this.pen) {
