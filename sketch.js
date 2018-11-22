@@ -22,6 +22,7 @@ let canvasScrollY = 0;
 let canvasScaleX = 1;
 let canvasScaleY = 1;
 let drawingBounds = new BoundingBox();
+let drawingBoundsFirstPoint = true;
 let centerAnimation = null;
 
 let primary_keywords = ['fd', 'bd', 'rt', 'lt'];
@@ -233,14 +234,20 @@ function scaleToFitBoundingBox(boundingBox, animate = false) {
 
 function afterCommandExecuted() {
   if (turtle.pen) {
-    drawingBounds.includePoint(turtle.x, turtle.y);
+    if (drawingBoundsFirstPoint) {
+      drawingBounds.reset();
+      drawingBounds.move(turtle.x, turtle.y);
+      drawingBoundsFirstPoint = false;
+    } else {
+      drawingBounds.includePoint(turtle.x, turtle.y);
+      drawingBounds.includePoint(turtle.prevX, turtle.prevY);
+    }
   }
 }
 
 function goTurtle() {
   turtle = new Turtle(0, 0, 0);
-  drawingBounds.reset();
-  drawingBounds.move(turtle.x, turtle.y);
+  drawingBoundsFirstPoint = true;
   background(bgcolor);
 
   push();
