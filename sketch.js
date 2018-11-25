@@ -8,6 +8,7 @@ let turtle;
 let recentreBtn;
 let bgcolorBtn;
 
+let draggingCanvas = false;
 let dragStartMousePos = new p5.Vector();
 let dragStartCanvasOffset = new p5.Vector();
 let allCases;
@@ -22,6 +23,7 @@ let canvasScaleX = 1;
 let canvasScaleY = 1;
 let drawingBounds = new BoundingBox();
 let drawingBoundsFirstPoint = true;
+let centerAnimation = null;
 
 let primary_keywords = ['fd', 'bd', 'rt', 'lt'];
 let secondary_keywords = ['color', 'colorrgb', 'pensize', 'repeat', 'pu', 'pd'];
@@ -72,6 +74,27 @@ function showError(start,end)
   editor_bg.html(bg_text);
 }
 
+/*
+ * Returns a function that waits for `delay` milliseconds and if it had not been called again, invokes `func`
+ * If it _is_ called again within `delay` milliseconds, `func` is *not* invoked (yet) and the timer is reset.
+ */
+function debounce(func, delay) {
+  let timeout;
+  return () => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      func();
+      timeout = null;
+    }, delay);
+  }
+}
+
+function canvasResized() {
+  scaleToFitBoundingBox(drawingBounds, true);
+}
+
+const debouncedCanvasResized = debounce(canvasResized, 300);
+
 function preload() {
   loadJSON("./assets/tests.json", createTestDataView);
 }
@@ -90,7 +113,8 @@ function windowResized() {
   const canvasSize = getCanvasSize();
   resizeCanvas(canvasSize.width, canvasSize.height);
   updateResizeHandlePosition();
-  scaleToFitBoundingBox(drawingBounds);
+  debouncedCanvasResized();
+  goTurtle();
   updateEditorOverlayMargin();
 }
 
@@ -102,29 +126,39 @@ function setup() {
   div.appendChild(canvas.elt);
 
   // Use a setTimeout with length 0 to call windowResized immediately after the DOM has updated (since we are dynamically injecting a canvas element)
-  setTimeout(windowResized, 0);
+  setTimeout(() => {
+    windowResized();
+    scaleToFitBoundingBox(drawingBounds);
+  }, 0);
 
   angleMode(DEGREES);
   background(bgcolor);
 
   canvas.mousePressed(function () {
-    dragStartMousePos = new p5.Vector(mouseX, mouseY);
-    dragStartCanvasOffset = new p5.Vector(canvasScrollX, canvasScrollY);
+    if (mouseIsPressed) {
+      draggingCanvas = true;
+      dragStartMousePos = new p5.Vector(mouseX, mouseY);
+      dragStartCanvasOffset = new p5.Vector(canvasScrollX, canvasScrollY);
+    }
   });
 
   canvas.mouseMoved(function () {
-    if (mouseIsPressed) {
+    if (mouseIsPressed && draggingCanvas) {
       canvasScrollX = dragStartCanvasOffset.x + dragStartMousePos.x - mouseX;
       canvasScrollY = dragStartCanvasOffset.y + dragStartMousePos.y - mouseY;
       goTurtle();
     }
   });
 
+  canvas.mouseReleased(function () {
+    draggingCanvas = false;
+  });
+
   recentreBtn = document.querySelector("#recentre");
   bgcolorBtn = document.querySelector("#bgcolor");
 
   recentreBtn.onclick = function () {
-    scaleToFitBoundingBox(drawingBounds);
+    scaleToFitBoundingBox(drawingBounds, true);
   }
 
   bgcolorBtn.onclick = function () {
@@ -156,17 +190,46 @@ function setup() {
   }, { passive: true }); // The 'passive: true' parameter increases performance when scrolling by making it impossible to cancel the scroll events
 }
 
-function scaleToFitBoundingBox(boundingBox) {
+function scaleToFitBoundingBox(boundingBox, animate = false) {
+  // If it's already animating, wait for it to finish
+  if (centerAnimation !== null) return;
+
   // Run this once first so we can measure the size of the drawing
   goTurtle();
 
   // 15% padding around the drawing in the canvas
   let drawingPadding = Math.min(width, height) * 0.15;
   let scale = Math.min((width - drawingPadding) / (boundingBox.width), (height - drawingPadding) / (boundingBox.height));
-  canvasScaleX = canvasScaleY = scale;
-  canvasScrollX = (drawingBounds.x * scale - width * .5);
-  canvasScrollY = (drawingBounds.y * scale - height * .5);
-  goTurtle();
+
+  centerAnimation = new Animation(
+    { // Starting values
+      scaleX: canvasScaleX,
+      scaleY: canvasScaleY,
+      scrollX: canvasScrollX,
+      scrollY: canvasScrollY
+    },
+    { // Ending values
+      scaleX: scale,
+      scaleY: scale,
+      scrollX: (drawingBounds.x * scale - width * .5),
+      scrollY: (drawingBounds.y * scale - height * .5)
+    },
+    500, // Duration
+    values => { // Update callback
+      canvasScaleX = values.scaleX;
+      canvasScaleY = values.scaleY;
+      canvasScrollX = values.scrollX;
+      canvasScrollY = values.scrollY;
+      goTurtle();
+    },
+    () => { // Finished callback
+      centerAnimation = null;
+    },
+    'EASE_IN_OUT_QUART' // Easing function
+  );
+
+  if (!animate)
+    centerAnimation.skip();
 }
 
 function afterCommandExecuted() {
