@@ -8,71 +8,71 @@ Repo for implementation of Logo in JavaScript p5
 
 ### Forward
 Moves the turtle forward, in the direction that it's facing, by the specified distance (measured in turtle steps).
-* Syntax => `fd units`
+* `fd units`
 
 ### Backward
 Moves the turtle backward, i.e., exactly opposite to the direction that it's facing, by the specified distance. (The heading of the turtle does not change.)
-* Syntax => `bd units`
+* `bd units`
 
 ### Right
 Turns the turtle clockwise by the specified angle, measured by default in degrees (1/360 of a circle).
-* Syntax => `rt angle`
+* `rt angle`
 
 ### Left
 Turns the turtle counterclockwise by the specified angle, measured by default in degrees (1/360 of a circle).
-* Syntax => `lt angle`
+* `lt angle`
 
 ### Penup
 Sets the pen's position to UP, without changing its mode.
-* Syntax => `pu`
+* `pu`
 
 ### Pendown
 Sets the pen's position to DOWN, without changing its mode.
-* Syntax => `pd`
+* `pd`
 
 ### Pensize
 Sets the thickness of the pen with the given the value. Note: If it's given a negative value, by default will be thickness of 1.
-* Syntax => `pensize thicknessValue`
+* `pensize thicknessValue`
 
 ### Set X Y
 Moves the turtle to an absolute position in the graphics window. The two inputs are numbers, the X and Y coordinates.
-* Syntax => `setxy coordinateX coordinateY`
+* `setxy coordinateX coordinateY`
 
 ### Set X
 Moves the turtle horizontally from its old position to a new absolute horizontal coordinate. The input is the new X coordinate.
-* Syntax => `setx coordinateX`
+* `setx coordinateX`
 
 ### Set Y
 Moves the turtle vertically from its old position to a new absolute vertical coordinate. The input is the new Y coordinate.
-* Syntax => `sety coordinateY`
+* `sety coordinateY`
 
 ### Home
 Moves the turtle to the center of the screen.
-* Syntax => `home`
+* `home`
 
 ### Radians
 Changes the angle values to be used as radians
-* Syntax => `radians`
+* `radians`
 
 ### Degrees
 Changes the angle values to be used as degrees
-* Syntax => `degrees`
+* `degrees`
 
 ### Repeat
  uns the following instruction list repeatedly, num times. Can be nested.
-* Syntax => `repeat num [instruction list]`
+* `repeat num [instruction list]`
 
 ### Color
 Sets the pen color given the hexadecimal value in format `#FFF / #FFFFFF`.
-* Syntax => `color hexadecimalValue`
+* `color hexadecimalValue`
 
 ### Color RGB
 Sets the pen color given the RGB value.
-* Syntax => `colorrgb [red green blue]`
+* `colorrgb [red green blue]`
 
 ### Author
 Prints the given  in the developer console
-* Syntax => `author [author website twitter]`
+* `author [author website twitter]`
 
 </p>
 </details>
