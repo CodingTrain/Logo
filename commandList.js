@@ -7,7 +7,7 @@ const commandLookUp = new CommandLookUp();
 /**
  * To add a new command, just need the name, the arguments,
  * and then the function to execute.
- * Note: When adding a new command update the list of supported commands on the readme file
+ * Note: When adding a new command, update the list of supported commands on the readme file
  */
 commandLookUp.add(
   new Command("fd", [new CommandArg("value", ARGUMENT_TYPES.EXPRESSION)], value => {
