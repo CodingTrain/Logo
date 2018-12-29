@@ -98,7 +98,13 @@ commandLookUp.add(
     angleMode(DEGREES);
   })
 );
-
+// params width, height or only radius? ellipseMode(CENTER) or corner?
+commandLookUp.add(
+  new Command("circle", [new CommandArg("radius",ARGUMENT_TYPES.EXPRESSION)], () => {
+    ellipseMode(CENTER);
+    ellipse(turtle.x,turtle.y,radius*2,radius*2);
+  })
+);
 commandLookUp.add(
   new Command(
     "repeat",
