@@ -76,6 +76,9 @@ Prints the given  in the developer console
 
 </p>
 </details>
+### Circle
+Makes a circle with the center at the turtles X and Y position with a given radius
+* `circle [radius]
 
 ## Useful links
 * [Live Web Demo](https://codingtrain.github.io/Logo/)
