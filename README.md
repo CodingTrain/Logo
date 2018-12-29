@@ -54,6 +54,10 @@ Moves the turtle to the center of the screen.
 Changes the angle values to be used as radians
 * `radians`
 
+### Circle
+Creates a circle with the center at the turtles x,y position with a given radius
+* `circle [radius]`
+
 ### Degrees
 Changes the angle values to be used as degrees
 * `degrees`
