@@ -105,6 +105,14 @@ commandLookUp.add(
     ellipse(turtle.x,turtle.y,radius*2,radius*2);
   })
 );
+
+commandLookUp.add(
+  new Command("dot", [new CommandArg("radius",ARGUMENT_TYPES.EXPRESSSION)], () => {
+    ellipseMode(CENTER);
+    ellipse(turtle.x,turtle.y,radius*2,radius*2);
+  })
+  );
+
 commandLookUp.add(
   new Command(
     "repeat",
