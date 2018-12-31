@@ -122,6 +122,7 @@ commandLookUp.add(
     } else {
       fill(255);
     }
+    stroke(255);
     arc(turtle.x, turtle.y, radius * 2, radius * 2, turtle.dir, turtle.dir + angle, OPEN);
   })
 );
@@ -134,6 +135,7 @@ commandLookUp.add(
     } else {
       fill(255);
     }
+    stroke(255);
     
     ellipse(turtle.x, turtle.y, radius * 2, radius * 2);
   })
@@ -143,6 +145,7 @@ commandLookUp.add(
   new Command("dot", [new CommandArg("radius", ARGUMENT_TYPES.EXPRESSSION)], radius => {
     ellipseMode(CENTER);
     fill(255);
+    stroke(255);
     ellipse(turtle.x, turtle.y, radius * 2, radius * 2);
   })
 );
