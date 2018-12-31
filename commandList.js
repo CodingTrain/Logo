@@ -6,7 +6,6 @@ const commandLookUp = new CommandLookUp();
 
 // Fill or no fill? 
 var filling = false;
-stroke(255);
 /**
  * To add a new command, just need the name, the arguments,
  * and then the function to execute.
