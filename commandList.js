@@ -111,6 +111,7 @@ commandLookUp.add(
 commandLookUp.add(
   new Command("circle", [new CommandArg("radius", ARGUMENT_TYPES.EXPRESSION)], radius => {
     ellipseMode(CENTER);
+    noFill();
     ellipse(turtle.x, turtle.y, radius * 2, radius * 2);
   })
 );
