@@ -102,9 +102,9 @@ commandLookUp.add(
 // Not sure if i should add only arc or both of these..
 
 commandLookUp.add(
-  new Command("arc", [new CommandArg("radius",ARGUMENT_TYPES.EXPRESSION)], () => {
+  new Command("arc", [new CommandArg("radius",ARGUMENT_TYPES.EXPRESSION), new CommandArg("angle",ARGUMENT_TYPES.EXPRESSION)], () => {
     ellipseMode(CENTER);
-    ellipse(turtle.x,turtle.y,radius*2,radius*2);
+    arc(turtle.x,turtle.y,radius*2,radius*2,turtle.dir,turtle.dir+angle);
   })
 );
 
