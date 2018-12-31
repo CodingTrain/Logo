@@ -4,6 +4,9 @@
  */
 const commandLookUp = new CommandLookUp();
 
+// Fill or no fill? 
+var filling = false;
+
 /**
  * To add a new command, just need the name, the arguments,
  * and then the function to execute.
@@ -102,8 +105,24 @@ commandLookUp.add(
 // Thanks TastefulTostie :)
 
 commandLookUp.add(
+  new Command("fill", [], () => {
+    filling = true;
+  })
+);
+
+commandLookUp.add(
+  new Command("nofill", [], () => {
+    filling = false;
+  })
+);
+
+commandLookUp.add(
   new Command("arc", [new CommandArg("angle", ARGUMENT_TYPES.EXPRESSION), new CommandArg("radius", ARGUMENT_TYPES.EXPRESSION)], (angle, radius) => {
-    noFill();
+    if(!filling) {
+      noFill();
+    } else {
+      fill(255);
+    }
     arc(turtle.x, turtle.y, radius * 2, radius * 2, turtle.dir, turtle.dir + angle, OPEN);
   })
 );
@@ -111,7 +130,12 @@ commandLookUp.add(
 commandLookUp.add(
   new Command("circle", [new CommandArg("radius", ARGUMENT_TYPES.EXPRESSION)], radius => {
     ellipseMode(CENTER);
-    noFill();
+    if(!filling) {
+      noFill();
+    } else {
+      fill(255);
+    }
+    
     ellipse(turtle.x, turtle.y, radius * 2, radius * 2);
   })
 );
@@ -119,6 +143,7 @@ commandLookUp.add(
 commandLookUp.add(
   new Command("dot", [new CommandArg("radius", ARGUMENT_TYPES.EXPRESSSION)], radius => {
     ellipseMode(CENTER);
+    fill(255);
     ellipse(turtle.x, turtle.y, radius * 2, radius * 2);
   })
 );
