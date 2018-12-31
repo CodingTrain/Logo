@@ -99,28 +99,28 @@ commandLookUp.add(
   })
 );
 
-// Not sure if i should add only arc or both of these..
+// Thanks TastefulTostie :)
 
 commandLookUp.add(
-  new Command("arc", [new CommandArg("radius",ARGUMENT_TYPES.EXPRESSION), new CommandArg("angle",ARGUMENT_TYPES.EXPRESSION)], () => {
-    ellipseMode(CENTER);
-    arc(turtle.x,turtle.y,radius*2,radius*2,turtle.dir,turtle.dir+angle);
+  new Command("arc", [new CommandArg("angle", ARGUMENT_TYPES.EXPRESSION), new CommandArg("radius", ARGUMENT_TYPES.EXPRESSION)], (angle, radius) => {
+    noFill();
+    arc(turtle.x, turtle.y, radius * 2, radius * 2, turtle.dir, turtle.dir + angle, OPEN);
   })
 );
 
 commandLookUp.add(
-  new Command("circle", [new CommandArg("radius",ARGUMENT_TYPES.EXPRESSION)], () => {
+  new Command("circle", [new CommandArg("radius", ARGUMENT_TYPES.EXPRESSION)], radius => {
     ellipseMode(CENTER);
-    ellipse(turtle.x,turtle.y,radius*2,radius*2);
+    ellipse(turtle.x, turtle.y, radius * 2, radius * 2);
   })
 );
 
 commandLookUp.add(
-  new Command("dot", [new CommandArg("radius",ARGUMENT_TYPES.EXPRESSSION)], () => {
+  new Command("dot", [new CommandArg("radius", ARGUMENT_TYPES.EXPRESSSION)], radius => {
     ellipseMode(CENTER);
-    ellipse(turtle.x,turtle.y,radius*2,radius*2);
+    ellipse(turtle.x, turtle.y, radius * 2, radius * 2);
   })
-  );
+);
 
 commandLookUp.add(
   new Command(
