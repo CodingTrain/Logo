@@ -19,6 +19,7 @@ class Parser {
   /**
    * Private method
    *
+   * @private
    * @returns Boolean If the index has surpased the length of the text or not.
    * @memberof Parser
    */
@@ -29,6 +30,7 @@ class Parser {
   /**
    * Private method
    *
+   * @private
    * @returns String The next token after the actual index.
    * @memberof Parser
    */
@@ -85,6 +87,7 @@ class Parser {
   /**
    * Public method
    *
+   * @public
    * @returns [CommandExecutor] Parsed text converted into CommandExecutors
    *    ready to be executed.
    * @memberof Parser
