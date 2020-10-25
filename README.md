@@ -59,7 +59,7 @@ Changes the angle values to be used as degrees
 * `degrees`
 
 ### Repeat
- uns the following instruction list repeatedly, num times. Can be nested.
+Runs the following instruction list repeatedly, num times. Can be nested.
 * `repeat num [instruction list]`
 
 ### Color
@@ -71,7 +71,7 @@ Sets the pen color given the RGB value.
 * `colorrgb [red green blue]`
 
 ### Author
-Prints the given  in the developer console
+Prints the given author information in the developer console.
 * `author [author website twitter]`
 
 </p>
