@@ -1,4 +1,12 @@
 class Turtle {
+
+  /**
+   * Creates an instance of the Turtle.
+   * @param {Number} x The home x location.
+   * @param {Number} y The home y location.
+   * @param {Number} angle The angle the turtle starts with
+   * @memberof Turtle
+   */
   constructor(x, y, angle) {
     this.x = x;
     this.y = y;
@@ -11,11 +19,15 @@ class Turtle {
     this.strokeColor = 255;
     this.strokeWeight = 1;
   }
-
+  
   reset() {
     this.pen = true;
   }
 
+  /**
+  * Move the turtle forward.
+  * @param {Number} amt  The amount the turtle needs to move forwards
+  */
   forward(amt) {
     // Move the turtle
     this.x += cos(this.dir) * amt;
@@ -32,11 +44,18 @@ class Turtle {
     this.prevX = this.x;
     this.prevY = this.y;
   }
-
+  
+  /**
+  * Rotate the turtle.
+  * @param {Number} angle  The amount the turtle needs to rotate
+  */
   right(angle) {
     this.dir += angle;
   }
 
+  /**
+  * Sets the location back to the default.
+  */
   home() {
     this.x = this.homeX;
     this.y = this.homeY;
