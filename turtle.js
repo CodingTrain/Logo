@@ -1,4 +1,12 @@
 class Turtle {
+
+  /**
+   * Creates an instance of the Turtle.
+   * @param {Number} x The home x location.
+   * @param {Number} y The home y location.
+   * @param {Number} angle The angle the turtle starts with
+   * @memberof Turtle
+   */
   constructor(x, y, angle) {
     this.x = x;
     this.y = y;
