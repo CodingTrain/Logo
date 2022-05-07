@@ -14,7 +14,8 @@ const ARGUMENT_TYPES = {
   FLOAT: "FLOAT",
   COMMANDS: "COMMANDS",
   EXPRESSION: "EXPRESSION",
-  PARAMETERS: "PARAMETERS" // Example
+  PARAMETERS: "PARAMETERS", // Example
+  COLOR: "COLOR"
 };
 
 /**
@@ -51,6 +52,13 @@ class CommandArg {
         case ARGUMENT_TYPES.EXPRESSION:
           this.validator = (str) => {
             let res = /^[-+]?([0-9]+\.?[0-9]?|[0-9]*\.?[0-9]+)(\s[+-/*]{1}\s[-+]?([0-9]+\.?[0-9]?|[0-9]*\.?[0-9]+))*$/.test(str);
+            return res;
+          }
+          break;
+        case ARGUMENT_TYPES.STR:
+          this.validator = (str) => {
+            let res = /^[\s\S]+/.test(str);
+            print(res)
             return res;
           }
           break;
@@ -118,6 +126,9 @@ class CommandExecutor {
 
       switch (argTemplate) {
         case ARGUMENT_TYPES.STR:
+          this.values.push(value.substring(1, value.length - 1));
+          break;
+        case ARGUMENT_TYPES.COLOR:
           this.values.push(value);
           break;
         case ARGUMENT_TYPES.INT:

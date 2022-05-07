@@ -176,7 +176,13 @@ function setup() {
   }
 
   editor = select("#code");
+  
   setDefaultDrawing();
+
+  let editorValue = localStorage.getItem("logo");
+  if (editorValue) {
+    editor.value(editorValue);
+  }
   editor.input(() => {
     updateEditorContent();
     goTurtle();
@@ -354,6 +360,18 @@ function windowMouseMove(ev) {
 function windowMouseUp() {
   resizingEditor = false;
   updateResizeHandlePosition();
+}
+
+function keyPressed(e) {
+  if (e.key == 'd' && e.ctrlKey) {
+    saveCanvas('logo', 'png');
+    e.preventDefault();
+  } else if (e.key == 's' && e.ctrlKey) {
+    // save the code to local storage
+    localStorage.setItem('logo', editor.value());
+    
+    e.preventDefault();
+  }
 }
 
 document.getElementById('resize-handle').addEventListener('mousedown', resizeHandleMouseDown);

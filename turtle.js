@@ -41,4 +41,12 @@ class Turtle {
     this.x = this.homeX;
     this.y = this.homeY;
   }
+
+  label(displayText) {
+    push();
+    translate(this.x, this.y);
+    rotate(this.dir);
+    text(displayText, 0, 0);
+    pop();
+  }
 }
