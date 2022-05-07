@@ -9,6 +9,35 @@ const commandLookUp = new CommandLookUp();
  * and then the function to execute.
  * Note: When adding a new command, update the list of supported commands on the readme file
  */
+
+commandLookUp.add(
+  new Command("label", [new CommandArg("displayText", ARGUMENT_TYPES.PARAMETERS)], params => {
+    textAlign(CENTER);
+    let realText = "";
+    for (let param of params) {
+      if (param.charAt(0) == '"') {
+        realText += param.substring(1);
+      } else {
+        realText += param;
+      }
+      realText += " ";
+    }
+    turtle.label(realText);
+  })
+);
+
+commandLookUp.add(
+  new Command("cs", [], () => { 
+    background(bgcolor);
+  })
+);
+
+commandLookUp.add(
+  new Command("setfontsize", [new CommandArg("size", ARGUMENT_TYPES.INT)], displayText => {
+    textSize(displayText);
+  })
+);
+
 commandLookUp.add(
   new Command("fd", [new CommandArg("value", ARGUMENT_TYPES.EXPRESSION)], value => {
     turtle.forward(value);
@@ -120,7 +149,7 @@ commandLookUp.add(
  * Color, added as example. Given a value, it set the stroke.
  */
 commandLookUp.add(
-  new Command("color", [new CommandArg("color", ARGUMENT_TYPES.STR,(str)=>{
+  new Command("color", [new CommandArg("color", ARGUMENT_TYPES.COLOR,(str)=>{
     return /^#?([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})$/.test(str);
   })], color => {
     // sanity sake let you use hex without the need for #

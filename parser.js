@@ -71,6 +71,12 @@ class Parser {
 
   getArgs() {
     let ret = this.nextToken();
+    for (let i = 1; i < ret.length; i++) {
+      let char = ret.charAt(i);
+      if (char === '/' || char === '*' || char === '-' || char === '+') {
+        return ret.substring(0, i) + ' ' + char + ' ' + ret.substring(i + 1);
+      }
+    }
     let temp = this.index;
     let next = this.nextToken();
     if (next == '/' || next == '*' || next == '+' || next == '-') {
@@ -110,14 +116,14 @@ class Parser {
               console.log({arg:theArgToken,offset:startIndex});
               valid = arg.validator(theArgToken,startIndex+this.offset)
             }else
-                valid = arg.validator(theArgToken);
-            if (!valid) {
-              console.error(`Argument number ${i} (${theArgToken}) is invalid for command ${token} parser offset ${this.offset}`);
-              throw {
-                startIndex: startIndex+this.offset,
-                endIndex: endIndex+this.offset
+              valid = arg.validator(theArgToken);
+              if (!valid) {
+                console.error(`Argument number ${i} (${theArgToken}) is invalid for command ${token} parser offset ${this.offset}`);
+                throw {
+                  startIndex: startIndex+this.offset,
+                  endIndex: endIndex+this.offset
+                }
               }
-            }
             args.push(theArgToken);
           }
           else {
